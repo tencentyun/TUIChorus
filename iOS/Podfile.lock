@@ -1,0 +1,54 @@
+PODS:
+  - Alamofire (5.4.3)
+  - Kingfisher (6.3.1)
+  - MJExtension (3.3.0)
+  - SnapKit (5.0.1)
+  - Toast-Swift (5.0.1)
+  - TUIChorus/Professional (1.0.0):
+    - Alamofire
+    - Kingfisher
+    - MJExtension
+    - SnapKit
+    - Toast-Swift
+    - TXAppBasic
+    - TXIMSDK_Plus_iOS (= 5.5.897)
+    - TXLiteAVSDK_Professional
+  - TXAppBasic (1.0.0)
+  - TXIMSDK_Plus_iOS (5.5.897)
+  - TXLiteAVSDK_Professional (9.1.10564)
+
+DEPENDENCIES:
+  - TUIChorus/Professional (from `./`)
+  - TXAppBasic (from `TXAppBasic/`)
+  - TXLiteAVSDK_Professional
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - Kingfisher
+    - MJExtension
+    - SnapKit
+    - Toast-Swift
+    - TXIMSDK_Plus_iOS
+    - TXLiteAVSDK_Professional
+
+EXTERNAL SOURCES:
+  TUIChorus:
+    :path: "./"
+  TXAppBasic:
+    :path: TXAppBasic/
+
+SPEC CHECKSUMS:
+  Alamofire: e447a2774a40c996748296fa2c55112fdbbc42f9
+  Kingfisher: 016c8b653a35add51dd34a3aba36b580041acc74
+  MJExtension: 01704cca2b60a214c10761b6491eab74069d68a9
+  SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  TUIChorus: a02f10c201cfbfd95f5662ff957642a0efebea9a
+  TXAppBasic: f72fd658cb2cec20f0368158752b82226cb6cdec
+  TXIMSDK_Plus_iOS: 88a0b007c1bc653fad6ea707dd3c23425ba9ba7c
+  TXLiteAVSDK_Professional: dadaf490453fe9395eabce2c8df8d0fbe90a63d5
+
+PODFILE CHECKSUM: 9a3b2d4d68b70ad4f040c1f25391bf4a1feba5d6
+
+COCOAPODS: 1.11.1
