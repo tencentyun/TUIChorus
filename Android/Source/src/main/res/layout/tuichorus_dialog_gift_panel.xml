@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/giftLayout"
+    android:layout_width="match_parent"
+    android:background="@drawable/tuichorus_bg_bottom_dialog"
+    android:layout_height="300dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_gift_panel_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:clickable="true"
+            android:layout_centerVertical="true"
+            android:text="@string/tuichorus_gift_title"
+            android:textColor="@color/tuichorus_white" />
+
+        <Button
+            android:id="@+id/btn_send_gift"
+            android:layout_width="85dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/tuichorus_button_border"
+            android:text="@string/tuichorus_gift_send_out"
+            android:textColor="@color/tuichorus_white"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/separate_line"
+        android:background="@drawable/tuichorus_bg_separate_line"
+        android:layout_marginTop="11dp"
+        android:layout_width="match_parent"
+        android:layout_height="1px" />
+    <include
+        layout="@layout/tuichorus_layout_gift_panel_container" />
+
+    <RelativeLayout
+        android:id="@+id/giftBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/btn_charge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:layout_marginEnd="22dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="@string/tuichorus_gift_charge"
+            android:textColor="@color/tuichorus_white" />
+
+    </RelativeLayout>
+
+</LinearLayout>

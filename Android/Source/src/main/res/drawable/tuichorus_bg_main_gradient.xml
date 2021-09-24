@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="MissingDefaultResource">
+            <gradient
+                android:angle="270"
+                android:gradientRadius="90dp"
+                android:startColor="@color/tuichorus_color_bg_start"
+                android:endColor="@color/tuichorus_color_bg_end" />
+        </shape>
+    </item>
+</selector>
+

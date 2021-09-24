@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="MissingDefaultResource">
+            <gradient
+                android:angle="0"
+                android:gradientRadius="90dp"
+                android:startColor="#FF88DD"
+                android:endColor="#7D00BD" />
+            <corners android:radius="28dp" />
+        </shape>
+    </item>
+
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle"
+            android:useLevel="false">
+            <solid android:color="@color/tuichorus_color_bg_grey" />
+            <corners android:radius="28dp"/>
+        </shape>
+    </item>
+</selector>
+

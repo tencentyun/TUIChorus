@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.tencent.liteav.tuichorus">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.REORDER_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application>
+        <activity
+            android:name="com.tencent.liteav.tuichorus.ui.room.ChorusRoomAnchorActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/TUIChorusChatTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.tencent.liteav.tuichorus.ui.room.ChorusRoomAudienceActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:launchMode="singleTask"
+            android:theme="@style/TUIChorusChatTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.tencent.liteav.tuichorus.ui.floatwindow.FloatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:theme="@style/TUIChorusChatTheme"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden"/>
+
+    </application>
+
+</manifest>
