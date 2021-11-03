@@ -1,10 +1,10 @@
 本文档主要介绍如何快速集成实时音视频（TRTC）SDK，运行 TRTC 场景化解决方案，实现 Chorus。
 
-## 目录结构
+## 目录结构README.md
 
 ```
 TUIChorus
-├─ App          // 主面板，各种场景入口
+├─ App          // 主面板，场景入口
 ├─ Debug        // 调试相关
 └─ Source       // 业务逻辑
 ```
@@ -41,10 +41,10 @@ TUIChorus
 
 ### 集成 SDK
 
-您可以选择使用 JCenter 自动加载的方式，或者手动下载 aar 再将其导入到您当前的工程项目中，工程默认采用方法一配置。
+您可以选择使用 maven 自动加载的方式，或者手动下载 aar 再将其导入到您当前的工程项目中，工程默认采用方法一配置。
 
 #### 方法一：自动加载（aar）
-实时音视频（TRTC） SDK 已经发布到 JCenter 库，您可以通过配置 gradle 自动下载更新。
+实时音视频（TRTC） SDK 已经发布到 maven 库，您可以通过配置 gradle 自动下载更新。
 只需要用 Android Studio 打开需要集成 SDK 的工程，然后通过简单的三个步骤修改 App/build.gradle 文件，就可以完成 SDK 集成：
 
 1. 在 dependencies 中添加 SDK 的依赖。
@@ -52,7 +52,7 @@ TUIChorus
 
 ```
 dependencies {
-    implementation 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    implementation 'com.tencent.liteav:LiteAVSDK_Professional:latest.release'
 }
 ```
 
@@ -60,7 +60,7 @@ dependencies {
 
 ```
 dependencies {
-    compile 'com.tencent.liteav:LiteAVSDK_TRTC:latest.release'
+    compile 'com.tencent.liteav:LiteAVSDK_Professional:latest.release'
 }
 ```
 
@@ -78,9 +78,9 @@ defaultConfig {
 
 
 #### 方法二：手动下载（aar）
-如果您的网络连接 JCenter 有问题，您也可以手动下载 SDK 集成到工程里：
+如果您的网络连接 maven 有问题，您也可以手动下载 SDK 集成到工程里：
 
-1. 下载最新版本 [实时音视频 SDK](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_TRTC_Android_latest.zip)。
+1. 下载最新版本 [实时音视频 SDK](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_Professional_Android_latest.zip)。
 2. 将下载到的 aar 文件拷贝到工程的 **App/libs** 目录下。
 3. 在工程根目录下的 build.gradle 中，添加 **flatDir**，指定本地仓库路径。
 
@@ -99,7 +99,7 @@ allprojects {
 
 ```
 dependencies {
-    compile(name: 'LiteAVSDK_TRTC_xxx', ext: 'aar') // xxx表示解压出来的SDK版本号    
+    compile(name: 'LiteAVSDK_Professional_xxx', ext: 'aar') // xxx表示解压出来的SDK版本号    
 }
 ```
 
@@ -124,27 +124,27 @@ defaultConfig {
 
 步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)，如图示：
 
-<img src="https://main.qcloudimg.com/raw/26bfd93e86fd16d90348143d64cf2656.png" width="320"/>
+<img src="https://main.qcloudimg.com/raw/5dad8ffa1b862e8b8f640748ab6ef813.png" width="320"/>
 
 步骤2、点击创建房间，如下图示：
 
-<img src="https://main.qcloudimg.com/raw/40e7560dd7ddf856534022902dc1e8b5.png" width="320"/>
+<img src="https://main.qcloudimg.com/raw/114200ce12aa05903ca2e0c1b1454389.png" width="320"/>
 
-步骤3、输入房间主题，点击一起嗨歌；
+步骤3、输入房间主题，点击实时合唱；
 
 #### 用户 B
 
 步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)，如图示：
 
-<img src="https://main.qcloudimg.com/raw/26bfd93e86fd16d90348143d64cf2656.png" width="320"/>
+<img src="https://main.qcloudimg.com/raw/23142bd7393882bf0bad4301d192401a.png" width="320"/>
 
-步骤2、输入用户 A 创建的房间号，点击加入房间
+步骤2、输入用户 A 创建的房间号，点击进入房间
 
-<img src="https://main.qcloudimg.com/raw/ff4f8bf3a52d922e745387c36ef074d5.png" width="320"/>
+<img src="https://main.qcloudimg.com/raw/5676a2cde2d284c0518d8a1f819a3f36.png" width="320"/>
 
 <font color=red>请注意，房间号在用户 A 的房间顶部查看，如下图示：</font>
 
-<img src="https://main.qcloudimg.com/raw/fe8f0897fea336997cf5c51ead9cc6c7.png" width="320"/>
+<img src="https://main.qcloudimg.com/raw/912aa8ca0d2b2b9f816e167c46550a24.png" width="320"/>
 
 
 ## 常见问题

@@ -9,4 +9,5 @@
     <string name="user_id">Username</string>
     <string name="hint_user_id">Enter a userId</string>
     <string name="btn_login">Log In</string>
+    <string name="welcome_tips">Welcome to Tencent\nReal-Time Communication</string>
 </resources>

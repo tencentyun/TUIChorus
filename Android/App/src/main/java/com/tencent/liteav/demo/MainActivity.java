@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("https://cloud.tencent.com/document/product/647/45667"));
+                intent.setData(Uri.parse("https://cloud.tencent.com/document/product/647/61859"));
                 startActivity(intent);
             }
         });

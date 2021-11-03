@@ -39,8 +39,8 @@ import java.util.List;
 import java.util.Set;
 
 public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomServiceDelegate, TRTCChorusRoomServiceDelegate {
-    private static final String TAG = TRTCChorusRoomImpl.class.getName();
-
+    private static final String TAG = "TRTCChorusRoomImpl";
+    
     private static final int TRTC_ROLE_OWNER = 19;
 
     private static TRTCChorusRoomImpl sInstance;
@@ -1493,7 +1493,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 if (errCode != 0) {
                     //重新校验
                     TXLiveBase.updateNetworkTime();
-                    Log.d("zzz", "onUpdateNetworkTime: ntp time update failed = " + errCode);
+                    Log.d(TAG, "onUpdateNetworkTime: ntp time update failed = " + errCode);
                 }
             }
         });

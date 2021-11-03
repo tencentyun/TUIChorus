@@ -83,7 +83,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         super.onDestroy();
 
         //申请悬浮窗权限
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N && !Settings.canDrawOverlays(this)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
             FloatActivity.request(this, new PermissionListener() {
                 @Override
                 public void onSuccess() {
