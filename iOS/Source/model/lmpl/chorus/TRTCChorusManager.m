@@ -7,7 +7,7 @@
 
 #import "TRTCChorusManager.h"
 #import "TXChorusBaseDef.h"
-#import "TXLiveBase.h"
+#import <TXLiveBase.h>
 #import "TRTCCloud.h"
 #import "V2TXLivePusher.h"
 #import "V2TXLivePlayer.h"
