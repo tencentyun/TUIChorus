@@ -33,11 +33,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 public class AudioEffectPanel extends BottomSheetDialog {
-
     private static final String TAG = "AudioEffectPanel";
 
     private static final int AUDIO_REVERB_TYPE_0        = 0;
@@ -74,7 +70,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
     private View                      mMusicVoiceGroup;
     private IAudioEffectPanelDelegate mDelegate;
 
-    private SwitchCompat mSwitchMusiceAudiction;
+    private SwitchCompat mSwitchMusicAudition;
 
     private int mBGMVolume = 100;
 
@@ -117,20 +113,22 @@ public class AudioEffectPanel extends BottomSheetDialog {
     protected void onStart() {
         super.onStart();
         getBottomSheetBehavior();
-        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        if (mBottomSheetBehavior != null) {
+            mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+            mBottomSheetBehavior.setHideable(false);
+        }
     }
 
-    private BottomSheetBehavior getBottomSheetBehavior() {
+    private void getBottomSheetBehavior() {
         if (mBottomSheetBehavior != null) {
-            return mBottomSheetBehavior;
+            return;
         }
 
         View view = getWindow().findViewById(R.id.design_bottom_sheet);
         if (view == null) {
-            return null;
+            return;
         }
         mBottomSheetBehavior = BottomSheetBehavior.from(view);
-        return mBottomSheetBehavior;
     }
 
     private void initView() {
@@ -142,7 +140,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
         mMusicToneGroup = findViewById(R.id.cl_music_tone_change);
         mRVAuidoChangeType = (RecyclerView) findViewById(R.id.rv_audio_change_type);
         mRVAudioReverbType = (RecyclerView) findViewById(R.id.rv_audio_reverb_type);
-        mSwitchMusiceAudiction = (SwitchCompat) findViewById(R.id.switch_music_audition);
+        mSwitchMusicAudition = (SwitchCompat) findViewById(R.id.switch_music_audition);
 
         mTvBGMVolume = (TextView) findViewById(R.id.tv_bgm_volume);
         mTvMicVolume = (TextView) findViewById(R.id.tv_mic_volume);
@@ -158,19 +156,17 @@ public class AudioEffectPanel extends BottomSheetDialog {
         if (mMusicType != null) {
             updateView();
         }
-        BottomSheetBehavior behavior = BottomSheetBehavior.from(findViewById(R.id.design_bottom_sheet));
-        behavior.setHideable(false);
     }
 
     private void updateView() {
         if (mMusicType.equals(MUSIC_TYPE)) {
             mTvTitle.setText(R.string.tuichorus_sound_effects);
-            mGroupMusic.setVisibility(VISIBLE);
-            mRVAuidoChangeType.setVisibility(GONE);
+            mGroupMusic.setVisibility(View.VISIBLE);
+            mRVAuidoChangeType.setVisibility(View.GONE);
         } else if (mMusicType.equals(CHANGE_VOICE)) {
             mTvTitle.setText(R.string.tuichorus_changer);
-            mGroupMusic.setVisibility(GONE);
-            mRVAuidoChangeType.setVisibility(VISIBLE);
+            mGroupMusic.setVisibility(View.GONE);
+            mRVAuidoChangeType.setVisibility(View.VISIBLE);
         }
     }
 
@@ -291,7 +287,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
                 mContext.startActivity(intent);
             }
         });
-        mSwitchMusiceAudiction.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        mSwitchMusicAudition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mTUIChorus != null) {
@@ -306,7 +302,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
     public void show() {
         super.show();
         boolean isOpen = EarMonitorInstance.getInstance().ismEarMonitorOpen();
-        mSwitchMusiceAudiction.setChecked(isOpen);
+        mSwitchMusicAudition.setChecked(isOpen);
     }
 
     private List<ItemEntity> createAudioChangeItems() {
@@ -394,10 +390,10 @@ public class AudioEffectPanel extends BottomSheetDialog {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context    = parent.getContext();
-            LayoutInflater inflater   = LayoutInflater.from(context);
-            View           view       = inflater.inflate(R.layout.tuichorus_audio_main_entry_item, parent, false);
-            ViewHolder     viewHolder = new ViewHolder(view);
+            Context context = parent.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.tuichorus_audio_main_entry_item, parent, false);
+            ViewHolder viewHolder = new ViewHolder(view);
             return viewHolder;
         }
 

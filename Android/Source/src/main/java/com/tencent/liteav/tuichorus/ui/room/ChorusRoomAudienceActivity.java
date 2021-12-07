@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
@@ -11,8 +13,6 @@ import android.view.View;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.basic.UserModel;
-import com.tencent.liteav.basic.UserModelManager;
 
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
@@ -34,6 +34,7 @@ import java.util.Map;
  * 听众界面
  */
 public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
+    private static final int MSG_DISMISS_LOADING = 1001;
 
     private        Map<String, Integer>     mInvitationSeatMap;
     private        String                   mOwnerId;
@@ -43,6 +44,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
     private static ChorusAudienceRoomEntity mCollectEntity;
     private static ChorusAudienceRoomEntity mLastEntity;
     private        boolean                  mRoomDestroy;
+    private boolean                         mIsTakingSeat; //正在进行上麦
 
     public static void enterRoom(final Context context, final int roomId, final String userId, final int audioQuality) {
         //保存房间信息
@@ -66,6 +68,16 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         starter.putExtra(CHORUSROOM_AUDIO_QUALITY, audioQuality);
         context.startActivity(starter);
     }
+
+    private final Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == MSG_DISMISS_LOADING) {
+                mHandler.removeMessages(MSG_DISMISS_LOADING);
+                mProgressBar.setVisibility(View.GONE);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +123,16 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
             showFloatWindow();
         }
 
+    }
+
+    private void showTakingSeatLoading(boolean isShow) {
+        mIsTakingSeat = isShow;
+        mProgressBar.setVisibility(isShow ? View.VISIBLE : View.GONE);
+        if (isShow) {
+            mHandler.sendEmptyMessageDelayed(MSG_DISMISS_LOADING, 10000);
+        } else {
+            mHandler.removeMessages(MSG_DISMISS_LOADING);
+        }
     }
 
     private void showFloatWindow() {
@@ -307,6 +329,10 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
                 @Override
                 public void onClick() {
                     mAlertDialog.dismiss();
+                    if (mIsTakingSeat) {
+                        return;
+                    }
+                    showTakingSeatLoading(true);
                     mTRTCChorusRoom.enterSeat(changeSeatIndexToModelIndex(itemPos), new TRTCChorusRoomCallback.ActionCallback() {
                         @Override
                         public void onCallback(int code, String msg) {
@@ -315,6 +341,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
                                 ToastUtils.showLong(getString(R.string.tuichorus_toast_owner_succeeded_in_occupying_the_seat));
                                 setSignalVisibility(View.VISIBLE);
                             } else {
+                                showTakingSeatLoading(false);
                                 ToastUtils.showLong(getString(R.string.tuichorus_toast_owner_failed_to_occupy_the_seat), code, msg);
                             }
                         }
@@ -400,12 +427,18 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         if (seatIndex != null) {
             ChorusRoomSeatEntity entity = mRoomSeatEntityList.get(seatIndex);
             if (!entity.isUsed) {
+                if (mIsTakingSeat) {
+                    return;
+                }
+                showTakingSeatLoading(true);
                 mTRTCChorusRoom.enterSeat(changeSeatIndexToModelIndex(seatIndex), new TRTCChorusRoomCallback.ActionCallback() {
                     @Override
                     public void onCallback(int code, String msg) {
                         if (code == 0) {
                             TRTCLogger.d(TAG, " enter seat succeed");
                             setSignalVisibility(View.VISIBLE);
+                        } else {
+                            showTakingSeatLoading(false);
                         }
                     }
                 });
@@ -419,6 +452,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         if (user.userId.equals(mSelfUserId)) {
             mCurrentRole = TRTCCloudDef.TRTCRoleAnchor;
             mSelfSeatIndex = index;
+            showTakingSeatLoading(false);
             refreshView();
             ToastUtils.showShort(R.string.tuichorus_put_on_your_headphones);
         }

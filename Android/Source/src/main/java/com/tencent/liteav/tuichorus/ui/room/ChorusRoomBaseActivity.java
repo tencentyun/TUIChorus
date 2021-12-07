@@ -98,7 +98,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     protected static final String CHORUSROOM_USER_AVATAR   = "user_avatar";
     protected static final String CHORUSROOM_ROOM_COVER    = "room_cover";
 
-    private static final int MESSAGE_USERNAME_COLOR_ARR[] = {
+    private static final int[] MESSAGE_USERNAME_COLOR_ARR = {
             R.color.tuichorus_color_msg_1,
             R.color.tuichorus_color_msg_2,
             R.color.tuichorus_color_msg_3,
@@ -175,6 +175,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     private ConstraintLayout         mRemoteNetWorkSignalLayout;
     private Button                   mBtnRecord;
     private ImageView                mIvStartChorus;
+    protected View                   mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +235,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
         mBtnMsg = (AppCompatImageButton) findViewById(R.id.btn_msg);
         mBtnGift = (AppCompatImageButton) findViewById(R.id.btn_more_gift);
         mIvStartChorus = findViewById(R.id.img_start_chorus);
+        mProgressBar = findViewById(R.id.progress_group);
 
         mConfirmDialogFragment = new ConfirmDialogFragment();
         mInputTextMsgDialog = new InputTextMsgDialog(this, R.style.TUIChorusInputDialog);
@@ -470,11 +472,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     }
 
     public void refreshView() {
-        if (mCurrentRole == TRTCCloudDef.TRTCRoleAnchor) {
-            mChorusMusicView.updateView(true);
-        } else {
-            mChorusMusicView.updateView(false);
-        }
+        mChorusMusicView.updateView(mCurrentRole == TRTCCloudDef.TRTCRoleAnchor);
     }
 
     /**
@@ -1197,7 +1195,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
         if (mLrcView == null) {
             return;
         }
-        showStartChorusAnim(path == null ? false : true);
+        showStartChorusAnim(path != null);
 
         initLoadLyricsView(path);
     }

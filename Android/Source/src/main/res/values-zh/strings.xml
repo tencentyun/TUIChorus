@@ -7,8 +7,7 @@
     <string name="tuichorus_warning_room_name_too_long">房间名称过长</string>
     <string name="tuichorus_send">发送</string>
     <string name="tuichorus_dialog_cancel">取消</string>
-    <string name="tuichorus_btn_confirm">我确定</string>
-    <string name="tuichorus_btn_cancel">再等等</string>
+    <string name="tuichorus_btn_confirm">确定</string>
     <string name="tuichorus_warning_not_empty">输入不能为空!</string>
     <string name="tuichorus_delete">删除</string>
 
@@ -16,9 +15,6 @@
     <string name="tuichorus_room_id">房间ID:%d</string>
     <string name="tuichorus_lock">锁定</string>
     <string name="tuichorus_unlock">解锁</string>
-    <string name="tuichorus_seat_already_mute">当前座位已经被静音，无法打开麦克风</string>
-    <string name="tuichorus_seat_mute">主播禁言</string>
-    <string name="tuichorus_seat_unmuted">解除禁言</string>
     <string name="tuichorus_tv_seat_id">%s号麦</string>
     <string name="tuichorus_btn_start_record">开始录制</string>
     <string name="tuichorus_btn_stop_record">结束录制</string>
@@ -46,7 +42,6 @@
     <string name="tuichorus_toast_enter_the_room_successfully">进房成功</string>
     <string name="tuichorus_toast_enter_the_room_failure">进房失败[%1$d]:%2$s</string>
     <string name="tuichorus_toast_list_has_not_been_initialized">麦位列表还没有初始化好哦！</string>
-    <string name="tuichorus_online">上麦</string>
     <string name="tuichorus_leave_seat">要求下麦</string>
     <string name="tuichorus_toast_the_room_is_not_ready">房间还没准备好~</string>
     <string name="tuichorus_toast_application_has_been_sent_please_wait_for_processing">申请已发出，请等待房主处理</string>
@@ -63,9 +58,6 @@
 
     <string name="tuichorus_accept_failed">接受请求失败</string>
     <string name="tuichorus_msg_close_room">房主已解散房间</string>
-    <string name="tuichorus_audience_leave_room">确认离开房间吗？</string>
-    <string name="tuichorus_toast_you_have_turned_on_the_microphone">您已开启麦克风</string>
-    <string name="tuichorus_toast_you_have_turned_off_the_microphone">您已关闭麦克风</string>
     <string name="tuichorus_toast_please_enter_content">请输入内容</string>
     <string name="tuichorus_toast_sent_successfully">发送成功</string>
     <string name="tuichorus_toast_sent_message_failure">发送消息失败</string>
@@ -74,11 +66,9 @@
     <!--    合唱-->
     <string name="tuichorus_audience">听众</string>
     <string name="tuichorus_tv_invite">邀请</string>
-    <string name="tuichorus_toast_invite_to_chat_successfully">抱%s上麦成功啦！</string>
     <string name="tuichorus_toast_refuse_to_chat">%s 拒绝上麦</string>
     <string name="tuichorus_msg_invite_you_to_chat">主播邀请你上%d号麦</string>
     <string name="tuichorus_msg_you_refuse_to_chat">你拒绝上麦申请</string>
-    <string name="tuichorus_network_value">%d ms</string>
     <string name="tuichorus_leave_seat_ask">您是否确定下麦</string>
     <string name="tuichorus_toast_anchor_can_only_operate_it">主播才能操作哦</string>
     <string name="tuichorus_leave_seat_and_exit_ask">您是否确定下麦并退出房间</string>
@@ -110,8 +100,6 @@
     <string name="tuichorus_gift_send_out">确认打赏</string>
 
     <!--    音效面板-->
-    <string name="tuichorus_bgm_title">背景音乐</string>
-    <string name="tuichorus_back">返回</string>
     <string name="tuichorus_sound_effects">音效</string>
     <string name="tuichorus_sound_audition">音效试听</string>
     <string name="tuichorus_put_on_your_headphones">请带上耳机获得更好体验</string>
@@ -121,9 +109,6 @@
     <string name="tuichorus_mic_volume">人声音量</string>
     <string name="tuichorus_changer">变声</string>
     <string name="tuichorus_reverb">混响效果</string>
-    <string name="tuichorus_bg_music_positive_happy">欢快</string>
-    <string name="tuichorus_bg_music_sad_cinematic_piano">忧郁</string>
-    <string name="tuichorus_bg_music_wonder_world">神奇世界</string>
     <string name="tuichorus_no_effect">无效果</string>
     <string name="tuichorus_audio_change_type_child">熊孩子</string>
     <string name="tuichorus_audio_change_type_luoli">萝莉</string>

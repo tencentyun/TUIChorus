@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class TRTCChorusRoomService extends TRTCCloudListener {
-    private static final String TAG           = "TRTCChorusRoomService";
-    private static final long   PLAY_TIME_OUT = 5000;
+    private static final String TAG = "TRTCChorusRoomService";
 
     private static TRTCChorusRoomService sInstance;
 
@@ -53,15 +52,15 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     }
 
     public void setDelegate(TRTCChorusRoomServiceDelegate delegate) {
-        TRTCLogger.i(TAG, "init delegate:" + delegate);
+        TRTCLogger.i(TAG, "setDelegate:" + delegate);
         mDelegate = delegate;
     }
 
     public void enterRoom(int sdkAppId, String roomId, String userId, String userSign, int role, TXCallback callback) {
         if (sdkAppId == 0 || TextUtils.isEmpty(roomId) || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)) {
             // 参数非法，可能执行了退房，或者登出
-            TRTCLogger.e(TAG, "enter trtc room fail. params invalid. room id:" + roomId +
-                    " user id:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
+            TRTCLogger.e(TAG, "enter trtc room fail. params invalid. roomId:" + roomId +
+                    " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
             if (callback != null) {
                 callback.onCallback(-1, "enter trtc room fail. params invalid. room id:" +
                         roomId + " user id:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
@@ -71,14 +70,13 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
         mUserId = userId;
         mRoomId = roomId;
         mEnterRoomCallback = callback;
-        TRTCLogger.i(TAG, "enter room, app id:" + sdkAppId + " room id:" + roomId + " user id:" +
+        TRTCLogger.i(TAG, "enter room, sdkAppId:" + sdkAppId + " roomId:" + roomId + " userId:" +
                 userId + " sign:" + TextUtils.isEmpty(userId));
         mTRTCParams = new TRTCCloudDef.TRTCParams();
         mTRTCParams.sdkAppId = sdkAppId;
         mTRTCParams.userId = userId;
         mTRTCParams.userSig = userSign;
         mTRTCParams.role = role;
-//         mTRTCParams.streamId = mStreamId;
         // 字符串房间号逻辑
         mTRTCParams.roomId = Integer.valueOf(roomId);
         internalEnterRoom();
@@ -120,17 +118,17 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     }
 
     public void muteLocalAudio(boolean mute) {
-        TRTCLogger.i(TAG, "mute local audio, mute:" + mute);
+        TRTCLogger.i(TAG, "muteLocalAudio mute:" + mute);
         mTRTCCloud.muteLocalAudio(mute);
     }
 
     public void muteRemoteAudio(String userId, boolean mute) {
-        TRTCLogger.i(TAG, "mute remote audio, user id:" + userId + " mute:" + mute);
+        TRTCLogger.i(TAG, "muteRemoteAudio userId:" + userId + " , mute:" + mute);
         mTRTCCloud.muteRemoteAudio(userId, mute);
     }
 
     public void muteAllRemoteAudio(boolean mute) {
-        TRTCLogger.i(TAG, "mute all remote audio, mute:" + mute);
+        TRTCLogger.i(TAG, "muteAllRemoteAudio mute:" + mute);
         mTRTCCloud.muteAllRemoteAudio(mute);
     }
 
@@ -140,7 +138,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
 
     @Override
     public void onEnterRoom(long l) {
-        TRTCLogger.i(TAG, "on enter room, result:" + l);
+        TRTCLogger.i(TAG, "onEnterRoom result:" + l);
         if (mEnterRoomCallback != null) {
             if (l > 0) {
                 mIsInRoom = true;
@@ -153,8 +151,8 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     }
 
     @Override
-    public void onExitRoom(int i) {
-        TRTCLogger.i(TAG, "on exit room.");
+    public void onExitRoom(int result) {
+        TRTCLogger.i(TAG, "onExitRoom result : " + result);
         if (mExitRoomCallback != null) {
             mIsInRoom = false;
             mExitRoomCallback.onCallback(0, "exit room success.");
@@ -164,7 +162,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
 
     @Override
     public void onRemoteUserEnterRoom(String userId) {
-        TRTCLogger.i(TAG, "on user enter, user id:" + userId);
+        TRTCLogger.i(TAG, "onRemoteUserEnterRoom userId:" + userId);
         if (mDelegate != null) {
             mDelegate.onTRTCAnchorEnter(userId);
         }
@@ -172,7 +170,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
 
     @Override
     public void onRemoteUserLeaveRoom(String userId, int i) {
-        TRTCLogger.i(TAG, "on user exit, user id:" + userId);
+        TRTCLogger.i(TAG, "onRemoteUserLeaveRoom userId:" + userId);
         if (mDelegate != null) {
             mDelegate.onTRTCAnchorExit(userId);
         }
@@ -180,7 +178,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
 
     @Override
     public void onUserVideoAvailable(String userId, boolean available) {
-        TRTCLogger.i(TAG, "on user video available, user id:" + userId + " available:" + available);
+        TRTCLogger.i(TAG, "onUserVideoAvailable userId:" + userId + " available:" + available);
         if (mDelegate != null) {
             mDelegate.onTRTCVideoAvailable(userId, available);
         }
@@ -188,7 +186,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
 
     @Override
     public void onUserAudioAvailable(String userId, boolean available) {
-        TRTCLogger.i(TAG, "on user audio available, user id:" + userId + " available:" + available);
+        TRTCLogger.i(TAG, "onUserAudioAvailable userId:" + userId + " available:" + available);
         if (mDelegate != null) {
             mDelegate.onTRTCAudioAvailable(userId, available);
         }
@@ -219,7 +217,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     @Override
     public void onSetMixTranscodingConfig(int i, String s) {
         super.onSetMixTranscodingConfig(i, s);
-        TRTCLogger.i(TAG, "on set mix transcoding, code:" + i + " msg:" + s);
+        TRTCLogger.i(TAG, "onSetMixTranscodingConfig code: " + i + " msg:" + s);
     }
 
     public TXBeautyManager getTXBeautyManager() {

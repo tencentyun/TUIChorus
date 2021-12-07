@@ -48,7 +48,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:text="@string/tuichorus_btn_cancel"
+            android:text="@string/tuichorus_dialog_cancel"
             android:textColor="@color/tuichorus_color_btn_negative"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="@id/cl_button_panel"

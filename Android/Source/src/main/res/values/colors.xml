@@ -17,7 +17,6 @@
     <!--输入框颜色-->
     <color name="tuichorus_color_text_red">#FF4E42</color>
     <color name="tuichorus_color_bg_grey">#FFECF1F8</color>
-    <color name="tuichorus_color_light_black">#999999</color>
     <color name="tuichorus_color_blue">#006EFF</color>
     <color name="tuichorus_color_bg_dialog">#66000000</color>
     <color name="tuichorus_color_bg_item_show">#33FFFFFF</color>

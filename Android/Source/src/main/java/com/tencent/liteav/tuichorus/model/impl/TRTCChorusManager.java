@@ -1,15 +1,11 @@
 package com.tencent.liteav.tuichorus.model.impl;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 
 import androidx.annotation.NonNull;
-
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.basic.log.TXCLog;
@@ -22,7 +18,6 @@ import com.tencent.live2.impl.V2TXLivePlayerImpl;
 import com.tencent.rtmp.TXLiveBase;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloud;
-import com.tencent.trtc.TRTCCloudDef;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,6 +26,7 @@ import java.lang.reflect.Constructor;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_DISCONNECTED;
 import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_OK;
 import static com.tencent.live2.V2TXLiveDef.V2TXLiveAudioQuality.V2TXLiveAudioQualityDefault;
 
@@ -53,6 +49,8 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
     private static final float  CACHE_TIME_SMOOTH       = 5.0f;
     private static final int    MUSIC_DEFAULT_VOLUMN    = 80;
 
+    private static final String V2TXLIVEPUSHER_PACKAGE_NAME = "com.tencent.live2.impl.V2TXLivePusherImpl";
+
     private final Context            mContext;
     private final TRTCCloud          mTRTCCloud;
     private       Timer              mTimer;
@@ -63,14 +61,15 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
     /**
      * 合唱音乐相关
      */
-    private          String            mMusicPath;
-    private          int               mMusicID;
-    private volatile long              mMusicDuration;
-    private volatile boolean           mIsChorusOn;
-    private          long              mRevStartPlayMusicTs;
-    private volatile long              mStartPlayMusicTs;
-    private          long              mRequestStopPlayMusicTs;
-    private          ChorusStartReason mChorusStartReason = ChorusStartReason.LocalStart;//记录开始合唱的原因，可以确定播放者身份（房主or副唱）
+    private          String  mMusicPath;
+    private          int     mMusicID;
+    private volatile long    mMusicDuration;
+    private volatile boolean mIsChorusOn;
+    private          long    mRevStartPlayMusicTs;
+    private volatile long    mStartPlayMusicTs;
+    private          long    mRequestStopPlayMusicTs;
+
+    private ChorusStartReason mChorusStartReason = ChorusStartReason.LocalStart;//记录开始合唱的原因，可以确定播放者身份:房主/副唱
 
     /**
      * 合唱 cdn 相关
@@ -122,7 +121,15 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
      */
     public void stopChorus() {
         TXCLog.i(TAG, "stopChorus");
+        clearStatus();
         stopPlayMusic(ChorusStopReason.LocalStop);
+    }
+
+    /**
+     * 清除状态
+     */
+    public void clearStatus() {
+        mChorusStartReason = ChorusStartReason.LocalStart;
     }
 
     /**
@@ -143,6 +150,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
      * @param message 消息数据
      */
     public void onRecvCustomCmdMsg(String userId, int cmdID, int seq, byte[] message) {
+        TXCLog.i(TAG, "onRecvCustomCmdMsg userId : " + userId + " , message : " + message);
         if (!isNtpReady() || message == null || message.length <= 0) {
             return;
         }
@@ -205,7 +213,9 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
      */
     public void stopCdnPush() {
         TXCLog.i(TAG, "stopCdnPush");
-        if (mPusher == null) return;
+        if (mPusher == null) {
+            return;
+        }
         if (mPusher.isPushing() == 1) {
             mPusher.stopVirtualCamera();
             mPusher.stopPush();
@@ -245,7 +255,9 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
      */
     public void stopCdnPlay() {
         TXCLog.i(TAG, "stopCdnPlay");
-        if (mPlayer == null) return;
+        if (mPlayer == null) {
+            return;
+        }
 
         if (mPlayer.isPlaying() == 1) {
             mPlayer.stopPlay();
@@ -309,7 +321,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
             return false;
         }
         mIsChorusOn = true;
-        TXCLog.i(TAG, "startPlayMusic delayMs:" + delayMs + " currentNtp:" + getNtpTime());
+        TXCLog.i(TAG, "startPlayMusic delayMs:" + delayMs + " mMusicDuration:" + mMusicDuration);
 
         startTimer(reason, reason == ChorusStartReason.LocalStart ? (getNtpTime() + MUSIC_START_DELAY) : mRevStartPlayMusicTs);
         final TXAudioEffectManager.AudioMusicParam audioMusicParam = new TXAudioEffectManager.AudioMusicParam(mMusicID, mMusicPath);
@@ -358,7 +370,6 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
                     checkMusicProgress();
                 }
             }, 0, MESSAGE_SEND_INTERVAL);
-            Log.v(TAG, "send Start:" + startTs);
             mStartPlayMusicTs = startTs;
         }
     }
@@ -384,7 +395,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         }
         mWorkHandler.removeCallbacksAndMessages(null);
         mIsChorusOn = false;
-        TXCLog.i(TAG, "stopPlayMusic currentNtp:" + getNtpTime());
+        TXCLog.i(TAG, "stopPlayMusic reason:" + reason);
         if (mTimer != null) {
             mTimer.cancel();
             mTimer = null;
@@ -397,9 +408,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         if (mListener != null) {
             mListener.onChorusStop(reason);
         }
-
         mListener.onMusicCompletePlaying(mMusicID);
-
     }
 
     private void sendStopBgmMsg() {
@@ -420,7 +429,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
     }
 
     private void checkMusicProgress() {
-        long currentProgress   = mTRTCCloud.getAudioEffectManager().getMusicCurrentPosInMS(mMusicID);
+        long currentProgress = mTRTCCloud.getAudioEffectManager().getMusicCurrentPosInMS(mMusicID);
         long estimatedProgress = getNtpTime() - mStartPlayMusicTs;
         if (estimatedProgress >= 0 && Math.abs(currentProgress - estimatedProgress) > 60) {
             TXCLog.i(TAG, "checkMusicProgress currentProgress:" + currentProgress + " estimatedProgress:" + estimatedProgress);
@@ -443,7 +452,6 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         if (mListener != null) {
             mListener.onChorusProgress(id, curPtsMS, durationMS);
         }
-
         sendMusicPositionMsg();
     }
 
@@ -467,15 +475,16 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         }
         TXCLog.i(TAG, "initPusher");
         try {
-            Class<?>       clazz       = Class.forName("com.tencent.live2.impl.V2TXLivePusherImpl");
+            Class<?> clazz = Class.forName(V2TXLIVEPUSHER_PACKAGE_NAME);
             Constructor<?> constructor = clazz.getDeclaredConstructor(Context.class, int.class);
             constructor.setAccessible(true);
             mPusher = (V2TXLivePusher) constructor.newInstance(mContext, 101);
         } catch (Exception e) {
-            TXCLog.e(TAG, "create pusher failed. " + e);
+            TXCLog.e(TAG, "initPusher failed : " + e);
             return;
         }
-        V2TXLiveDef.V2TXLiveVideoEncoderParam param = new V2TXLiveDef.V2TXLiveVideoEncoderParam(V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution960x540);
+        V2TXLiveDef.V2TXLiveVideoEncoderParam param = new V2TXLiveDef.V2TXLiveVideoEncoderParam(
+                V2TXLiveDef.V2TXLiveVideoResolution.V2TXLiveVideoResolution960x540);
         mPusher.setVideoQuality(param);
         mPusher.setAudioQuality(V2TXLiveAudioQualityDefault);
         mPusher.startVirtualCamera(null);
@@ -500,6 +509,9 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
                     case V2TXLivePushStatusConnectSuccess:
                         pushStatus = CdnPushStatus.ConnectSuccess;
                         break;
+                    default:
+                        TXCLog.i(TAG, "initPusher status : " + status);
+                        break;
                 }
                 mListener.onCdnPushStatusUpdate(pushStatus);
             }
@@ -515,23 +527,25 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         mPlayer.enableReceiveSeiMessage(true, SEI_PAYLOAD_TYPE);
         mPlayer.setObserver(new V2TXLivePlayerObserver() {
             @Override
-            public void onAudioPlayStatusUpdate(V2TXLivePlayer player, V2TXLiveDef.V2TXLivePlayStatus status, V2TXLiveDef.V2TXLiveStatusChangeReason reason, Bundle extraInfo) {
-                if (mListener == null) {
-                    return;
+            public void onAudioPlaying(V2TXLivePlayer player, boolean firstPlay, Bundle extraInfo) {
+                if (mListener != null) {
+                    mListener.onCdnPlayStatusUpdate(CdnPlayStatus.Playing);
                 }
-                CdnPlayStatus playStatus = CdnPlayStatus.Stopped;
-                switch (status) {
-                    case V2TXLivePlayStatusStopped:
-                        playStatus = CdnPlayStatus.Stopped;
-                        break;
-                    case V2TXLivePlayStatusPlaying:
-                        playStatus = CdnPlayStatus.Playing;
-                        break;
-                    case V2TXLivePlayStatusLoading:
-                        playStatus = CdnPlayStatus.Loading;
-                        break;
+            }
+
+            @Override
+            public void onAudioLoading(V2TXLivePlayer player, Bundle extraInfo) {
+                if (mListener != null) {
+                    mListener.onCdnPlayStatusUpdate(CdnPlayStatus.Loading);
                 }
-                mListener.onCdnPlayStatusUpdate(playStatus);
+            }
+
+            @Override
+            public void onError(V2TXLivePlayer player, int code, String msg, Bundle extraInfo) {
+                TXCLog.i(TAG, "onError: code = " + code + " , msg = " + msg);
+                if (code == V2TXLIVE_ERROR_DISCONNECTED && mListener != null) {
+                    mListener.onCdnPlayStatusUpdate(CdnPlayStatus.Stopped);
+                }
             }
 
             @Override
@@ -546,7 +560,6 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
                     }
                     long position = json.getLong(KEY_MUSIC_CURRENT_TS);
                     mMusicID = Integer.parseInt(json.getString(KEY_MUSIC_CURRENT_ID));
-                    Log.v(TAG, "recvSEI:" + position);
                     if (mListener != null) {
                         mListener.onChorusProgress(mMusicID, position + SEI_LRC_OFFSET, mMusicDuration);
                     }
@@ -567,8 +580,8 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         }
         String body = "";
         try {
-            JSONObject jsonObject     = new JSONObject();
-            long       currentPosInMs = mTRTCCloud.getAudioEffectManager().getMusicCurrentPosInMS(mMusicID);
+            JSONObject jsonObject = new JSONObject();
+            long currentPosInMs = mTRTCCloud.getAudioEffectManager().getMusicCurrentPosInMS(mMusicID);
             jsonObject.put(KEY_MUSIC_CURRENT_TS, currentPosInMs > 0 ? currentPosInMs : 0);
             jsonObject.put(KEY_MUSIC_CURRENT_ID, mMusicID);
             body = jsonObject.toString();

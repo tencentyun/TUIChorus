@@ -4,15 +4,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.tencent.liteav.audio.TXAudioEffectManager;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoom;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDef;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDelegate;
-import com.tencent.liteav.tuichorus.model.TRTCChorusSEIJsonData;
 import com.tencent.liteav.tuichorus.model.impl.base.TRTCLogger;
 import com.tencent.liteav.tuichorus.model.impl.base.TXCallback;
 import com.tencent.liteav.tuichorus.model.impl.base.TXRoomInfo;
@@ -28,19 +25,15 @@ import com.tencent.rtmp.TXLiveBaseListener;
 import com.tencent.rtmp.ui.TXCloudVideoView;
 import com.tencent.trtc.TRTCCloudDef;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomServiceDelegate, TRTCChorusRoomServiceDelegate {
+public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomServiceDelegate,
+        TRTCChorusRoomServiceDelegate {
     private static final String TAG = "TRTCChorusRoomImpl";
-    
+
     private static final int TRTC_ROLE_OWNER = 19;
 
     private static TRTCChorusRoomImpl sInstance;
@@ -68,9 +61,6 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     private int                                   mTakeSeatIndex;
     private int                                   mRole = TRTCCloudDef.TRTCRoleAudience;
 
-    //歌曲管理
-    private TXAudioEffectManager mAudioEffectManager;
-
     //////////////////////////////////////////////////////////
     //                 合唱
     /////////////////////////////////////////////////////////
@@ -78,6 +68,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     private String            mPushUrl;
     private String            mPlayUrl;
     private TXCloudVideoView  mVideoView;
+    private boolean           mIsInTRTCRoom;
 
     public static synchronized TRTCChorusRoom sharedInstance(Context context) {
         if (sInstance == null) {
@@ -109,7 +100,6 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         TRTCChorusRoomService.getInstance().init(context);
         TXRoomService.getInstance().init(context);
         TXRoomService.getInstance().setDelegate(this);
-        mAudioEffectManager = getAudioEffectManager();
         mTRTCChorusManager = new TRTCChorusManager(mContext, com.tencent.trtc.TRTCCloud.sharedInstance(context));
         mTRTCChorusManager.setListener(new ChorusManagerListener());
 
@@ -160,11 +150,13 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void login(final int sdkAppId, final String userId, final String userSig, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void login(final int sdkAppId, final String userId, final String userSig,
+                      final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "start login, sdkAppId:" + sdkAppId + " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSig));
+                TRTCLogger.i(TAG, "start login, sdkAppId:" + sdkAppId + " userId:" + userId
+                        + " sign is empty:" + TextUtils.isEmpty(userSig));
                 if (sdkAppId == 0 || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSig)) {
                     TRTCLogger.e(TAG, "start login fail. params invalid.");
                     if (callback != null) {
@@ -222,7 +214,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void setSelfProfile(final String userName, final String avatarURL, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void setSelfProfile(final String userName, final String avatarURL,
+                               final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -246,13 +239,14 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void createRoom(final int roomId, final TRTCChorusRoomDef.RoomParam roomParam, TXCloudVideoView videoView, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void createRoom(final int roomId, final TRTCChorusRoomDef.RoomParam roomParam, TXCloudVideoView videoView,
+                           final TRTCChorusRoomCallback.ActionCallback callback) {
         this.mVideoView = videoView;
         enableRealtimeChorus(1);
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "create room, room id:" + roomId + " info:" + roomParam);
+                TRTCLogger.i(TAG, "create room, roomId:" + roomId + " info:" + roomParam);
                 if (roomId == 0) {
                     TRTCLogger.e(TAG, "create room fail. params invalid");
                     return;
@@ -264,10 +258,10 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 mRole = TRTC_ROLE_OWNER;
                 clearList();
 
-                final String           roomName       = (roomParam == null ? "" : roomParam.roomName);
-                final String           roomCover      = (roomParam == null ? "" : roomParam.coverUrl);
-                final boolean          isNeedRequest  = (roomParam != null && roomParam.needRequest);
-                final int              seatCount      = (roomParam == null ? 8 : roomParam.seatCount);
+                final String roomName = (roomParam == null ? "" : roomParam.roomName);
+                final String roomCover = (roomParam == null ? "" : roomParam.coverUrl);
+                final boolean isNeedRequest = (roomParam != null && roomParam.needRequest);
+                final int seatCount = (roomParam == null ? 8 : roomParam.seatCount);
                 final List<TXSeatInfo> txSeatInfoList = new ArrayList<>();
                 if (roomParam != null && roomParam.seatInfoList != null) {
                     for (TRTCChorusRoomDef.SeatInfo seatInfo : roomParam.seatInfoList) {
@@ -287,33 +281,34 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 mPushUrl = roomParam.mPushUrl;
                 mPlayUrl = roomParam.mPlayUrl;
                 // 创建房间
-                TXRoomService.getInstance().createRoom(strRoomId, roomName, roomCover, isNeedRequest, txSeatInfoList, new TXCallback() {
-                    @Override
-                    public void onCallback(final int code, final String msg) {
-                        TRTCLogger.i(TAG, "create room in service, code:" + code + " msg:" + msg);
-                        if (code == 0) {
-                            enterTRTCRoomInner(strRoomId, mUserId, mUserSig, mRole, callback);
-                            return;
-                        } else {
-                            runOnDelegateThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (mDelegate != null) {
-                                        mDelegate.onError(code, msg);
-                                    }
-                                }
-                            });
-                        }
-                        runOnDelegateThread(new Runnable() {
+                TXRoomService.getInstance().createRoom(strRoomId, roomName, roomCover, isNeedRequest, txSeatInfoList,
+                        new TXCallback() {
                             @Override
-                            public void run() {
-                                if (callback != null) {
-                                    callback.onCallback(code, msg);
+                            public void onCallback(final int code, final String msg) {
+                                TRTCLogger.i(TAG, "create room in IM, code:" + code + " , msg: " + msg);
+                                if (code == 0) {
+                                    enterTRTCRoomInner(strRoomId, mUserId, mUserSig, mRole, callback);
+                                    return;
+                                } else {
+                                    runOnDelegateThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (mDelegate != null) {
+                                                mDelegate.onError(code, msg);
+                                            }
+                                        }
+                                    });
                                 }
+                                runOnDelegateThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (callback != null) {
+                                            callback.onCallback(code, msg);
+                                        }
+                                    }
+                                });
                             }
-                        });
-                    }
-                }, roomParam.mPlayUrl);
+                        }, roomParam.mPlayUrl);
             }
         });
     }
@@ -367,7 +362,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void enterRoom(final int roomId, final TXCloudVideoView videoView, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void enterRoom(final int roomId, final TXCloudVideoView videoView,
+                          final TRTCChorusRoomCallback.ActionCallback callback) {
         this.mVideoView = videoView;
         runOnMainThread(new Runnable() {
             @Override
@@ -375,11 +371,11 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 // 恢复设定
                 clearList();
                 mRoomId = String.valueOf(roomId);
-                TRTCLogger.i(TAG, "start enter room, room id:" + roomId);
+                TRTCLogger.i(TAG, "start enter IM room, roomId:" + roomId);
                 TXRoomService.getInstance().enterRoom(mRoomId, new TXCallback() {
                     @Override
                     public void onCallback(final int code, final String msg) {
-                        TRTCLogger.i(TAG, "enter room service finish, room id:" + roomId + " code:" + code + " msg:" + msg);
+                        TRTCLogger.i(TAG, "enter IM room service finish, roomId:" + roomId + " code:" + code);
                         runOnMainThread(new Runnable() {
                             @Override
                             public void run() {
@@ -396,7 +392,9 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                                     //进入房间时，获取IM的attr来获取播放地址
                                     mPlayUrl = msg;
                                     //开始拉流
-                                    mTRTCChorusManager.startCdnPlay(mPlayUrl, videoView);
+                                    if (!mTRTCChorusManager.isCdnPlaying()) {
+                                        mTRTCChorusManager.startCdnPlay(mPlayUrl, videoView);
+                                    }
                                 }
                             }
                         });
@@ -412,7 +410,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "start exit room.");
+                TRTCLogger.i(TAG, "start exit IM room.");
                 // 退房的时候需要判断主播是否在座位，如果是麦上主播，需要先清空座位列表
                 if (isOnSeat(mUserId)) {
                     leaveSeat(new TRTCChorusRoomCallback.ActionCallback() {
@@ -448,9 +446,44 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         clearList();
     }
 
+    //进入合唱（TRTC房间），即主播上麦
+    private void enterTRTCRoomInner(final String roomId, final String userId, final String userSig, final int role,
+                                    final TRTCChorusRoomCallback.ActionCallback callback) {
+        // 进入 TRTC 房间
+        enableRealtimeChorus(1);
+        TRTCLogger.i(TAG, "enter trtc room.");
+        TRTCChorusRoomService.getInstance().enterRoom(mSdkAppId, roomId, userId, userSig, role, new TXCallback() {
+            @Override
+            public void onCallback(final int code, final String msg) {
+                TRTCLogger.i(TAG, "enter trtc room finish, code:" + code + " msg:" + msg);
+                runOnDelegateThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //上麦后停止拉流
+                        mTRTCChorusManager.stopCdnPlay();
+                        if (code == 0 && mRole == TRTC_ROLE_OWNER) {
+                            //房主开始推流
+                            mTRTCChorusManager.startCdnPush(mPushUrl);
+                        }
+                        //房主进房身份变为主播
+                        if (mUserId != null && mUserId.equals(userId)) {
+                            mRole = TRTCCloudDef.TRTCRoleAnchor;
+                        }
+                        //在TRTC房间中
+                        mIsInTRTCRoom = true;
+                        if (callback != null) {
+                            callback.onCallback(code, msg);
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     //退出合唱（TRTC房间），即主播下麦并拉流
-    private void exitChorusRoom() {
+    private void exitTRTCRoom() {
         enableRealtimeChorus(0);
+        TRTCLogger.i(TAG, "exit trtc chorus Room.");
         TRTCChorusRoomService.getInstance().exitRoom(new TXCallback() {
             @Override
             public void onCallback(final int code, final String msg) {
@@ -464,14 +497,16 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                         }
                     });
                 } else {
+                    //结束合唱
+                    mTRTCChorusManager.stopChorus();
                     //开始拉流
                     mTRTCChorusManager.startCdnPlay(mPlayUrl, mVideoView);
                     //身份变为听众
                     mRole = TRTCCloudDef.TRTCRoleAudience;
+                    mIsInTRTCRoom = false;
                 }
             }
         });
-        TRTCLogger.i(TAG, "start exit chorus room service.");
         //听众无法实时获取网络质量（仅主播通过TRTCChorusRoomService创建或进入房间可实时获取）
         runOnDelegateThread(new Runnable() {
             @Override
@@ -484,7 +519,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     private boolean isOnSeat(String userId) {
-        // 判断某个userid 是不是在座位上
+        // 判断某个userId 是不是在座位上
         if (mSeatInfoList == null) {
             return false;
         }
@@ -508,7 +543,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 TXRoomService.getInstance().getUserInfo(userIdList, new TXUserListCallback() {
                     @Override
                     public void onCallback(final int code, final String msg, final List<TXUserInfo> list) {
-                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg + " list:" + (list != null ? list.size() : 0));
+                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg
+                                + " list:" + (list != null ? list.size() : 0));
                         runOnDelegateThread(new Runnable() {
                             @Override
                             public void run() {
@@ -541,7 +577,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 TXRoomService.getInstance().getAudienceList(new TXUserListCallback() {
                     @Override
                     public void onCallback(final int code, final String msg, final List<TXUserInfo> list) {
-                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg + " list:" + (list != null ? list.size() : 0));
+                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg
+                                + " list:" + (list != null ? list.size() : 0));
                         runOnDelegateThread(new Runnable() {
                             @Override
                             public void run() {
@@ -572,7 +609,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "enterSeat " + seatIndex);
+                TRTCLogger.i(TAG, "enterSeat seatIndex = " + seatIndex);
                 if (isOnSeat(mUserId)) {
                     runOnDelegateThread(new Runnable() {
                         @Override
@@ -596,13 +633,20 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                                 callback.onCallback(code, msg);
                             }
                         } else {
+                            //成功上麦后,更新本地麦位表
+                            TRTCChorusRoomDef.SeatInfo seatInfo = new TRTCChorusRoomDef.SeatInfo();
+                            seatInfo.userId = mUserId;
+                            mSeatInfoList.add(seatInfo);
                             TRTCLogger.i(TAG, "take seat callback success, and wait attrs changed.");
                         }
                     }
                 });
 
                 //进入TRTC房间进行合唱
-                enterTRTCRoomInner(mRoomId, mUserId, mUserSig, mRole, callback);
+                //房主创建房间的时候已经进入了TRTC房间,上麦的时候不需要再次进入
+                if (!mIsInTRTCRoom) {
+                    enterTRTCRoomInner(mRoomId, mUserId, mUserSig, mRole, callback);
+                }
             }
         });
     }
@@ -612,7 +656,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "leaveSeat " + mTakeSeatIndex);
+                TRTCLogger.i(TAG, "leaveSeat seatIndex = " + mTakeSeatIndex);
                 if (mTakeSeatIndex == -1) {
                     //已经不再座位上了
                     runOnDelegateThread(new Runnable() {
@@ -641,17 +685,17 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                                 }
                             });
                         }
+                        //离开麦位，身份变为听众
+                        exitTRTCRoom();
                     }
                 });
-
-                //离开麦位，身份变为听众
-                exitChorusRoom();
             }
         });
     }
 
     @Override
-    public void pickSeat(final int seatIndex, final String userId, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void pickSeat(final int seatIndex, final String userId,
+                         final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -719,11 +763,12 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void muteSeat(final int seatIndex, final boolean isMute, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void muteSeat(final int seatIndex, final boolean isMute,
+                         final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
-                TRTCLogger.i(TAG, "kickSeat " + seatIndex + " " + isMute);
+                TRTCLogger.i(TAG, "muteSeat " + seatIndex + " " + isMute);
                 TXRoomService.getInstance().muteSeat(seatIndex, isMute, new TXCallback() {
                     @Override
                     public void onCallback(final int code, final String msg) {
@@ -742,7 +787,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void closeSeat(final int seatIndex, final boolean isClose, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void closeSeat(final int seatIndex, final boolean isClose,
+                          final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -805,11 +851,9 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     /**
-     * 静音本地
-     * <p>
-     * 直接调用 TRTC 设置：TXTRTCLiveRoom.muteLocalAudio
+     * 静音本地音频
      *
-     * @param mute
+     * @param mute 是否静音
      */
     @Override
     public void muteLocalAudio(final boolean mute) {
@@ -853,10 +897,10 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     /**
-     * 静音音频
+     * 静音远端音频
      *
-     * @param userId
-     * @param mute
+     * @param userId 用户ID
+     * @param mute   是否静音
      */
     @Override
     public void muteRemoteAudio(final String userId, final boolean mute) {
@@ -870,9 +914,9 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     /**
-     * 静音所有音频
+     * 静音所有远端音频
      *
-     * @param mute
+     * @param mute 是否静音
      */
     @Override
     public void muteAllRemoteAudio(final boolean mute) {
@@ -914,7 +958,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void sendRoomCustomMsg(final String cmd, final String message, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public void sendRoomCustomMsg(final String cmd, final String message,
+                                  final TRTCChorusRoomCallback.ActionCallback callback) {
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -937,7 +982,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public String sendInvitation(final String cmd, final String userId, final String content, final TRTCChorusRoomCallback.ActionCallback callback) {
+    public String sendInvitation(final String cmd, final String userId, final String content,
+                                 final TRTCChorusRoomCallback.ActionCallback callback) {
         TRTCLogger.i(TAG, "sendInvitation to " + userId + " cmd:" + cmd + " content:" + content);
         return TXRoomService.getInstance().sendInvitation(cmd, userId, content, new TXCallback() {
             @Override
@@ -1023,34 +1069,6 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
         });
     }
 
-    private void enterTRTCRoomInner(final String roomId, final String userId, final String userSig, final int role, final TRTCChorusRoomCallback.ActionCallback callback) {
-        // 进入 TRTC 房间
-        enableRealtimeChorus(1);
-        TRTCLogger.i(TAG, "enter trtc room.");
-        TRTCChorusRoomService.getInstance().enterRoom(mSdkAppId, roomId, userId, userSig, role, new TXCallback() {
-            @Override
-            public void onCallback(final int code, final String msg) {
-                TRTCLogger.i(TAG, "enter trtc room finish, code:" + code + " msg:" + msg);
-                runOnDelegateThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (callback != null) {
-                            callback.onCallback(code, msg);
-                        }
-                    }
-                });
-                if (code == 0 && mRole == TRTC_ROLE_OWNER) {
-                    //房主开始推流
-                    mTRTCChorusManager.startCdnPush(mPushUrl);
-                }
-                //上麦后停止拉流
-                mTRTCChorusManager.stopCdnPlay();
-                //身份变为主播
-                mRole = TRTCCloudDef.TRTCRoleAnchor;
-            }
-        });
-    }
-
     @Override
     public void onRoomDestroy(final String roomId) {
         runOnMainThread(new Runnable() {
@@ -1086,7 +1104,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void onRoomRecvRoomCustomMsg(final String roomId, final String cmd, final String message, final TXUserInfo userInfo) {
+    public void onRoomRecvRoomCustomMsg(String roomId, final String cmd, final String message,
+                                        final TXUserInfo userInfo) {
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
@@ -1125,7 +1144,9 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 }
                 mPlayUrl = tXRoomInfo.playUrl;
                 //主播不需要去播放
-                if (mRole != TRTCCloudDef.TRTCRoleAudience) return;
+                if (mRole != TRTCCloudDef.TRTCRoleAudience) {
+                    return;
+                }
                 if (mTRTCChorusManager.isCdnPlaying()) {
                     mTRTCChorusManager.stopCdnPlay();
                 }
@@ -1383,7 +1404,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
 
     @Override
     public void onTRTCVideoAvailable(final String userId, final boolean available) {
-        Log.d(TAG, "onTRTCVideoAvailable: userId = " + userId + " , available = " + available);
+        TRTCLogger.d(TAG, "onTRTCVideoAvailable userId = " + userId + " , available = " + available);
         runOnMainThread(new Runnable() {
             @Override
             public void run() {
@@ -1421,7 +1442,8 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void onNetworkQuality(final TRTCCloudDef.TRTCQuality trtcQuality, final ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
+    public void onNetworkQuality(final TRTCCloudDef.TRTCQuality trtcQuality,
+                                 final ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
@@ -1473,7 +1495,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     public void enableRealtimeChorus(int status) {
-        Log.v(TAG,"enableRealtime:"+status);
+        TRTCLogger.d(TAG, "enableRealtimeChorus : " + status);
         TRTCChorusRoomService.getInstance().enableRealtimeChorus(status);
     }
 
@@ -1493,7 +1515,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 if (errCode != 0) {
                     //重新校验
                     TXLiveBase.updateNetworkTime();
-                    Log.d(TAG, "onUpdateNetworkTime: ntp time update failed = " + errCode);
+                    TRTCLogger.d(TAG, "onUpdateNetworkTime: ntp time update failed = " + errCode);
                 }
             }
         });
@@ -1503,7 +1525,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     /**
      * TRTCChorusManager合唱相关回调
      */
-    private class ChorusManagerListener implements com.tencent.liteav.tuichorus.model.impl.TRTCChorusManager.TRTCChorusListener {
+    private class ChorusManagerListener implements TRTCChorusManager.TRTCChorusListener {
         /**
          * 合唱开始回调
          *
@@ -1531,7 +1553,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
 
         @Override
         public void onMusicPrepareToPlay(final int musicID) {
-            Log.d(TAG, "onMusicPlay Start: id = " + musicID);
+            TRTCLogger.d(TAG, "onMusicPrepareToPlay musicID = " + musicID);
             runOnMainThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1563,7 +1585,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
 
         @Override
         public void onMusicCompletePlaying(final int musicID) {
-            Log.d(TAG, "onMusicPlayFinish id " + musicID);
+            TRTCLogger.d(TAG, "onMusicCompletePlaying musicID = " + musicID);
             mMainHandler.post(new Runnable() {
                 @Override
                 public void run() {
@@ -1587,7 +1609,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                     if (mDelegate != null) {
                         //回调给上层查询音乐路径
                         mDelegate.onReceiveAnchorSendChorusMsg(String.valueOf(musicID), startDelay);
-                        Log.v(TAG, "onReceiveAnchorSendChorusMsg:" + musicID);
+                        TRTCLogger.d(TAG, "onReceiveAnchorSendChorusMsg:" + musicID);
                     }
                 }
             });

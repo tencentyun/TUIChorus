@@ -241,6 +241,9 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
      */
     @Override
     public void onItemClick(final int itemPos) {
+        if (itemPos == 0) {
+            return;
+        }
         // 判断座位有没有人
         ChorusRoomSeatEntity entity = mRoomSeatEntityList.get(itemPos);
         if (entity.isUsed) {
@@ -333,8 +336,8 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
     public void onAgreeClick(int position) {
         super.onAgreeClick(position);
         if (mMsgEntityList != null) {
-            final MsgEntity entity   = mMsgEntityList.get(position);
-            String          inviteId = entity.invitedId;
+            final MsgEntity entity = mMsgEntityList.get(position);
+            String inviteId = entity.invitedId;
             if (inviteId == null) {
                 ToastUtils.showLong(getString(R.string.tuichorus_request_expired));
                 return;
@@ -364,7 +367,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
     private void recvTakeSeat(String inviteId, String inviter, String content) {
         //收到了听众的申请上麦消息，显示到通知栏
         MemberEntity memberEntity = mMemberEntityMap.get(inviter);
-        MsgEntity    msgEntity    = new MsgEntity();
+        MsgEntity msgEntity = new MsgEntity();
         msgEntity.userId = inviter;
         msgEntity.invitedId = inviteId;
         msgEntity.userName = (memberEntity != null ? memberEntity.userName : inviter);
@@ -384,8 +387,8 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
         msgEntity.invitedId = TCConstants.CMD_ORDER_SONG;
         msgEntity.type = MsgEntity.TYPE_ORDERED_SONG;
 
-        int    seatIndex = 0;
-        String userName  = null;
+        int seatIndex = 0;
+        String userName = null;
         for (int i = 0; i < MAX_SEAT_SIZE; i++) {
             if (entity.bookUser.equals(mRoomSeatEntityList.get(i).userId)) {
                 seatIndex = i;
@@ -403,8 +406,8 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
     public void onOrderedManagerClick(int position) {
         super.onOrderedManagerClick(position);
         if (mMsgEntityList != null) {
-            final MsgEntity entity   = mMsgEntityList.get(position);
-            String          inviteId = entity.invitedId;
+            final MsgEntity entity = mMsgEntityList.get(position);
+            String inviteId = entity.invitedId;
             if (inviteId == null) {
                 ToastUtils.showLong(getString(R.string.tuichorus_request_expired));
                 return;

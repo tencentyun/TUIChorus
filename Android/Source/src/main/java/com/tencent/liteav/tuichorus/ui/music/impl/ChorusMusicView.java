@@ -37,10 +37,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicServiceDelegate {
-    private static String TAG = "MusicView";
+    private static final String TAG = "ChorusMusicView";
 
-    private final Context        mContext;
-    private final TRTCChorusRoom mTUIChorus;
+    private final Context mContext;
 
     private static final int CHORUS_START_DELAY = 3000;
     private static final int PAGE_NUM           = 1;
@@ -84,7 +83,6 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
         super(context, attrs, defStyleAttr);
         mContext = context;
         View rootView = LayoutInflater.from(context).inflate(R.layout.tuichorus_layout_songtable, this);
-        mTUIChorus = TRTCChorusRoom.sharedInstance(mContext);
         initView(rootView);
         initListener();
     }
@@ -182,7 +180,7 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
         mBtnStartChorus = (Button) view.findViewById(R.id.btn_start_chorus);
     }
 
-    public void updateSongTableView(int size) {
+    private void updateSongTableView(int size) {
         if (size == 0) {
             mLayoutSongInfo.setVisibility(View.GONE);
             mLayoutEmpty.setVisibility(View.VISIBLE);
@@ -199,7 +197,8 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
             mBtnChooseSong.setVisibility(VISIBLE);
             mLayoutInfo.setVisibility(VISIBLE);
             //房主显示开始合唱按钮
-            if (mChorusRoomInfoController.isRoomOwner() && mAudioManager.getCurrentStatus() != TUIChorusAudioManager.MUSIC_PLAYING) {
+            if (mChorusRoomInfoController.isRoomOwner()
+                    && mAudioManager.getCurrentStatus() != TUIChorusAudioManager.MUSIC_PLAYING) {
                 mBtnStartChorus.setVisibility(VISIBLE);
             }
 
@@ -222,11 +221,12 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
 
             if (seatEntity != null) {
                 mTvUserName.setText(seatEntity.userName);
-                mTvSeatName.setText(getResources().getString(R.string.tuichorus_tv_seat_id, String.valueOf(seatEntity.index + 1)));
+                mTvSeatName.setText(getResources().getString(R.string.tuichorus_tv_seat_id,
+                        String.valueOf(seatEntity.index + 1)));
             }
         }
 
-        if (mChorusRoomInfoController.isAnchor()) {
+        if (mChorusRoomInfoController != null && mChorusRoomInfoController.isAnchor()) {
             mLayoutInfo.setVisibility(VISIBLE);
             LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mLayoutEmpty.getLayoutParams();
             layoutParams.setMargins(layoutParams.getMarginStart(), dp2px(mContext, 20), layoutParams.getMarginEnd(), 0);
@@ -283,37 +283,16 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
     }
 
     //打开点歌/已点面板
-    public void showChooseSongDialog() {
+    private void showChooseSongDialog() {
         if (mDialog != null) {
             mDialog.show();
         } else {
+            if (mChorusRoomInfoController == null) {
+                return;
+            }
             mDialog = new ChorusMusicDialog(mContext, mChorusRoomInfoController);
             mDialog.show();
         }
-    }
-
-    private void showConfirmDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(R.string.tuichorus_toast_anchor_can_only_operate_it);
-        builder.setPositiveButton(R.string.tuichorus_btn_confirm, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (mDialog != null) {
-                    mDialog.show();
-                } else {
-                    mDialog = new ChorusMusicDialog(mContext, mChorusRoomInfoController);
-                    mDialog.show();
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.tuichorus_btn_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        Dialog dialog = builder.create();
-        dialog.show();
     }
 
     protected boolean checkButtonPermission() {

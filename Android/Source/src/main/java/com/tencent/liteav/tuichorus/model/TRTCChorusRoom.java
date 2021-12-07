@@ -39,7 +39,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 设置组件回调接口
-     * <p>
      * 您可以通过 TRTCChorusRoomDelegate 获得 TRTCChorusRoom 的各种状态通知
      *
      * @param delegate 回调接口
@@ -86,7 +85,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 创建房间（主播调用）
-     * <p>
      * 主播正常的调用流程是：
      * 1. 主播调用`createRoom`创建新的合唱房间，此时传入房间 ID、上麦是否需要房主确认、麦位数等房间属性信息。
      * 2. 主播创建房间成功后，调用`enterSeat`进入座位。
@@ -97,18 +95,17 @@ public abstract class TRTCChorusRoom {
      * @param roomParam 房间信息，用于房间描述的信息，例如房间名称，封面信息等。如果房间列表和房间信息都由您的服务器自行管理，可忽略该参数。
      * @param callback  创建房间的结果回调，成功时 code 为0.
      */
-    public abstract void createRoom(int roomId, TRTCChorusRoomDef.RoomParam roomParam, TXCloudVideoView videoView, TRTCChorusRoomCallback.ActionCallback callback);
+    public abstract void createRoom(int roomId, TRTCChorusRoomDef.RoomParam roomParam, TXCloudVideoView videoView,
+                                    TRTCChorusRoomCallback.ActionCallback callback);
 
     /**
      * 销毁房间（房主调用）
-     * <p>
      * 房主在创建房间后，可以调用这个函数来销毁房间。
      */
     public abstract void destroyRoom(TRTCChorusRoomCallback.ActionCallback callback);
 
     /**
      * 进入房间（听众调用）
-     * <p>
      * 听众进房收听的正常调用流程如下：
      * 1.【听众】向您的服务端获取最新的合唱房间列表，可能包含多个直播间的 roomId 和房间信息。
      * 2. 听众选择一个合唱房间，调用`enterRoom`并传入房间号即可进入该房间。
@@ -143,7 +140,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 主动上麦（听众端和主播均可调用）
-     * <p>
      * 上麦成功后，房间内所有成员会收到`onSeatListChange`和`onAnchorEnterSeat`的事件通知。
      *
      * @param seatIndex 需要上麦的麦位序号
@@ -153,7 +149,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 主动下麦（听众端和主播均可调用）
-     * <p>
      * 下麦成功后，房间内所有成员会收到`onSeatListChange`和`onAnchorLeaveSeat`的事件通知。
      *
      * @param callback 操作回调
@@ -162,7 +157,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 抱人上麦(主播调用)
-     * <p>
      * 主播抱人上麦，房间内所有成员会收到`onSeatListChange`和`onAnchorEnterSeat`的事件通知。
      *
      * @param seatIndex 需要抱麦的麦位序号
@@ -173,7 +167,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 踢人下麦(主播调用)
-     * <p>
      * 主播踢人下麦，房间内所有成员会收到`onSeatListChange`和`onAnchorLeaveSeat`的事件通知。
      *
      * @param seatIndex 需要踢下麦的麦位序号
@@ -183,7 +176,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 静音/解禁对应麦位的麦克风(主播调用)
-     * <p>
      * 房间内所有成员会收到`onSeatListChange`和`onSeatMute`的事件通知。
      * 对应 seatIndex 座位上的主播，会自动调用 muteAudio 进行静音/解禁
      *
@@ -195,7 +187,6 @@ public abstract class TRTCChorusRoom {
 
     /**
      * 封禁/解禁某个麦位(主播调用)
-     * <p>
      * 房间内所有成员会收到`onSeatListChange`和`onSeatClose`的事件通知。
      *
      * @param seatIndex 麦位序号

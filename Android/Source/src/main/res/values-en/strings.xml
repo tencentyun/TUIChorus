@@ -8,16 +8,12 @@
     <string name="tuichorus_send">Send</string>
     <string name="tuichorus_dialog_cancel">Cancel</string>
     <string name="tuichorus_btn_confirm">Confirm</string>
-    <string name="tuichorus_btn_cancel">Wait a bit</string>
     <string name="tuichorus_warning_not_empty">The input field must not be empty!</string>
     <string name="tuichorus_delete">delete</string>
     <string name="tuichorus_tips_open_audio">Please turn on the microphone permission first</string>
     <string name="tuichorus_room_id">Room Id: %d</string>
     <string name="tuichorus_lock">Lock</string>
     <string name="tuichorus_unlock">UnLock</string>
-    <string name="tuichorus_seat_already_mute">Cannot turn mic on as the seat is muted</string>
-    <string name="tuichorus_seat_mute">Mute</string>
-    <string name="tuichorus_seat_unmuted">Seat unmuted</string>
     <string name="tuichorus_tv_seat_id">Mic No.%s</string>
     <string name="tuichorus_btn_start_record">Start Record</string>
     <string name="tuichorus_btn_stop_record">Stop Record</string>
@@ -40,7 +36,6 @@
     <string name="tuichorus_toast_enter_the_room_successfully">Entered room</string>
     <string name="tuichorus_toast_enter_the_room_failure">Failed to enter room[%1$d]:%2$s</string>
     <string name="tuichorus_toast_list_has_not_been_initialized">The seat list has not been initialized！</string>
-    <string name="tuichorus_online">Mic On</string>
     <string name="tuichorus_leave_seat">Mic Off</string>
     <string name="tuichorus_toast_the_room_is_not_ready">Room not ready~</string>
     <string name="tuichorus_toast_application_has_been_sent_please_wait_for_processing">Your request has been sent. Please wait for reply from the anchor.</string>
@@ -56,9 +51,6 @@
     <string name="tuichorus_seat_closed">The seat is blocked</string>
     <string name="tuichorus_accept_failed">Failed to accept request</string>
     <string name="tuichorus_msg_close_room">Room closed</string>
-    <string name="tuichorus_audience_leave_room">Are you sure you want to leave？</string>
-    <string name="tuichorus_toast_you_have_turned_on_the_microphone">Mic turned on</string>
-    <string name="tuichorus_toast_you_have_turned_off_the_microphone">Mic turned off</string>
     <string name="tuichorus_toast_please_enter_content">Enter content</string>
     <string name="tuichorus_toast_sent_successfully">Sent</string>
     <string name="tuichorus_toast_sent_message_failure">Failed to send message</string>
@@ -69,10 +61,8 @@
     <string name="tuichorus_me">Me</string>
     <string name="tuichorus_audience">Audience</string>
     <string name="tuichorus_tv_invite">Invite</string>
-    <string name="tuichorus_toast_invite_to_chat_successfully">Placed %s in the seat</string>
     <string name="tuichorus_toast_refuse_to_chat">%s declined the mic-on request</string>
     <string name="tuichorus_msg_you_refuse_to_chat">You declined the mic-on request</string>
-    <string name="tuichorus_network_value">%d ms</string>
     <string name="tuichorus_toast_chorus_can_not_leave_seat">You cannot leave your seat when in a duet</string>
 
     <string name="tuichorus_create_room_limit">The cloud communication account you are currently using has not activated the Chorus function, and the number of rooms created exceeds the limit, please go to the Tencent Cloud official website to open Chorus，地址：https://cloud.tencent.com/document/product/269/11673</string>
@@ -98,8 +88,6 @@
     <string name="tuichorus_gift_give_gift">giving</string>
     <string name="tuichorus_gift_game_currency">money%d</string>
 
-    <string name="tuichorus_bgm_title">Background music</string>
-    <string name="tuichorus_back">Back</string>
     <string name="tuichorus_sound_effects">Audio Effect</string>
     <string name="tuichorus_sound_audition">Music Preview</string>
     <string name="tuichorus_put_on_your_headphones">Use earphones for better experience</string>
@@ -108,9 +96,6 @@
     <string name="tuichorus_mic_volume">Voice volume</string>
     <string name="tuichorus_changer">Voice changing</string>
     <string name="tuichorus_reverb">Reverb</string>
-    <string name="tuichorus_bg_music_positive_happy">Happy</string>
-    <string name="tuichorus_bg_music_sad_cinematic_piano">Sad Cinematic Piano</string>
-    <string name="tuichorus_bg_music_wonder_world">Wonder World</string>
     <string name="tuichorus_no_effect">No effect</string>
     <string name="tuichorus_audio_change_type_child">Naughty boy</string>
     <string name="tuichorus_audio_change_type_luoli">Little girl</string>
