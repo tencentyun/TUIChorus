@@ -15,6 +15,8 @@ protocol TRTCChorusViewNavigator: NSObject {
 
 protocol TRTCChorusViewResponder: NSObject {
     func showToast(message: String)
+    func showToastActivity()
+    func hiddenToastActivity()
     func switchView(type: ChorusRoleType)
     func changeRoom(info: ChorusRoomInfo)
     func refreshAnchorInfos()
@@ -971,8 +973,12 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
                 return
             }
             if !seatModel.isUsed {
+                // 显示Loading指示框， 回调结束消失
+                self.viewResponder?.showToastActivity()
                 chorusRoom.enterSeat(seatIndex: seatIndex) { [weak self] (code, message) in
                     guard let `self` = self else { return }
+                    // 隐藏Loading指示器
+                    self.viewResponder?.hiddenToastActivity()
                     if code == 0 {
                         self.viewResponder?.showToast(message: .handsupSuccessText)
                     } else {

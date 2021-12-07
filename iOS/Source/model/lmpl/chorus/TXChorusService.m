@@ -11,6 +11,7 @@
 #import "ChorusLocalized.h"
 #import "TXChorusIMJsonHandle.h"
 #import "MJExtension.h"
+#import "TRTCChorusRoomDef.h"
 
 @interface TXChorusService()<V2TIMSDKListener, V2TIMGroupListener, V2TIMSimpleMsgListener, V2TIMSignalingListener>
 @property (nonatomic, assign) BOOL isInitIMSDK;
@@ -45,7 +46,7 @@
     if (!self.isInitIMSDK) {
         V2TIMSDKConfig *config = [[V2TIMSDKConfig alloc] init];
         config.logLevel = V2TIM_LOG_ERROR;
-        self.isInitIMSDK = [self.imManager initSDK:sdkAppId config:config listener:self];
+        self.isInitIMSDK = [self.imManager initSDK:sdkAppId config:config];
         if (!self.isInitIMSDK) {
             if (callback) {
                 callback(CHORUS_SERVICE_CODE_ERROR, @"init im sdk error.");
@@ -53,10 +54,13 @@
             return;
         }
     }
-    if (self.isLogin) {
-        self.selfUserId = userId;
+    NSString *loggedUserId = [self.imManager getLoginUser];
+    if (loggedUserId && [loggedUserId isEqualToString:userId]) {
+        // 已经登陆了
+        self.isLogin = YES;
+        self.selfUserId = loggedUserId;
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"start login fail, you have been login, can not login twice.");
+            callback(0, @"start login im success, but you have been login.");
         }
         return;
     }
@@ -91,15 +95,21 @@
         }
         return;
     }
+    self.isLogin = NO;
+    self.selfUserId = @"";
     @weakify(self)
     [self.imManager logout:^{
         @strongify(self)
         if (!self) {
             return;
         }
-        self.isLogin = false;
+        if (callback) {
+            callback(0, @"im logout success");
+        }
     } fail:^(int code, NSString *desc) {
-        
+        if (callback) {
+            callback(code, desc);
+        }
     }];
 }
 
@@ -328,7 +338,7 @@
         changeInfo.status = kTXChorusSeatStatusUsed;
         changeInfo.user = self.selfUserId;
         NSDictionary *dic = [TXChorusIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
-        [self modeifyGroupAttrs:dic callback:callback];
+        [self modifyGroupAttrs:dic callback:callback];
     } else {
         if (callback) {
             callback(-1, @"seat info list is empty or index error.");
@@ -352,7 +362,7 @@
         changeInfo.status = kTXChorusSeatStatusUnused;
         changeInfo.user = @"";
         NSDictionary *dic = [TXChorusIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
-        [self modeifyGroupAttrs:dic callback:callback];
+        [self modifyGroupAttrs:dic callback:callback];
     } else {
         if (callback) {
             callback(-1, @"seat info list is empty or index error.");
@@ -385,7 +395,7 @@
     changeInfo.status = kTXChorusSeatStatusUsed;
     changeInfo.user = userId;
     NSDictionary *dic = [TXChorusIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
-    [self modeifyGroupAttrs:dic callback:callback];
+    [self modifyGroupAttrs:dic callback:callback];
 }
 
 - (void)kickSeat:(NSInteger)seatIndex callback:(TXChorusCallback _Nullable)callback {
@@ -405,7 +415,7 @@
     changeInfo.user = @"";
 //    changeInfo.mute = self.seatInfoList[seatIndex].mute;
     NSDictionary *dic = [TXChorusIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
-    [self modeifyGroupAttrs:dic callback:callback];
+    [self modifyGroupAttrs:dic callback:callback];
 }
 
 - (void)closeSeat:(NSInteger)seatIndex isClose:(BOOL)isClose callback:(TXChorusCallback)callback {
@@ -433,7 +443,7 @@
     changeInfo.status = isClose ? kTXChorusSeatStatusClosed : kTXChorusSeatStatusUnused;
     changeInfo.user = @"";
     NSDictionary *dic = [TXChorusIMJsonHandle getSeatInfoJsonStrWithIndex:seatIndex info:changeInfo];
-    [self modeifyGroupAttrs:dic callback:callback];
+    [self modifyGroupAttrs:dic callback:callback];
 }
 
 - (void)getRoomInfoList:(NSArray<NSString *> *)roomIds calback:(TXChorusRoomInfoListCallback _Nullable)callback {
@@ -653,22 +663,34 @@
     if (![groupID isEqualToString:self.mRoomId]) {
         return;
     }
-    if (self.roomInfo.seatSize == 0) {
-        TRTCLog(@"group attr changed, but room info is empty");
-        return;
-    }
     if (!attributes) {
-        TRTCLog(@"attributes error");
+        TRTCLog(@"on group attr changed:: attributes is empty");
         return;
     }
-    NSArray<TXChorusSeatInfo *> *seatInfoList = [TXChorusIMJsonHandle getSeatListFromAttr:attributes seatSize:self.roomInfo.seatSize];
-    NSArray<TXChorusSeatInfo *> *oldSeatInfoList = [self.seatInfoList copy];
     TXChorusRoomInfo *roomInfo = [TXChorusIMJsonHandle getRoomInfoFromAttr:attributes];
     if (roomInfo) {
+        roomInfo.roomId = self.mRoomId;
+        roomInfo.memberCount = -1; // 当前房间的MemberCount无法从这个接口正确获取。
+        self.roomInfo = roomInfo;
         if ([self canDelegateResponseMethod:@selector(onRoomInfoChange:)]) {
             [self.delegate onRoomInfoChange:roomInfo];
         }
     }
+    if (self.roomInfo.seatSize == 0) {
+        TRTCLog(@"on group attr changed: but room seatSize is 0");
+        return;
+    }
+    [self onSeatAttrMapChangedWithAttributes:attributes seatSize:self.roomInfo.seatSize];
+}
+
+
+#pragma mark - 群属性麦位更新
+/// 群属性回调麦位信息更新
+/// @param attributes 群属性信息
+/// @param seatSize 麦位数量
+- (void)onSeatAttrMapChangedWithAttributes:(NSDictionary<NSString *, NSString *> *)attributes seatSize:(NSInteger)seatSize{
+    NSArray<TXChorusSeatInfo *> *seatInfoList = [TXChorusIMJsonHandle getSeatListFromAttr:attributes seatSize:seatSize];
+    NSArray<TXChorusSeatInfo *> *oldSeatInfoList = [self.seatInfoList copy];
     self.seatInfoList = [seatInfoList mutableCopy];
     if ([self canDelegateResponseMethod:@selector(onSeatInfoListChange:)]) {
         [self.delegate onSeatInfoListChange:self.seatInfoList];
@@ -696,6 +718,54 @@
             }
         }
     }
+}
+
+
+/// 更新本地群属性信息
+/// @param callback 回调
+- (void)getGroupAttrsWithCallBack:(TXChorusCallback)callback{
+    @weakify(self)
+    [self.imManager getGroupAttributes:self.mRoomId keys:nil succ:^(NSMutableDictionary<NSString *,NSString *> *groupAttributeList) {
+        @strongify(self)
+        if (!self) {
+            return;
+        }
+        if (!groupAttributeList) {
+            if (callback) {
+                callback(-1, @"get group attrs failed: groupAttributeList is empty");
+            }
+            return;
+        }
+        TRTCLog(@"get group attrs success, now update data");
+        // 解析roomInfo
+        TXChorusRoomInfo* roomInfo = [TXChorusIMJsonHandle getRoomInfoFromAttr:groupAttributeList];
+        if (roomInfo) {
+            roomInfo.memberCount = -1; // 当前房间的MemberCount无法从这个接口正确获取。
+            self.roomInfo = roomInfo;
+        } else {
+            TRTCLog(@"init room info is empty, enter room failed.");
+            if (callback) {
+                callback(-1, @"group room info is empty, enter room failed.");
+            }
+            return;
+        }
+        self.isEnterRoom = YES;
+        self.ownerUserId = self.roomInfo.ownerId;
+        // 回调 更新roomInfo
+        if ([self canDelegateResponseMethod:@selector(onRoomInfoChange:)]) {
+            [self.delegate onRoomInfoChange:self.roomInfo];
+        }
+        // 更新麦位信息
+        [self onSeatAttrMapChangedWithAttributes:groupAttributeList seatSize:self.roomInfo.seatSize];
+        if (callback) {
+            callback(0, @"enter room success");
+        }
+    } fail:^(int code, NSString *desc) {
+        TRTCLog(@"get group attrs failed: %d, %@", code, desc);
+        if (callback) {
+            callback(code, desc);
+        }
+    }];
 }
 
 
@@ -796,7 +866,24 @@
     } fail:^(int code, NSString *desc) {
         @strongify(self)
         if (!self) { return; }
-        if (code == 10007) {
+        if (code == ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
+            TRTCLog(@"modify group attrs conflict, now get group attrs");
+            [self getGroupAttrsWithCallBack:^(int code, NSString * _Nonnull message) {
+                @strongify(self)
+                if (!self) { return; }
+                if (code == 0) {
+                    self.isEnterRoom = YES;
+                    if (callback) {
+                        callback(0, @"init room info and seat success");
+                    }
+                } else {
+                    TRTCLog(@"error: group has been created. join group fail. code:%d, message: %@", code, desc);
+                    if (callback) {
+                        callback(code, desc ?: @"init group attributes failed");
+                    }
+                }
+            }];
+        } else if (code == 10007) {
             [self.imManager joinGroup:self.mRoomId msg:@"" succ:^{
                 TRTCLog(@"gorup has benn created. join group success");
                 @strongify(self)
@@ -903,12 +990,19 @@
     }];
 }
 
-- (void)modeifyGroupAttrs:(NSDictionary<NSString *, NSString *> *)attrs callback:(TXChorusCallback _Nullable)callback {
+- (void)modifyGroupAttrs:(NSDictionary<NSString *, NSString *> *)attrs callback:(TXChorusCallback _Nullable)callback {
+    TRTCLog(@"start modify group attrs: %@", attrs);
+    @weakify(self)
     [self.imManager setGroupAttributes:self.mRoomId attributes:attrs succ:^{
         if (callback) {
             callback(0, @"modify group attrs success");
         }
     } fail:^(int code, NSString *desc) {
+        if (code == ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
+            @strongify(self)
+            TRTCLog(@"modify group attrs conflict, now get group attrs");
+            [self getGroupAttrsWithCallBack:nil];
+        }
         if (callback) {
             callback(code, desc ?: @"modify group attrs failed");
         }

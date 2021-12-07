@@ -83,12 +83,13 @@ extension ChorusMainViewController {
         let cancelAction = UIAlertAction.init(title: TRTCChorusLocalize("App.PortalViewController.cancel"), style: .cancel, handler: nil)
         let sureAction = UIAlertAction.init(title: TRTCChorusLocalize("App.PortalViewController.determine"), style: .default) { (action) in
             ProfileManager.shared.removeLoginCache()
-            V2TIMManager.sharedInstance()?.logout({
-                TRTCChorusRoom.shared().logout()
-                AppUtils.shared.appDelegate.showLoginViewController()
-            }, fail: { (errCode, errMsg) in
-                debugPrint("errCode = \(errCode), errMsg = \(errMsg ?? "")")
-            })
+            TRTCChorusRoom.shared().logout { (code, desc) in
+                if code == 0 {
+                    AppUtils.shared.appDelegate.showLoginViewController()
+                } else {
+                    debugPrint("logout error code: \(code) desc: \(desc)")
+                }
+            }
         }
         alertVC.addAction(cancelAction)
         alertVC.addAction(sureAction)
