@@ -13,10 +13,9 @@
 "Demo.TRTC.Salon.seatunmuted" = "Unmuted by room owner";
 "Demo.TRTC.LiveRoom.accept" = "Confirm";
 "Demo.TRTC.LiveRoom.refuse" = "Cancel";
-"Demo.TRTC.Chorus.confirm" = "Confirm";
-"Demo.TRTC.Chorus.cancel" = "Cancel";
 "Demo.TRTC.Salon.pleaseselect" = "Please Select";
 "Demo.TRTC.LiveRoom.cancel" = "Cancel";
+
 "Demo.TRTC.Chorus.xxonline" = "xxx is online";
 "Demo.TRTC.Chorus.presshandsup" = "Tap to Speak";
 "Demo.TRTC.Chorus.islocked" = "Blocked";
