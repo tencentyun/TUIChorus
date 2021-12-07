@@ -1039,6 +1039,7 @@ static dispatch_once_t onceToken;
         }
     }
     self.roomID = @"";
+    _chorusRole = TRTCChorusRoleAnchor;
 }
 
 - (void)sendSEIMsg:(NSDictionary *)json {

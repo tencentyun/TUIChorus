@@ -300,6 +300,14 @@ extension TRTCChorusRootView: TRTCChorusViewResponder {
         makeToast(message)
     }
     
+    func showToastActivity(){
+        makeToastActivity(.center)
+    }
+    
+    func hiddenToastActivity() {
+        hideToastActivity()
+    }
+    
     func switchView(type: ChorusRoleType) {
         debugPrint("Began switch view")
         switch type {

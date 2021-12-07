@@ -11,10 +11,10 @@ PODS:
     - SnapKit
     - Toast-Swift
     - TXAppBasic
-    - TXIMSDK_Plus_iOS (= 5.5.897)
+    - TXIMSDK_Plus_iOS (~> 5.7.1435)
     - TXLiteAVSDK_Professional
   - TXAppBasic (1.0.0)
-  - TXIMSDK_Plus_iOS (5.5.897)
+  - TXIMSDK_Plus_iOS (5.7.1435)
   - TXLiteAVSDK_Professional (9.1.10564)
 
 DEPENDENCIES:
@@ -44,11 +44,11 @@ SPEC CHECKSUMS:
   MJExtension: 01704cca2b60a214c10761b6491eab74069d68a9
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
-  TUIChorus: a02f10c201cfbfd95f5662ff957642a0efebea9a
+  TUIChorus: 209c28c65ae4b20303a8e5a07d25f33451d083b3
   TXAppBasic: f72fd658cb2cec20f0368158752b82226cb6cdec
-  TXIMSDK_Plus_iOS: 88a0b007c1bc653fad6ea707dd3c23425ba9ba7c
+  TXIMSDK_Plus_iOS: 4b7c1097ea9899f7bf95fa90e2cb4471389f93dd
   TXLiteAVSDK_Professional: dadaf490453fe9395eabce2c8df8d0fbe90a63d5
 
 PODFILE CHECKSUM: b9b731624c387d9ed105a549d77ff57a70f2da5d
 
-COCOAPODS: 1.11.1
+COCOAPODS: 1.11.2

@@ -332,25 +332,19 @@
     }
 }
 
-- (void)onAudioPlayStatusUpdate:(id<V2TXLivePlayer>)player status:(V2TXLivePlayStatus)status reason:(V2TXLiveStatusChangeReason)reason extraInfo:(NSDictionary *)extraInfo {
+- (void)onAudioLoading:(id<V2TXLivePlayer>)player extraInfo:(NSDictionary *)extraInfo {
+    NSLog(@"----- onAudioLoading");
     if (self.delegate && [self.delegate respondsToSelector:@selector(onCdnPlayStatusUpdate:)]) {
-        [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager calling onCdnPlayStatusUpdate, status:%ld, current_ntp:%ld", status, [TXLiveBase getNetworkTimestamp]]];
-        CdnPlayStatus result;
-        switch (status) {
-            case V2TXLivePlayStatusStopped:
-                result = CdnPlayStatusStopped;
-                break;
-            case V2TXLivePlayStatusPlaying:
-                result = CdnPlayStatusPlaying;
-                break;
-            case V2TXLivePlayStatusLoading:
-                result = CdnPlayStatusLoading;
-                break;
-            default:
-                [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager calling onCdnPlayStatusUpdate, v2_status translate error, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
-                break;
-        }
-        [self.delegate onCdnPlayStatusUpdate:result];
+        [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager calling onCdnPlayStatusUpdate, status:onLoading, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
+        [self.delegate onCdnPlayStatusUpdate:CdnPlayStatusLoading];
+    }
+}
+
+- (void)onAudioPlaying:(id<V2TXLivePlayer>)player firstPlay:(BOOL)firstPlay extraInfo:(NSDictionary *)extraInfo {
+    NSLog(@"----- onAudioPlaying firstPlay: %d",firstPlay);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(onCdnPlayStatusUpdate:)]) {
+        [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager calling onCdnPlayStatusUpdate, status:onPlaying, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
+        [self.delegate onCdnPlayStatusUpdate:CdnPlayStatusPlaying];
     }
 }
 
@@ -358,6 +352,12 @@
            code:(V2TXLiveCode)code
         message:(NSString *)msg
       extraInfo:(NSDictionary *)extraInfo {
+    if (code == V2TXLIVE_ERROR_DISCONNECTED) {
+        if (self.delegate && [self.delegate respondsToSelector:@selector(onCdnPlayStatusUpdate:)]) {
+            [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager calling onCdnPlayStatusUpdate, status:stop, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
+            [self.delegate onCdnPlayStatusUpdate:CdnPlayStatusStopped];
+        }
+    }
     [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager player onError, code:%ld, msg:%@, current_ntp:%ld", code, msg, [TXLiveBase getNetworkTimestamp]]];
 }
 
