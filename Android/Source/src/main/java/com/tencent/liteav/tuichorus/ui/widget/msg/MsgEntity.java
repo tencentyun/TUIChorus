@@ -17,4 +17,19 @@ public class MsgEntity {
     public int     color;
     public boolean isChat;
     public String  songName;
+
+    @Override
+    public String toString() {
+        return "MsgEntity{"
+                + "userId= '" + userId + '\''
+                + ", userName= '" + userName + '\''
+                + ", content= '" + content + '\''
+                + ", invitedId= '" + invitedId + '\''
+                + ", linkUrl= '" + linkUrl + '\''
+                + ", type=" + type
+                + ", color=" + color
+                + ", isChat=" + isChat
+                + ", songName= '" + songName + '\''
+                + '}';
+    }
 }

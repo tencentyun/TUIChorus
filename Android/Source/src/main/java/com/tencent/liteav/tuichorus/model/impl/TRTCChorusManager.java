@@ -1,5 +1,9 @@
 package com.tencent.liteav.tuichorus.model.impl;
 
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_DISCONNECTED;
+import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_OK;
+import static com.tencent.live2.V2TXLiveDef.V2TXLiveAudioQuality.V2TXLiveAudioQualityDefault;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,10 +29,6 @@ import org.json.JSONObject;
 import java.lang.reflect.Constructor;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_ERROR_DISCONNECTED;
-import static com.tencent.live2.V2TXLiveCode.V2TXLIVE_OK;
-import static com.tencent.live2.V2TXLiveDef.V2TXLiveAudioQuality.V2TXLiveAudioQualityDefault;
 
 public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserver {
 
@@ -404,6 +404,10 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         mTRTCCloud.getAudioEffectManager().stopPlayMusic(mMusicID);
         if (reason == ChorusStopReason.LocalStop && mChorusStartReason == ChorusStartReason.LocalStart) {
             sendStopBgmMsg();
+        }
+        //停止播放时,清空合唱停止时间信息
+        if (reason == ChorusStopReason.LocalStop) {
+            mRequestStopPlayMusicTs = 0;
         }
         if (mListener != null) {
             mListener.onChorusStop(reason);

@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.basic.ImageLoader;
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoom;
@@ -37,14 +38,12 @@ public class FloatWindow implements IFloatWindowCallback {
     private TRTCChorusRoom             mTUIChorus;
     private ChorusRoomInfoController   mRoomInfoController;
 
-
     private float   mStartX;   //最开始点击的X坐标
     private float   mStartY;   //最开始点击的Y坐标
     private float   mCurX;     //X坐标
     private float   mCurY;     //Y坐标
     private boolean mIsMove;
     private OnClick mOnClick;  //点击事件接口
-    private boolean mIsPlay;
 
     private static FloatWindow sInstance;
     public static  boolean     mIsShowing       = false; //悬浮窗是否显示
@@ -78,9 +77,9 @@ public class FloatWindow implements IFloatWindowCallback {
 
     public void createDemoApplication(Context context, IFloatWindowCallback callback) {
         try {
-            Class  clz    = Class.forName("com.tencent.liteav.demo.DemoApplication");
+            Class clz = Class.forName("com.tencent.liteav.demo.DemoApplication");
             Method method = clz.getMethod("setCallback", IFloatWindowCallback.class);
-            Object obj    = method.invoke(context, callback);
+            Object obj = method.invoke(context, callback);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -183,14 +182,17 @@ public class FloatWindow implements IFloatWindowCallback {
             mWindowManager = null;
         }
 
+        mEntity = null;
+        mIsDestroyByself = false;
+        ChorusRoomAudienceActivity.mLastEntity = null;
         mIsShowing = false;
-        mIsPlay = false;
         Log.d(TAG, "destroy: WindowManager");
 
         if (mTUIChorus != null) {
             mTUIChorus.exitRoom(new TRTCChorusRoomCallback.ActionCallback() {
                 @Override
                 public void onCallback(int code, String msg) {
+                    ToastUtils.showShort(mContext.getString(R.string.tuichorus_toast_exit_the_room_successfully));
                 }
             });
         }
