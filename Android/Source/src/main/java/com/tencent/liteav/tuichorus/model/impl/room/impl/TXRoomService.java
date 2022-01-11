@@ -240,6 +240,8 @@ public class TXRoomService extends V2TIMSDKListener {
                 callback.onCallback(CODE_ERROR,
                         "you have been in room:" + mRoomId + " can't create another room:" + roomId);
             }
+            //已经在房间内,更新房间信息
+            setGroupInfo(roomId, roomName, coverUrl, mSelfUserName);
             return;
         }
         if (!isLogin()) {
@@ -347,12 +349,9 @@ public class TXRoomService extends V2TIMSDKListener {
                 IMProtocol.getInitRoomMap(mTXRoomInfo, mTXSeatInfoList),
                 new V2TIMCallback() {
                     @Override
-                    public void onError(int i, String s) {
-                        TRTCLogger.i(TAG, "init room info and seat failed. code:" + i);
-                        if (callback != null) {
-                            callback.onCallback(i, s);
-                        }
-                        if (i == TRTCChorusRoomDef.ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
+                    public void onError(int code, String msg) {
+                        TRTCLogger.i(TAG, "init room info and seat failed. code:" + code);
+                        if (code == TRTCChorusRoomDef.ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
                             getGroupAttrs(new TXCallback() {
                                 @Override
                                 public void onCallback(int code, String msg) {
@@ -365,6 +364,10 @@ public class TXRoomService extends V2TIMSDKListener {
                                     }
                                 }
                             });
+                        } else {
+                            if (callback != null) {
+                                callback.onCallback(code, msg);
+                            }
                         }
                     }
 
@@ -398,6 +401,9 @@ public class TXRoomService extends V2TIMSDKListener {
                     sendGroupMsg(IMProtocol.getRoomDestroyMsg(), callback);
                     unInitImListener();
                     cleanStatus();
+                }
+                if (callback != null) {
+                    callback.onCallback(code, msg);
                 }
             }
 

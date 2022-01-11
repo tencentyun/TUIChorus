@@ -37,6 +37,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
     // 邀请人上麦的map
     private Map<String, SeatInvitation> mPickSeatInvitationMap;
     private boolean                     mIsEnterRoom;
+    private boolean                     mFinCreateRoom = true; //已完成进房流程
     private String                      mPushUrl;
     private String                      mPlayUrl;
 
@@ -68,6 +69,10 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
 
     @Override
     public void onBackPressed() {
+        if (!mFinCreateRoom) {
+            TRTCLogger.d(TAG, "you have not finish create room, please wait a bit");
+            return;
+        }
         if (mIsEnterRoom) {
             showExitRoom();
         } else {
@@ -91,7 +96,6 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
             public void onClick() {
                 mConfirmDialogFragment.dismiss();
                 destroyRoom();
-                finish();
             }
         });
         mConfirmDialogFragment.show(getFragmentManager(), "confirm_fragment");
@@ -106,6 +110,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
                 } else {
                     TRTCLogger.d(TAG, "IM destroy room failed:" + msg);
                 }
+                finish();
             }
         });
 
@@ -168,12 +173,14 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
         roomInfo.roomName = mRoomName;
         mChorusMusicService.setRoomInfo(roomInfo);
 
+        mFinCreateRoom = false; //创建房间前将该值改为false
         mTRTCChorusRoom.createRoom(mRoomId, roomParam, mVideoView, new TRTCChorusRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
                 if (code == 0) {
                     onTRTCRoomCreateSuccess();
                 }
+                mFinCreateRoom = true;
             }
         });
         //房间创建完成后
@@ -214,7 +221,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
     }
 
     private void takeMainSeat() {
-        // 开始创建房间
+        // 进房后房主主动上麦
         mTRTCChorusRoom.enterSeat(0, new TRTCChorusRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
@@ -388,7 +395,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
         msgEntity.type = MsgEntity.TYPE_ORDERED_SONG;
 
         int seatIndex = 0;
-        String userName = null;
+        String userName = "";
         for (int i = 0; i < MAX_SEAT_SIZE; i++) {
             if (entity.bookUser.equals(mRoomSeatEntityList.get(i).userId)) {
                 seatIndex = i;
@@ -396,6 +403,7 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
                 break;
             }
         }
+        msgEntity.userId = entity.bookUser;
         msgEntity.userName = userName;
         msgEntity.content = getString(R.string.tuichorus_msg_order_song_seat, seatIndex + 1);
         msgEntity.linkUrl = getString(R.string.tuichorus_msg_order_song, entity.musicName);
@@ -567,11 +575,5 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
                 ToastUtils.showShort(getString(R.string.tuichorus_toast_refuse_to_chat, entity.userName));
             }
         }
-    }
-
-    @Override
-    public void onRoomDestroy(String roomId) {
-        super.onRoomDestroy(roomId);
-        finish();
     }
 }

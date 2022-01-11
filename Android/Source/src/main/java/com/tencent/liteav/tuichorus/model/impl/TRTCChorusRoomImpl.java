@@ -35,6 +35,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     private static final String TAG = "TRTCChorusRoomImpl";
 
     private static final int TRTC_ROLE_OWNER = 19;
+    private static final int MAX_SEAT_SIZE   = 2;
 
     private static TRTCChorusRoomImpl sInstance;
     private final  Context            mContext;
@@ -261,7 +262,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 final String roomName = (roomParam == null ? "" : roomParam.roomName);
                 final String roomCover = (roomParam == null ? "" : roomParam.coverUrl);
                 final boolean isNeedRequest = (roomParam != null && roomParam.needRequest);
-                final int seatCount = (roomParam == null ? 8 : roomParam.seatCount);
+                final int seatCount = (roomParam == null ? MAX_SEAT_SIZE : roomParam.seatCount);
                 final List<TXSeatInfo> txSeatInfoList = new ArrayList<>();
                 if (roomParam != null && roomParam.seatInfoList != null) {
                     for (TRTCChorusRoomDef.SeatInfo seatInfo : roomParam.seatInfoList) {
@@ -388,12 +389,18 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                                             }
                                         }
                                     });
+                                    if (null != callback) {
+                                        callback.onCallback(code, msg);
+                                    }
                                 } else {
                                     //进入房间时，获取IM的attr来获取播放地址
                                     mPlayUrl = msg;
                                     //开始拉流
                                     if (!mTRTCChorusManager.isCdnPlaying()) {
                                         mTRTCChorusManager.startCdnPlay(mPlayUrl, videoView);
+                                    }
+                                    if (null != callback) {
+                                        callback.onCallback(0, "enter room success");
                                     }
                                 }
                             }
@@ -543,7 +550,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 TXRoomService.getInstance().getUserInfo(userIdList, new TXUserListCallback() {
                     @Override
                     public void onCallback(final int code, final String msg, final List<TXUserInfo> list) {
-                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg
+                        TRTCLogger.i(TAG, "getUserInfoList finish, code:" + code + " msg:" + msg
                                 + " list:" + (list != null ? list.size() : 0));
                         runOnDelegateThread(new Runnable() {
                             @Override
@@ -577,7 +584,7 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
                 TXRoomService.getInstance().getAudienceList(new TXUserListCallback() {
                     @Override
                     public void onCallback(final int code, final String msg, final List<TXUserInfo> list) {
-                        TRTCLogger.i(TAG, "get audience list finish, code:" + code + " msg:" + msg
+                        TRTCLogger.i(TAG, "getAudienceList, code:" + code + " msg:" + msg
                                 + " list:" + (list != null ? list.size() : 0));
                         runOnDelegateThread(new Runnable() {
                             @Override

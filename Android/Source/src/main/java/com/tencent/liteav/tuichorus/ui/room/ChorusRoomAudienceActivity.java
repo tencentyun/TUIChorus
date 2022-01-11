@@ -13,7 +13,6 @@ import android.view.View;
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.ToastUtils;
-
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDef;
@@ -42,9 +41,10 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
     private        int                      mSelfSeatIndex;
     private        ConfirmDialogFragment    mAlertDialog;
     private static ChorusAudienceRoomEntity mCollectEntity;
-    private static ChorusAudienceRoomEntity mLastEntity;
+    public static  ChorusAudienceRoomEntity mLastEntity;
     private        boolean                  mRoomDestroy;
-    private boolean                         mIsTakingSeat; //正在进行上麦
+    private        boolean                  mIsTakingSeat;        // 正在进行上麦
+    private        boolean                  mFinEnterRoom = true; // 默认已完成进房流程
 
     public static void enterRoom(final Context context, final int roomId, final String userId, final int audioQuality) {
         //保存房间信息
@@ -154,6 +154,10 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (!mFinEnterRoom) {
+            TRTCLogger.d(TAG, "you have not finish enter room,please wait a bit");
+            return;
+        }
         if (mCurrentRole == TRTCCloudDef.TRTCRoleAnchor) {
             leaveSeatAndQuit();
         } else {
@@ -208,9 +212,11 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         mSelfSeatIndex = -1;
         mCurrentRole = TRTCCloudDef.TRTCRoleAudience;
         mTRTCChorusRoom.setSelfProfile(mUserName, mUserAvatar, null);
+        mFinEnterRoom = false;
         mTRTCChorusRoom.enterRoom(mRoomId, mVideoView, new TRTCChorusRoomCallback.ActionCallback() {
             @Override
             public void onCallback(int code, String msg) {
+                mFinEnterRoom = true;
                 if (code == 0) {
                     //进房成功
                     ToastUtils.showShort(R.string.tuichorus_toast_enter_the_room_successfully);
@@ -478,6 +484,12 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
             mLastEntity = null;
         } else {
             mRoomDestroy = true;
+            mTRTCChorusRoom.exitRoom(new TRTCChorusRoomCallback.ActionCallback() {
+                @Override
+                public void onCallback(int code, String msg) {
+                    TRTCLogger.d(TAG, "onRoomDestroy errorCode : " + code + " , errorMsg : " + msg);
+                }
+            });
         }
         finish();
     }

@@ -2,13 +2,7 @@ package com.tencent.liteav.tuichorus.ui.music.impl;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,18 +13,19 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.liteav.tuichorus.R;
-import com.tencent.liteav.tuichorus.model.TRTCChorusRoom;
 import com.tencent.liteav.tuichorus.ui.audio.AudioEffectPanel;
 import com.tencent.liteav.tuichorus.ui.audio.impl.TUIChorusAudioManager;
 import com.tencent.liteav.tuichorus.ui.base.ChorusMusicInfo;
 import com.tencent.liteav.tuichorus.ui.base.ChorusMusicModel;
 import com.tencent.liteav.tuichorus.ui.base.ChorusRoomSeatEntity;
+import com.tencent.liteav.tuichorus.ui.music.ChorusMusicCallback;
 import com.tencent.liteav.tuichorus.ui.music.ChorusMusicService;
 import com.tencent.liteav.tuichorus.ui.music.ChorusMusicServiceDelegate;
 import com.tencent.liteav.tuichorus.ui.music.IUpdateLrcDelegate;
-import com.tencent.liteav.tuichorus.ui.music.ChorusMusicCallback;
 import com.tencent.liteav.tuichorus.ui.room.ChorusRoomInfoController;
 
 import java.util.ArrayList;
@@ -409,6 +404,9 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
             @Override
             public void onAnimationEnd(Animator animator) {
                 mTVTimer.setVisibility(View.GONE);
+                if (null == model || null == model.lrcUrl) {
+                    return;
+                }
                 mLrcDelegate.setLrcPath(model.lrcUrl);
             }
 

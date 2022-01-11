@@ -88,8 +88,8 @@
     <string name="tuichorus_gift_give_gift">giving</string>
     <string name="tuichorus_gift_game_currency">money%d</string>
 
-    <string name="tuichorus_sound_effects">Audio Effect</string>
-    <string name="tuichorus_sound_audition">Music Preview</string>
+    <string name="tuichorus_sound_effects">Sound effect settings</string>
+    <string name="tuichorus_sound_audition">Music</string>
     <string name="tuichorus_put_on_your_headphones">Use earphones for better experience</string>
     <string name="tuichorus_sounds_adjustment">Music tone</string>
     <string name="tuichorus_music_volume">Music volume</string>

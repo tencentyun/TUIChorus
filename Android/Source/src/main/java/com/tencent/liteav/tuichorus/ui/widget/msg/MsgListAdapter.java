@@ -3,12 +3,15 @@ package com.tencent.liteav.tuichorus.ui.widget.msg;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,7 @@ import java.util.List;
 
 /**
  * Chorus消息互动显示的适配器
- *
+ * <p>
  * 根据消息的类型显示不同的样式，消息的发送者的username可以对颜色进行设置。
  * 普通消息：      TYPE_NORMAL        消息的内容会在界面显示出来
  * 邀请等待的消息： TYPE_WAIT_AGREE    消息中会有同意的按钮，可以进行事件处理
@@ -46,10 +49,10 @@ public class MsgListAdapter extends
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context        context    = parent.getContext();
-        LayoutInflater inflater   = LayoutInflater.from(context);
-        View           view       = inflater.inflate(R.layout.tuichorus_item_msg, parent, false);
-        ViewHolder     viewHolder = new ViewHolder(view);
+        Context context = parent.getContext();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(R.layout.tuichorus_item_msg, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
@@ -66,6 +69,7 @@ public class MsgListAdapter extends
 
     public interface OnItemClickListener {
         void onAgreeClick(int position);
+
         void onOrderedManagerClick(int position);
     }
 
@@ -92,29 +96,29 @@ public class MsgListAdapter extends
                 SpannableStringBuilder builder = new SpannableStringBuilder(result);
                 ForegroundColorSpan welcomeTitleSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.tuichorus_color_welcome));
                 ForegroundColorSpan linkSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.tuichorus_color_link));
-                UnderlineSpan linkUnderline  = new UnderlineSpan();
+                UnderlineSpan linkUnderline = new UnderlineSpan();
                 builder.setSpan(welcomeTitleSpan, 0, model.content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setSpan(linkSpan, model.content.length(), result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setSpan(linkUnderline, model.content.length(), result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mTvMsgContent.setText(builder);
                 mTvMsgContent.setBackground(null);
-            //消息发送者颜色定制，消息发送者的username会根据设置的颜色显示
-            } else if(model.type == MsgEntity.TYPE_ORDERED_SONG){
-                String                 split   = " ";
-                String result = model.content + split + model.userName + model.linkUrl;
+                //消息发送者颜色定制，消息发送者的username会根据设置的颜色显示
+            } else if (model.type == MsgEntity.TYPE_ORDERED_SONG) {
+                String split = " ";
+                String result = model.content + split + userName + model.linkUrl;
                 SpannableStringBuilder builder = new SpannableStringBuilder(result);
                 ForegroundColorSpan redSpan = new ForegroundColorSpan(model.color);
                 int start = model.content.length() + 1;
-                int end = start + model.userName.length();
+                int end = start + userName.length();
                 builder.setSpan(redSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mTvMsgContent.setText(builder);
                 mTvMsgContent.setBackgroundResource(R.drawable.tuichorus_bg_msg_item);
             } else if (!TextUtils.isEmpty(userName) && model.color != 0) {
                 String split = model.isChat ? ": " : " ";
-                String result = model.userName + split + model.content;
+                String result = userName + split + model.content;
                 SpannableStringBuilder builder = new SpannableStringBuilder(result);
                 ForegroundColorSpan redSpan = new ForegroundColorSpan(model.color);
-                builder.setSpan(redSpan, 0, model.userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(redSpan, 0, userName.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mTvMsgContent.setText(builder);
                 mTvMsgContent.setBackgroundResource(R.drawable.tuichorus_bg_msg_item);
             } else {
@@ -128,9 +132,9 @@ public class MsgListAdapter extends
                 @Override
                 public void onClick(View v) {
                     if (listener != null) {
-                        if(model.type == MsgEntity.TYPE_WAIT_AGREE){
+                        if (model.type == MsgEntity.TYPE_WAIT_AGREE) {
                             listener.onAgreeClick(getLayoutPosition());
-                        } else if(model.type == MsgEntity.TYPE_ORDERED_SONG) {
+                        } else if (model.type == MsgEntity.TYPE_ORDERED_SONG) {
                             listener.onOrderedManagerClick(getLayoutPosition());
                         }
                     }

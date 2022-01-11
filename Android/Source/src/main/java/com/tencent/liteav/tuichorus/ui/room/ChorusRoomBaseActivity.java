@@ -3,18 +3,9 @@ package com.tencent.liteav.tuichorus.ui.room;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -27,6 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.gson.Gson;
 import com.tencent.liteav.basic.ImageLoader;
@@ -34,7 +32,6 @@ import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoom;
-
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDef;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDelegate;
@@ -43,13 +40,6 @@ import com.tencent.liteav.tuichorus.ui.audio.impl.TUIChorusAudioManager;
 import com.tencent.liteav.tuichorus.ui.base.ChorusMusicInfo;
 import com.tencent.liteav.tuichorus.ui.base.ChorusMusicModel;
 import com.tencent.liteav.tuichorus.ui.base.ChorusRoomSeatEntity;
-import com.tencent.liteav.tuichorus.ui.lrc.LyricsReader;
-import com.tencent.liteav.tuichorus.ui.lrc.widget.AbstractLrcView;
-import com.tencent.liteav.tuichorus.ui.lrc.widget.FloatLyricsView;
-import com.tencent.liteav.tuichorus.ui.music.ChorusMusicService;
-import com.tencent.liteav.tuichorus.ui.music.IUpdateLrcDelegate;
-import com.tencent.liteav.tuichorus.ui.music.ChorusMusicCallback;
-import com.tencent.liteav.tuichorus.ui.music.impl.ChorusMusicView;
 import com.tencent.liteav.tuichorus.ui.base.MemberEntity;
 import com.tencent.liteav.tuichorus.ui.gift.GiftAdapter;
 import com.tencent.liteav.tuichorus.ui.gift.GiftPanelDelegate;
@@ -59,6 +49,13 @@ import com.tencent.liteav.tuichorus.ui.gift.imp.GiftAnimatorLayout;
 import com.tencent.liteav.tuichorus.ui.gift.imp.GiftInfo;
 import com.tencent.liteav.tuichorus.ui.gift.imp.GiftInfoDataHandler;
 import com.tencent.liteav.tuichorus.ui.gift.imp.GiftPanelViewImp;
+import com.tencent.liteav.tuichorus.ui.lrc.LyricsReader;
+import com.tencent.liteav.tuichorus.ui.lrc.widget.AbstractLrcView;
+import com.tencent.liteav.tuichorus.ui.lrc.widget.FloatLyricsView;
+import com.tencent.liteav.tuichorus.ui.music.ChorusMusicCallback;
+import com.tencent.liteav.tuichorus.ui.music.ChorusMusicService;
+import com.tencent.liteav.tuichorus.ui.music.IUpdateLrcDelegate;
+import com.tencent.liteav.tuichorus.ui.music.impl.ChorusMusicView;
 import com.tencent.liteav.tuichorus.ui.widget.ConfirmDialogFragment;
 import com.tencent.liteav.tuichorus.ui.widget.InputTextMsgDialog;
 import com.tencent.liteav.tuichorus.ui.widget.SelectMemberView;
@@ -86,7 +83,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
         InputTextMsgDialog.OnTextSendListener,
         MsgListAdapter.OnItemClickListener,
         IUpdateLrcDelegate {
-    protected static final String TAG = ChorusRoomBaseActivity.class.getName();
+    protected static final String TAG = "ChorusRoomBaseActivity";
 
     protected static final int    MAX_SEAT_SIZE            = 2;
     protected static final String CHORUSROOM_ROOM_ID       = "room_id";
@@ -148,6 +145,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     protected Map<String, MemberEntity>  mMemberEntityMap;
     protected TXCloudVideoView           mVideoView;
     protected boolean                    mIsChorusOn;
+    protected View                       mProgressBar;
 
     private Context mContext;
     private String  mLastMsgUserId = null;
@@ -175,7 +173,6 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     private ConstraintLayout         mRemoteNetWorkSignalLayout;
     private Button                   mBtnRecord;
     private ImageView                mIvStartChorus;
-    protected View                   mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,7 +197,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     // 通过反射创建歌曲管理实现类的实例
     public void createChorusMusicImpl() {
         try {
-            Class       clz         = Class.forName(CHORUS_MUSIC_SERVICE_IMPL_URI);
+            Class clz = Class.forName(CHORUS_MUSIC_SERVICE_IMPL_URI);
             Constructor constructor = clz.getConstructor(Context.class);
             mChorusMusicService = (ChorusMusicService) constructor.newInstance(this);
         } catch (Exception e) {
@@ -453,10 +450,10 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
      */
     private void handleGiftMsg(TRTCChorusRoomDef.UserInfo userInfo, String data) {
         if (mGiftInfoDataHandler != null) {
-            Gson         gson     = new Gson();
+            Gson gson = new Gson();
             GiftSendJson jsonData = gson.fromJson(data, GiftSendJson.class);
-            String       giftId   = jsonData.getGiftId();
-            GiftInfo     giftInfo = mGiftInfoDataHandler.getGiftInfo(giftId);
+            String giftId = jsonData.getGiftId();
+            GiftInfo giftInfo = mGiftInfoDataHandler.getGiftInfo(giftId);
             if (giftInfo != null) {
                 if (userInfo != null) {
                     giftInfo.sendUserHeadIcon = userInfo.userAvatar;
@@ -539,30 +536,18 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
 
         switch (remoteQuality) {
             case TCConstants.TRTCQUALITY_EXCELLENT:
-                mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_good);
-                mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_good);
-                mTextRemoteNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_good));
-                break;
             case TCConstants.TRTCQUALITY_GOOD:
                 mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_good);
                 mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_good);
                 mTextRemoteNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_good));
                 break;
             case TCConstants.TRTCQUALITY_POOR:
-                mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_poor);
-                mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_General);
-                mTextRemoteNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_poor));
-                break;
             case TCConstants.TRTCQUALITY_BAD:
                 mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_poor);
                 mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_General);
                 mTextRemoteNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_poor));
                 break;
             case TCConstants.TRTCQUALITY_VBAD:
-                mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_bad);
-                mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_poor);
-                mTextRemoteNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_bad));
-                break;
             case TCConstants.TRTCQUALITY_DOWN:
                 mImageRemoteNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_bad);
                 mTextRemoteNetwork.setText(R.string.tuichorus_network_quality_poor);
@@ -593,9 +578,9 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
      * 发消息弹出框
      */
     private void showInputMsgDialog() {
-        WindowManager              windowManager = getWindowManager();
-        Display                    display       = windowManager.getDefaultDisplay();
-        WindowManager.LayoutParams lp            = mInputTextMsgDialog.getWindow().getAttributes();
+        WindowManager windowManager = getWindowManager();
+        Display display = windowManager.getDefaultDisplay();
+        WindowManager.LayoutParams lp = mInputTextMsgDialog.getWindow().getAttributes();
         lp.width = display.getWidth(); //设置宽度
         mInputTextMsgDialog.getWindow().setAttributes(lp);
         mInputTextMsgDialog.setCancelable(true);
@@ -662,7 +647,12 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     @Override
     public void onRoomDestroy(String roomId) {
         ToastUtils.showLong(R.string.tuichorus_msg_close_room);
-        mTRTCChorusRoom.exitRoom(null);
+        mTRTCChorusRoom.exitRoom(new TRTCChorusRoomCallback.ActionCallback() {
+            @Override
+            public void onCallback(int code, String msg) {
+                Log.d(TAG, "onRoomDestroy: code = " + code + " , msg = " + msg);
+            }
+        });
         //房主销毁房间,其他人退出房间,并清除自己的信息
         UserModelManager.getInstance().getUserModel().userType = UserModel.UserType.NONE;
         if (mAudioManager != null) {
@@ -688,7 +678,8 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     public void onSeatListChange(final List<TRTCChorusRoomDef.SeatInfo> seatInfoList) {
         //先刷一遍界面
         final List<String> userids = new ArrayList<>();
-        for (int i = 0; i < seatInfoList.size(); i++) {
+        int seatSize = Math.min(MAX_SEAT_SIZE, seatInfoList.size());
+        for (int i = 0; i < seatSize; i++) {
             TRTCChorusRoomDef.SeatInfo newSeatInfo = seatInfoList.get(i);
             // 座位区域的列表
             ChorusRoomSeatEntity oldSeatEntity = mRoomSeatEntityList.get(i);
@@ -734,7 +725,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
                 }
                 for (int i = 0; i < seatInfoList.size(); i++) {
                     TRTCChorusRoomDef.SeatInfo newSeatInfo = seatInfoList.get(i);
-                    TRTCChorusRoomDef.UserInfo userInfo    = map.get(newSeatInfo.userId);
+                    TRTCChorusRoomDef.UserInfo userInfo = map.get(newSeatInfo.userId);
                     if (userInfo == null) {
                         continue;
                     }
@@ -936,7 +927,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     public void onUserVolumeUpdate(List<TRTCCloudDef.TRTCVolumeInfo> userVolumes, int totalVolume) {
         for (TRTCCloudDef.TRTCVolumeInfo info : userVolumes) {
             if (info != null) {
-                int                  volume = info.volume;
+                int volume = info.volume;
                 ChorusRoomSeatEntity entity = findSeatEntityFromUserId(info.userId);
                 if (entity != null) {
                     entity.isTalk = volume > 20;
@@ -1111,14 +1102,13 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
                         mMsgEntityList.remove(0);
                     }
                 }
-                if (!TextUtils.isEmpty(entity.userName)) {
-                    if (mMessageColorIndex >= MESSAGE_USERNAME_COLOR_ARR.length) {
-                        mMessageColorIndex = 0;
-                    }
-                    int color = MESSAGE_USERNAME_COLOR_ARR[mMessageColorIndex];
-                    entity.color = getResources().getColor(color);
-                    mMessageColorIndex++;
+
+                if (mMessageColorIndex >= MESSAGE_USERNAME_COLOR_ARR.length) {
+                    mMessageColorIndex = 0;
                 }
+                int color = MESSAGE_USERNAME_COLOR_ARR[mMessageColorIndex];
+                entity.color = getResources().getColor(color);
+                mMessageColorIndex++;
 
                 //判断当前消息类型是申请上麦消息
                 if (entity != null && entity.type == MsgEntity.TYPE_WAIT_AGREE) {
@@ -1211,7 +1201,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     }
 
     public void startRecordLocal() {
-        File   sdcardDir = mContext.getExternalFilesDir(null);
+        File sdcardDir = mContext.getExternalFilesDir(null);
         String dirPath;
         if (sdcardDir == null) {
             dirPath = "/sdcard/record.mp4";
