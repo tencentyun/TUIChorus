@@ -158,26 +158,27 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     private GiftInfoDataHandler mGiftInfoDataHandler;
     private GiftAnimatorLayout  mGiftAnimatorLayout;
 
-    private ConfirmDialogFragment    mAlertDialog;
-    private FloatLyricsView          mLrcView;
-    public  ChorusMusicService       mChorusMusicService;
-    private String                   mRoomDefaultCover =
+    private   ConfirmDialogFragment    mAlertDialog;
+    private   FloatLyricsView          mLrcView;
+    public    ChorusMusicService       mChorusMusicService;
+    private   String                   mRoomDefaultCover =
             "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover1.png";
-    private boolean                  mIsDestroyed;
-    public  ChorusRoomInfoController mChorusRoomInfoController;
-    private ImageView                mImageLocalNetwork;
-    private TextView                 mTextLocalNetwork;
-    private ImageView                mImageRemoteNetwork;
-    private TextView                 mTextRemoteNetwork;
-    private ConstraintLayout         mLocalNetWorkSignalLayout;
-    private ConstraintLayout         mRemoteNetWorkSignalLayout;
-    private Button                   mBtnRecord;
-    private ImageView                mIvStartChorus;
+    private   boolean                  mIsDestroyed;
+    public    ChorusRoomInfoController mChorusRoomInfoController;
+    private   ImageView                mImageLocalNetwork;
+    private   TextView                 mTextLocalNetwork;
+    private   ImageView                mImageRemoteNetwork;
+    private   TextView                 mTextRemoteNetwork;
+    private   ConstraintLayout         mLocalNetWorkSignalLayout;
+    private   ConstraintLayout         mRemoteNetWorkSignalLayout;
+    private   Button                   mBtnRecord;
+    private   ImageView                mIvStartChorus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
+        UserModelManager.getInstance().getUserModel().userType = UserModel.UserType.CHORUS;
         // 应用运行时，保持不锁屏、全屏化
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -1132,6 +1133,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     @Override
     protected void onDestroy() {
         mIsDestroyed = true;
+        UserModelManager.getInstance().getUserModel().userType = UserModel.UserType.NONE;
         super.onDestroy();
     }
 

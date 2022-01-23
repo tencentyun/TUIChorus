@@ -22,7 +22,8 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class TRTCChorusRoomService extends TRTCCloudListener {
-    private static final String TAG = "TRTCChorusRoomService";
+    private static final String TAG                  = "TRTCChorusRoomService";
+    private static final int    KTC_COMPONENT_CHORUS = 9;
 
     private static TRTCChorusRoomService sInstance;
 
@@ -82,12 +83,13 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
         internalEnterRoom();
     }
 
-    private void setFramework(int framework) {
+    private void setFramework() {
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("api", "setFramework");
             JSONObject params = new JSONObject();
-            params.put("framework", framework);
+            params.put("framework", 1);
+            params.put("component", KTC_COMPONENT_CHORUS);
             jsonObject.put("params", params);
             mTRTCCloud.callExperimentalAPI(jsonObject.toString());
         } catch (JSONException e) {
@@ -100,7 +102,7 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
         if (mTRTCParams == null) {
             return;
         }
-        setFramework(5);
+        setFramework();
         mTRTCCloud.setListener(this);
         mTRTCCloud.enterRoom(mTRTCParams, TRTCCloudDef.TRTC_APP_SCENE_VOICE_CHATROOM);
         // enable volume callback
