@@ -19,7 +19,7 @@ PODS:
 
 DEPENDENCIES:
   - TUIChorus/Professional (from `./`)
-  - TXAppBasic (from `TXAppBasic/`)
+  - TXAppBasic (from `../TXAppBasic/`)
   - TXLiteAVSDK_Professional
 
 SPEC REPOS:
@@ -36,7 +36,7 @@ EXTERNAL SOURCES:
   TUIChorus:
     :path: "./"
   TXAppBasic:
-    :path: TXAppBasic/
+    :path: "../TXAppBasic/"
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
@@ -49,6 +49,6 @@ SPEC CHECKSUMS:
   TXIMSDK_Plus_iOS: 4b7c1097ea9899f7bf95fa90e2cb4471389f93dd
   TXLiteAVSDK_Professional: e04a6e2582dcc5e7d1f57ab54d7ff24d6158d808
 
-PODFILE CHECKSUM: 9a3b2d4d68b70ad4f040c1f25391bf4a1feba5d6
+PODFILE CHECKSUM: b9b731624c387d9ed105a549d77ff57a70f2da5d
 
 COCOAPODS: 1.11.2
