@@ -7,7 +7,7 @@ import android.os.StrictMode;
 
 import androidx.multidex.MultiDexApplication;
 
-import com.tencent.liteav.tuichorus.ui.floatwindow.IFloatWindowCallback;
+import com.tencent.liteav.tuichorus.ui.floatwindow.IChorusFloatWindowCallback;
 import com.tencent.liteav.tuichorus.ui.room.ChorusRoomAudienceActivity;
 
 import java.lang.reflect.Constructor;
@@ -17,8 +17,8 @@ import java.lang.reflect.Method;
 public class DemoApplication extends MultiDexApplication {
     private static String TAG = "DemoApplication";
 
-    private int                  startCount = 0;
-    private IFloatWindowCallback mCallback;
+    private int                        startCount = 0;
+    private IChorusFloatWindowCallback mCallback;
 
     @Override
     public void onCreate() {
@@ -80,27 +80,24 @@ public class DemoApplication extends MultiDexApplication {
         });
     }
 
-    public void setCallback(IFloatWindowCallback callback) {
+    public void setChorusCallBack(IChorusFloatWindowCallback callback) {
         mCallback = callback;
-        if (mCallback != null) {
-            boolean is = mCallback instanceof IFloatWindowCallback;
-        }
     }
 
     private void closeAndroidPDialog() {
         try {
-            Class       aClass              = Class.forName("android.content.pm.PackageParser$Package");
+            Class aClass = Class.forName("android.content.pm.PackageParser$Package");
             Constructor declaredConstructor = aClass.getDeclaredConstructor(String.class);
             declaredConstructor.setAccessible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
         try {
-            Class  cls            = Class.forName("android.app.ActivityThread");
+            Class cls = Class.forName("android.app.ActivityThread");
             Method declaredMethod = cls.getDeclaredMethod("currentActivityThread");
             declaredMethod.setAccessible(true);
-            Object activityThread         = declaredMethod.invoke(null);
-            Field  mHiddenApiWarningShown = cls.getDeclaredField("mHiddenApiWarningShown");
+            Object activityThread = declaredMethod.invoke(null);
+            Field mHiddenApiWarningShown = cls.getDeclaredField("mHiddenApiWarningShown");
             mHiddenApiWarningShown.setAccessible(true);
             mHiddenApiWarningShown.setBoolean(activityThread, true);
         } catch (Exception e) {

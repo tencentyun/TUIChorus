@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.tencent.imsdk.v2.V2TIMGroupInfoResult;
+import com.tencent.liteav.basic.IntentUtils;
 import com.tencent.liteav.basic.UserModel;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.debug.GenerateTestUserSig;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://cloud.tencent.com/document/product/647/61859"));
-                startActivity(intent);
+                IntentUtils.safeStartActivity(MainActivity.this, intent);
             }
         });
 
@@ -178,11 +179,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createRoom() {
-        int                          index    = new Random().nextInt(ROOM_COVER_ARRAY.length);
-        final String                 coverUrl = ROOM_COVER_ARRAY[index];
-        final String                 userName = UserModelManager.getInstance().getUserModel().userName;
-        final String                 userId   = UserModelManager.getInstance().getUserModel().userId;
-        final ChorusRoomCreateDialog dialog   = new ChorusRoomCreateDialog(this);
+        int index = new Random().nextInt(ROOM_COVER_ARRAY.length);
+        final String coverUrl = ROOM_COVER_ARRAY[index];
+        final String userName = UserModelManager.getInstance().getUserModel().userName;
+        final String userId = UserModelManager.getInstance().getUserModel().userId;
+        final ChorusRoomCreateDialog dialog = new ChorusRoomCreateDialog(this);
         //获取推拉流地址
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
@@ -203,12 +204,15 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     try {
-                        JSONObject   jsonRsp          = new JSONObject(response.body().string());
+                        JSONObject jsonRsp = new JSONObject(response.body().string());
                         final String pusherURLDefault = jsonRsp.optString(URL_PUSH);
-                        final String flvPlayURL       = jsonRsp.optString(URL_PLAY_FLV);
+                        final String flvPlayURL = jsonRsp.optString(URL_PLAY_FLV);
                         mWorkHandler.post(new Runnable() {
                             @Override
                             public void run() {
+                                if (isFinishing()) {
+                                    return;
+                                }
                                 dialog.showRoomCreateDialog(userId, userName, coverUrl, TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT, true, pusherURLDefault, flvPlayURL);
                             }
                         });
@@ -242,8 +246,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void realEnterRoom(String roomIdStr) {
         UserModel userModel = UserModelManager.getInstance().getUserModel();
-        String    userId    = userModel.userId;
-        int       roomId;
+        String userId = userModel.userId;
+        int roomId;
         try {
             roomId = Integer.parseInt(roomIdStr);
         } catch (Exception e) {
@@ -297,16 +301,16 @@ public class MainActivity extends AppCompatActivity {
     public static void copyAssetsToFile(Context context, String name) {
         String savePath = ContextCompat.getExternalFilesDirs(context, null)[0].getAbsolutePath();
         String filename = savePath + "/" + name;
-        File   dir      = new File(savePath);
+        File dir = new File(savePath);
         // 如果目录不存在，创建这个目录
         if (!dir.exists())
             dir.mkdir();
         try {
             if (!(new File(filename)).exists()) {
-                InputStream      is     = context.getResources().getAssets().open(name);
-                FileOutputStream fos    = new FileOutputStream(filename);
-                byte[]           buffer = new byte[7168];
-                int              count  = 0;
+                InputStream is = context.getResources().getAssets().open(name);
+                FileOutputStream fos = new FileOutputStream(filename);
+                byte[] buffer = new byte[7168];
+                int count = 0;
                 while ((count = is.read(buffer)) > 0) {
                     fos.write(buffer, 0, count);
                 }

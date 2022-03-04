@@ -93,36 +93,6 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        //申请悬浮窗权限
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
-            FloatActivity.request(this, new PermissionListener() {
-                @Override
-                public void onSuccess() {
-                    showFloatWindow();
-                }
-
-                @Override
-                public void onFail() {
-                    //没有悬浮窗权限就直接退房,回到房间列表
-                    if (mTRTCChorusRoom != null) {
-                        mTRTCChorusRoom.exitRoom(new TRTCChorusRoomCallback.ActionCallback() {
-                            @Override
-                            public void onCallback(int code, String msg) {
-                                ToastUtils.showShort(R.string.tuichorus_toast_exit_the_room_successfully);
-                            }
-                        });
-                    }
-
-                    if (mChorusRoomInfoController != null && mChorusRoomInfoController.getMusicServiceImpl() != null) {
-                        mChorusRoomInfoController.getMusicServiceImpl().onExitRoom();
-                    }
-                }
-            });
-        } else {
-            showFloatWindow();
-        }
-
     }
 
     private void showTakingSeatLoading(boolean isShow) {
@@ -162,6 +132,39 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
             leaveSeatAndQuit();
         } else {
             super.onBackPressed();
+            requestFloatWindow();
+        }
+    }
+
+    //观众端:在返回或退出的时候显示悬浮窗
+    private void requestFloatWindow() {
+        //申请悬浮窗权限
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            FloatActivity.request(this, new PermissionListener() {
+                @Override
+                public void onSuccess() {
+                    showFloatWindow();
+                }
+
+                @Override
+                public void onFail() {
+                    //没有悬浮窗权限就直接退房,回到房间列表
+                    if (mTRTCChorusRoom != null) {
+                        mTRTCChorusRoom.exitRoom(new TRTCChorusRoomCallback.ActionCallback() {
+                            @Override
+                            public void onCallback(int code, String msg) {
+                                ToastUtils.showShort(R.string.tuichorus_toast_exit_the_room_successfully);
+                            }
+                        });
+                    }
+
+                    if (mChorusRoomInfoController != null && mChorusRoomInfoController.getMusicServiceImpl() != null) {
+                        mChorusRoomInfoController.getMusicServiceImpl().onExitRoom();
+                    }
+                }
+            });
+        } else {
+            showFloatWindow();
         }
     }
 
@@ -195,6 +198,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
                     }
                 });
                 mAlertDialog.dismiss();
+                requestFloatWindow();
                 finish();
             }
         });

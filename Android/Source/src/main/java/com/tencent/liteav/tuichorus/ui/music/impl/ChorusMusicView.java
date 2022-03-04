@@ -2,6 +2,7 @@ package com.tencent.liteav.tuichorus.ui.music.impl;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -279,6 +280,9 @@ public class ChorusMusicView extends CoordinatorLayout implements ChorusMusicSer
 
     //打开点歌/已点面板
     private void showChooseSongDialog() {
+        if (getContext() == null || ((Activity) getContext()).isFinishing()) {
+            return;
+        }
         if (mDialog != null) {
             mDialog.show();
         } else {
