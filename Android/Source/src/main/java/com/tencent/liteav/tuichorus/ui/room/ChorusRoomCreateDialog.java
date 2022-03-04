@@ -1,8 +1,6 @@
 package com.tencent.liteav.tuichorus.ui.room;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -10,9 +8,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.tencent.liteav.basic.UserModelManager;
 import com.tencent.liteav.tuichorus.R;
+import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
+import com.tencent.liteav.tuichorus.ui.floatwindow.FloatWindow;
 
 /**
  * 创建chorus房间页面
@@ -77,7 +80,18 @@ public class ChorusRoomCreateDialog extends BottomSheetDialog {
         mEnterTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createRoom();
+                //创建房间前有悬浮窗,则先退出悬浮窗
+                if (FloatWindow.mIsShowing) {
+                    FloatWindow.getInstance().destroy(new TRTCChorusRoomCallback.ActionCallback() {
+                        @Override
+                        public void onCallback(int code, String msg) {
+                            //无论悬浮窗退房结果如何,都继续创建房间
+                            createRoom();
+                        }
+                    });
+                } else {
+                    createRoom();
+                }
             }
         });
         String showName = TextUtils.isEmpty(mUserName) ? mUserId : mUserName;

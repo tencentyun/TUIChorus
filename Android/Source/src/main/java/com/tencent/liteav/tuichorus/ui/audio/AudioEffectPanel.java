@@ -24,6 +24,7 @@ import android.widget.CompoundButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.tencent.liteav.basic.IntentUtils;
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoom;
 import com.tencent.liteav.tuichorus.ui.base.EarMonitorInstance;
@@ -284,7 +285,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse("https://cloud.tencent.com/product/ame"));
-                mContext.startActivity(intent);
+                IntentUtils.safeStartActivity(mContext, intent);
             }
         });
         mSwitchMusicAudition.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -339,6 +340,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
             mType = type;
         }
     }
+
 
     public class RecyclerViewAdapter extends
             RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
@@ -408,6 +410,7 @@ public class AudioEffectPanel extends BottomSheetDialog {
             return list.size();
         }
     }
+
 
     public interface OnItemClickListener {
         void onItemClick(int position);

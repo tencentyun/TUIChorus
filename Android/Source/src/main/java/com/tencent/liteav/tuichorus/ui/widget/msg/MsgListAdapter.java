@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.tencent.liteav.basic.IntentUtils;
 import com.tencent.liteav.tuichorus.R;
 
 import java.util.List;
@@ -72,6 +73,7 @@ public class MsgListAdapter extends
 
         void onOrderedManagerClick(int position);
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView mTvMsgContent;
@@ -171,7 +173,7 @@ public class MsgListAdapter extends
     private void startLinkActivity(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
-        mContext.startActivity(intent);
+        IntentUtils.safeStartActivity(mContext, intent);
     }
 
 }

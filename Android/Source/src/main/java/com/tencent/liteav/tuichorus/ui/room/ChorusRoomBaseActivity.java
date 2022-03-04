@@ -158,21 +158,21 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     private GiftInfoDataHandler mGiftInfoDataHandler;
     private GiftAnimatorLayout  mGiftAnimatorLayout;
 
-    private   ConfirmDialogFragment    mAlertDialog;
-    private   FloatLyricsView          mLrcView;
-    public    ChorusMusicService       mChorusMusicService;
-    private   String                   mRoomDefaultCover =
+    private ConfirmDialogFragment    mAlertDialog;
+    private FloatLyricsView          mLrcView;
+    public  ChorusMusicService       mChorusMusicService;
+    private String                   mRoomDefaultCover =
             "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover1.png";
-    private   boolean                  mIsDestroyed;
-    public    ChorusRoomInfoController mChorusRoomInfoController;
-    private   ImageView                mImageLocalNetwork;
-    private   TextView                 mTextLocalNetwork;
-    private   ImageView                mImageRemoteNetwork;
-    private   TextView                 mTextRemoteNetwork;
-    private   ConstraintLayout         mLocalNetWorkSignalLayout;
-    private   ConstraintLayout         mRemoteNetWorkSignalLayout;
-    private   Button                   mBtnRecord;
-    private   ImageView                mIvStartChorus;
+    private boolean                  mIsDestroyed;
+    public  ChorusRoomInfoController mChorusRoomInfoController;
+    private ImageView                mImageLocalNetwork;
+    private TextView                 mTextLocalNetwork;
+    private ImageView                mImageRemoteNetwork;
+    private TextView                 mTextRemoteNetwork;
+    private ConstraintLayout         mLocalNetWorkSignalLayout;
+    private ConstraintLayout         mRemoteNetWorkSignalLayout;
+    private Button                   mBtnRecord;
+    private ImageView                mIvStartChorus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -498,30 +498,18 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     private void switchNetworkStatus(int localQuality, int remoteQuality) {
         switch (localQuality) {
             case TCConstants.TRTCQUALITY_EXCELLENT:
-                mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_good);
-                mTextLocalNetwork.setText(R.string.tuichorus_network_quality_good);
-                mTextLocalNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_good));
-                break;
             case TCConstants.TRTCQUALITY_GOOD:
                 mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_good);
                 mTextLocalNetwork.setText(R.string.tuichorus_network_quality_good);
                 mTextLocalNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_good));
                 break;
             case TCConstants.TRTCQUALITY_POOR:
-                mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_poor);
-                mTextLocalNetwork.setText(R.string.tuichorus_network_quality_General);
-                mTextLocalNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_poor));
-                break;
             case TCConstants.TRTCQUALITY_BAD:
                 mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_poor);
                 mTextLocalNetwork.setText(R.string.tuichorus_network_quality_General);
                 mTextLocalNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_poor));
                 break;
             case TCConstants.TRTCQUALITY_VBAD:
-                mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_bad);
-                mTextLocalNetwork.setText(R.string.tuichorus_network_quality_poor);
-                mTextLocalNetwork.setTextColor(getResources().getColor(R.color.tuichorus_network_quality_bad));
-                break;
             case TCConstants.TRTCQUALITY_DOWN:
                 mImageLocalNetwork.setImageResource(R.drawable.trtcchorus_ic_signal_bad);
                 mTextLocalNetwork.setText(R.string.tuichorus_network_quality_poor);
@@ -679,7 +667,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
     public void onSeatListChange(final List<TRTCChorusRoomDef.SeatInfo> seatInfoList) {
         //先刷一遍界面
         final List<String> userids = new ArrayList<>();
-        int seatSize = Math.min(MAX_SEAT_SIZE, seatInfoList.size());
+        final int seatSize = Math.min(MAX_SEAT_SIZE, seatInfoList.size());
         for (int i = 0; i < seatSize; i++) {
             TRTCChorusRoomDef.SeatInfo newSeatInfo = seatInfoList.get(i);
             // 座位区域的列表
@@ -724,7 +712,7 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
                 for (TRTCChorusRoomDef.UserInfo userInfo : list) {
                     map.put(userInfo.userId, userInfo);
                 }
-                for (int i = 0; i < seatInfoList.size(); i++) {
+                for (int i = 0; i < seatSize; i++) {
                     TRTCChorusRoomDef.SeatInfo newSeatInfo = seatInfoList.get(i);
                     TRTCChorusRoomDef.UserInfo userInfo = map.get(newSeatInfo.userId);
                     if (userInfo == null) {
