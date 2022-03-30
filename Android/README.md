@@ -1,178 +1,77 @@
-本文档主要介绍如何快速集成实时音视频（TRTC）SDK，运行 TRTC 场景化解决方案，实现 Chorus。
+# TUIChorus Android 示例工程快速跑通
 
-## 目录结构README.md
+本文档主要介绍如何快速跑通 TUIChorus 示例工程，体验实时在线合唱场景，包括低延时合唱、麦位管理、收发礼物、文字聊天等 TRTC 在合唱场景下的相关能力。更详细的 TUIChorus 组件接入流程，请点击腾讯云官网文档： [**TUIChorus 组件 Android 接入说明** ](https://cloud.tencent.com/document/product/647/61859)...
 
+## 目录结构
 ```
 TUIChorus
-├─ App          // 主面板，场景入口
+├─ App          // 主面板，合唱场景入口
 ├─ Debug        // 调试相关
-└─ Source       // 业务逻辑
+└─ Source       // 合唱业务逻辑
 ```
 
 ## 环境准备
-- 最低兼容 Android 4.1（SDK API Level 16），建议使用 Android 5.0 （SDK API Level 21）及以上版本
+- 最低兼容 Android 4.2（SDK API Level 17），建议使用 Android 5.0 （SDK API Level 21）及以上版本
 - Android Studio 3.5及以上版本
-- App 要求 Android 4.1及以上设备
-
+  
 ## 运行示例
 
-### 前提条件
-您已 [注册腾讯云](https://cloud.tencent.com/document/product/378/17985) 账号，并完成 [实名认证](https://cloud.tencent.com/document/product/378/3629)。
+### 第一步：创建TRTC的应用
+1. 一键进入腾讯云实时音视频控制台的[应用管理](https://console.cloud.tencent.com/trtc/app)界面，选择创建应用，输入应用名称，例如 `TUIKitDemo` ，单击 **创建**；
+2. 点击对应应用条目后的**应用信息**，具体位置如下图所示：
+    <img src="https://qcloudimg.tencent-cloud.cn/raw/62f58d310dde3de2d765e9a460b8676a.png" width="900">
+3. 进入应用信息后，按下图操作，记录SDKAppID和密钥：
+    <img src="https://qcloudimg.tencent-cloud.cn/raw/bea06852e22a33c77cb41d287cac25db.png" width="900">
 
-### 申请 SDKAPPID 和 SECRETKEY
-1. 登录实时音视频控制台，选择【开发辅助】>【[快速跑通Demo](https://console.cloud.tencent.com/trtc/quickstart)】。
-2. 单击【立即开始】，输入您的应用名称，例如`TestTRTC`，单击【创建应用】。
-<img src="https://main.qcloudimg.com/raw/169391f6711857dca6ed8cfce7b391bd.png" width="650" height="295"/>
-3. 创建应用完成后，单击【我已下载，下一步】，可以查看 SDKAppID 和密钥信息。
+>! 本功能同时使用了腾讯云 [实时音视频 TRTC](https://cloud.tencent.com/document/product/647/16788) 和 [即时通信 IM](https://cloud.tencent.com/document/product/269) 两个基础 PaaS 服务，开通实时音视频后会同步开通即时通信 IM 服务。 即时通信 IM 属于增值服务，详细计费规则请参见 [即时通信 IM 价格说明](https://cloud.tencent.com/document/product/269/11673)。
 
-### 配置工程文件
-1. 使用 Android Studio（3.5及以上的版本）打开源码工程`TUIChorus`。
-2. 找到并打开`TUIChorus/Debug/src/main/java/com/tencent/liteav/debug/GenerateTestUserSig.java`文件。
-3. 设置`GenerateTestUserSig.java`文件中的相关参数：
-<ul style="margin:0"><li/>SDKAPPID：默认为占位符（PLACEHOLDER），请设置为实际的 SDKAppID。
-<li/>SECRETKEY：默认为占位符（PLACEHOLDER），请设置为实际的密钥信息。</ul>
-<img src="https://liteav.sdk.qcloud.com/doc/res/trtc/picture/zh-cn/sdkappid_secretkey.png">
+### 第二步：生成推拉流地址
+TUIChorus 合唱场景您需要开通推拉流，用于主唱端推流，听众端拉流。
+请参照 [推拉流URL](https://cloud.tencent.com/document/product/454/7915) 文档，生成自己的推拉流地址并保存。
 
-4. 返回实时音视频控制台，单击【粘贴完成，下一步】。
-5. 单击【关闭指引，进入控制台管理应用】。
+[](id:ui.step2)
+### 第三步：下载源码，配置工程
+1. 克隆或者直接下载此仓库源码，**欢迎 Star**，感谢~~
+2. 找到并打开 `Android/Debug/src/main/java/com/tencent/liteav/debug/GenerateTestUserSig.java` 文件。
+3. 配置 `GenerateTestUserSig.java` 文件中的相关参数：
+	<img src="https://qcloudimg.tencent-cloud.cn/raw/624da9c6c806f166d9f552043fa93e7c.png" width="900">
+	- SDKAPPID：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的 SDKAppID。
+	- SECRETKEY：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的秘钥信息。
+	- URL_FETCH_PUSH_URL：默认为占位符（PLACEHOLDER），请设置为第二步中记录下的推拉流地址。
 
->!本文提到的生成 UserSig 的方案是在客户端代码中配置 SECRETKEY，该方法中 SECRETKEY 很容易被反编译逆向破解，一旦您的密钥泄露，攻击者就可以盗用您的腾讯云流量，因此**该方法仅适合本地跑通工程和功能调试**。
->正确的 UserSig 签发方式是将 UserSig 的计算代码集成到您的服务端，并提供面向 App 的接口，在需要 UserSig 时由您的 App 向业务服务器发起请求获取动态 UserSig。更多详情请参见 [服务端生成 UserSig](https://cloud.tencent.com/document/product/647/17275#Server)。
+### 第四步：编译运行
+使用 Android Studio 打开源码目录 `TUIChorus/Android`，待Android Studio工程同步完成后，连接真机单击 **运行按钮** 即可开始体验本APP。
 
-### 集成 SDK
+### 第五步：示例体验
 
-您可以选择使用 maven 自动加载的方式，或者手动下载 aar 再将其导入到您当前的工程项目中，工程默认采用方法一配置。
+Tips：TUIChorus 使用体验，需要两台设备，如果用户A/B分别代表两台不同的设备：
 
-#### 方法一：自动加载（aar）
-实时音视频（TRTC） SDK 已经发布到 maven 库，您可以通过配置 gradle 自动下载更新。
-只需要用 Android Studio 打开需要集成 SDK 的工程，然后通过简单的三个步骤修改 App/build.gradle 文件，就可以完成 SDK 集成：
+**设备 A（userId：258）**
 
-1. 在 dependencies 中添加 SDK 的依赖。
-  - 若使用3.x版本的 com.android.tools.build:gradle 工具，请执行以下命令：
+步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)；
 
-```
-dependencies {
-    implementation 'com.tencent.liteav:LiteAVSDK_Professional:latest.release'
-}
-```
+步骤2、点击创建房间；
 
-- 若使用2.x版本的 com.android.tools.build:gradle 工具，请执行以下命令：
+步骤3、输入房间主题，点击实时合唱。
 
-```
-dependencies {
-    compile 'com.tencent.liteav:LiteAVSDK_Professional:latest.release'
-}
-```
+| 步骤1 | 步骤2 | 步骤3 |
+|---------|---------|---------|
+|<img src="https://main.qcloudimg.com/raw/5dad8ffa1b862e8b8f640748ab6ef813.png" width="320"/>|<img src="https://main.qcloudimg.com/raw/114200ce12aa05903ca2e0c1b1454389.png" width="320"/>|<img src="https://qcloudimg.tencent-cloud.cn/raw/95d14bef5d5ab78f817456ee345098f6.png" width="320"/>|
 
-2. 在 defaultConfig 中，指定 App 使用的 CPU 架构。
+**设备 B（userId：369）**
 
-```
-defaultConfig {
-    ndk {
-        abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
-    }
-}
-```
+步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)；
 
-3. 单击【Sync Now】，自动下载 SDK 并集成到工程里。
+步骤2、输入设备 A 创建的房间号，点击进入房间。
 
+<font color=red>请注意，房间号在设备 A 的房间顶部查看。</font>
 
-#### 方法二：手动下载（aar）
-如果您的网络连接 maven 有问题，您也可以手动下载 SDK 集成到工程里：
-
-1. 下载最新版本 [实时音视频 SDK](https://liteav.sdk.qcloud.com/download/latest/TXLiteAVSDK_Professional_Android_latest.zip)。
-2. 将下载到的 aar 文件拷贝到工程的 **App/libs** 目录下。
-3. 在工程根目录下的 build.gradle 中，添加 **flatDir**，指定本地仓库路径。
-
-```
-allprojects {
-    repositories {
-        flatDir {
-            dirs 'libs'
-            dirs project(':App').file('libs')
-        }
-    }
-}
-```
-
-4. 在 App/build.gradle 中，添加引用 aar 包的代码。
-
-```
-dependencies {
-    compile(name: 'LiteAVSDK_Professional_xxx', ext: 'aar') // xxx表示解压出来的SDK版本号    
-}
-```
-
-5. 在 App/build.gradle的defaultConfig 中，指定 App 使用的 CPU 架构。
-
-```
-defaultConfig {
-    ndk {
-        abiFilters "armeabi", "armeabi-v7a", "arm64-v8a"
-    }
-}
-```
-
-6. 单击【Sync Now】，完成 SDK 的集成工作。 
-
-### 编译运行
-用 Android Studio 打开该项目，连上Android设备，编译并运行。
-
-### 体验应用（**体验应用至少需要两台设备**）
-
-#### 用户 A
-
-步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)，如图示：
-
-<img src="https://main.qcloudimg.com/raw/5dad8ffa1b862e8b8f640748ab6ef813.png" width="320"/>
-
-步骤2、点击创建房间，如下图示：
-
-<img src="https://main.qcloudimg.com/raw/114200ce12aa05903ca2e0c1b1454389.png" width="320"/>
-
-步骤3、输入房间主题，点击实时合唱；
-
-#### 用户 B
-
-步骤1、输入用户名(<font color=red>请确保用户名唯一性，不能与其他用户重复</font>)，如图示：
-
-<img src="https://main.qcloudimg.com/raw/23142bd7393882bf0bad4301d192401a.png" width="320"/>
-
-步骤2、输入用户 A 创建的房间号，点击进入房间
-
-<img src="https://main.qcloudimg.com/raw/5676a2cde2d284c0518d8a1f819a3f36.png" width="320"/>
-
-<font color=red>请注意，房间号在用户 A 的房间顶部查看，如下图示：</font>
-
-<img src="https://main.qcloudimg.com/raw/912aa8ca0d2b2b9f816e167c46550a24.png" width="320"/>
+| 步骤1 | 步骤2 | 注意 |
+|---------|---------|---------|
+|<img src="https://main.qcloudimg.com/raw/23142bd7393882bf0bad4301d192401a.png" width="320"/>|<img src="https://main.qcloudimg.com/raw/5676a2cde2d284c0518d8a1f819a3f36.png" width="320"/>|<img src="https://main.qcloudimg.com/raw/912aa8ca0d2b2b9f816e167c46550a24.png" width="320"/>|
 
 
 ## 常见问题
-#### 1. 查看密钥时只能获取公钥和私钥信息，该如何获取密钥？
-TRTC SDK 6.6 版本（2019年08月）开始启用新的签名算法 HMAC-SHA256。在此之前已创建的应用，需要先升级签名算法才能获取新的加密密钥。如不升级，您也可以继续使用 [老版本算法 ECDSA-SHA256](https://cloud.tencent.com/document/product/647/17275#.E8.80.81.E7.89.88.E6.9C.AC.E7.AE.97.E6.B3.95)，如已升级，您按需切换为新旧算法。
 
-升级/切换操作：
-
- 1. 登录 [实时音视频控制台](https://console.cloud.tencent.com/trtc)。
- 2. 在左侧导航栏选择【应用管理】，单击目标应用所在行的【应用信息】。
- 3. 选择【快速上手】页签，单击【第二步 获取签发UserSig的密钥】区域的【点此升级】、【非对称式加密】或【HMAC-SHA256】。
-  
-  - 升级：
-   
-   ![](https://main.qcloudimg.com/raw/69bd0957c99e6a6764368d7f13c6a257.png)
-   
-  - 切换回老版本算法 ECDSA-SHA256：
-  
-   ![](https://main.qcloudimg.com/raw/f89c00f4a98f3493ecc1fe89bea02230.png)
-   
-  - 切换为新版本算法 HMAC-SHA256：
-  
-   ![](https://main.qcloudimg.com/raw/b0412153935704abc9e286868ad8a916.png)
-   
-
-#### 2. 两台手机同时运行工程，为什么看不到彼此的画面？
-请确保两台手机在运行工程时使用的是不同的 UserID，TRTC 不支持同一个 UserID （除非 SDKAppID 不同）在两个终端同时使用。
-<img src="https://main.qcloudimg.com/raw/662dcd613626717c1fdf461e3f8c0295.png" width="320"/>
-
-#### 3. 防火墙有什么限制？
-由于 SDK 使用 UDP 协议进行音视频传输，所以在对 UDP 有拦截的办公网络下无法使用。如遇到类似问题，请参考 [应对公司防火墙限制](https://cloud.tencent.com/document/product/647/34399) 排查并解决。
+- [TUI 场景化解决方案常见问题](https://cloud.tencent.com/developer/article/1952880)
+- 欢迎加入 QQ 群：592465424，进行技术交流和反馈~
