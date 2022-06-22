@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/tuichorus_bg_main_gradient"
+    android:descendantFocusability="blocksDescendants"
+    android:focusableInTouchMode="true">
+
+    <LinearLayout
+        android:id="@+id/ll_anchor_info"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/tuichorus_bg_auchor_title"
+        android:orientation="horizontal"
+        android:paddingStart="1dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="1dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.tencent.rtmp.ui.TXCloudVideoView
+            android:id="@+id/cloud_view"
+            android:layout_width="1dp"
+            android:layout_height="1dp"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_anchor_head"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/tuichorus_ic_head" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="3dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_room_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:maxWidth="120dp"
+                android:maxLines="1"
+                android:minWidth="30dp"
+                android:singleLine="true"
+                android:textColor="@color/tuichorus_white"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/tv_room_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_room_name"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:maxWidth="120dp"
+                android:maxLines="1"
+                android:textColor="@color/tuichorus_white"
+                android:textSize="12sp"
+                tools:text="房间ID : 123456" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/exit_room"
+        style="@style/tuichorus_buttonStyle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/tuichorus_ic_exit_room"
+        app:layout_constraintBottom_toBottomOf="@id/ll_anchor_info"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ll_anchor_info" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_report"
+        android:visibility="gone"
+        style="@style/tuichorus_buttonStyle"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/tuichorus_ic_report_room"
+        app:layout_constraintBottom_toBottomOf="@id/ll_anchor_info"
+        app:layout_constraintEnd_toStartOf="@+id/exit_room"
+        app:layout_constraintTop_toTopOf="@id/ll_anchor_info" />
+
+    <ImageView
+        android:id="@+id/iv_audience_move"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/tuichorus_ic_arrow_right"
+        app:layout_constraintBottom_toBottomOf="@+id/exit_room"
+        app:layout_constraintEnd_toStartOf="@+id/btn_report"
+        app:layout_constraintTop_toTopOf="@+id/exit_room" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_audience"
+        android:layout_width="56dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layoutDirection="rtl"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_audience_move"
+        app:layout_constraintRight_toLeftOf="@+id/iv_audience_move"
+        app:layout_constraintTop_toTopOf="@+id/iv_audience_move" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_v"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <com.tencent.liteav.tuichorus.ui.music.impl.ChorusMusicView
+        android:id="@+id/fl_songtable_container"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_anchor_info" />
+
+    <com.tencent.liteav.tuichorus.ui.lrc.widget.FloatLyricsView
+        android:id="@+id/lrc_view"
+        android:layout_width="match_parent"
+        android:layout_height="82dp"
+        android:layout_gravity="bottom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="90dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/ll_anchor_info" />
+
+    <ImageView
+        android:id="@+id/img_start_chorus"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="110dp"
+        android:layout_marginRight="108dp"
+        android:layout_marginBottom="27dp"
+        app:layout_constraintStart_toStartOf="@+id/rv_seat"
+        app:layout_constraintEnd_toEndOf="@+id/rv_seat"
+        app:layout_constraintTop_toTopOf="@+id/rv_seat"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_seat"
+        android:visibility="gone"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_seat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/fl_songtable_container" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_network"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/rv_seat">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_local_network"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/tuichorus_bg_network"
+            android:paddingLeft="14dp"
+            android:paddingTop="8dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/ll_remote_network">
+
+            <ImageView
+                android:id="@+id/iv_local_network"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/tuichorus_close_seat"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_local_network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/tuichorus_black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_local_network" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_remote_network"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tuichorus_bg_network"
+            android:paddingLeft="14dp"
+            android:paddingTop="8dp"
+            android:paddingRight="14dp"
+            android:paddingBottom="8dp"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_remote_network"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/tuichorus_close_seat"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_remote_network"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/tuichorus_black"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/iv_remote_network" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_im_msg"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="@+id/tool_bar_separator"
+        app:layout_constraintEnd_toEndOf="@id/gl_v"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_network"
+        tools:visibility="visible" />
+
+    <View
+        android:id="@+id/tool_bar_separator"
+        android:layout_width="wrap_content"
+        android:layout_height="1px"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_msg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_msg"
+        style="@style/tuichorus_buttonStyle"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/tuichorus_button_msg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tuichorus_btn_start_record"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="@+id/btn_msg">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_more_gift"
+            style="@style/tuichorus_buttonStyle"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/tuichorus_ic_gift" />
+    </LinearLayout>
+
+    <com.tencent.liteav.tuichorus.ui.gift.imp.GiftAnimatorLayout
+        android:id="@+id/gift_animator_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="3"
+        android:textSize="60dp"
+        app:layout_constraintBottom_toBottomOf="@+id/rv_seat"
+        app:layout_constraintEnd_toEndOf="@+id/rv_seat"
+        app:layout_constraintStart_toStartOf="@+id/rv_seat"
+        app:layout_constraintTop_toTopOf="@+id/rv_seat"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/progress_group"
+        android:visibility="gone"
+        android:background="@android:color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

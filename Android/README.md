@@ -5,23 +5,23 @@
 ## 目录结构
 ```
 TUIChorus
-├─ App          // 主面板，合唱场景入口
-├─ Debug        // 调试相关
-└─ Source       // 合唱业务逻辑
+├─ app          // 主面板，合唱场景入口
+├─ debug        // 调试相关
+└─ tuichorus    // 合唱业务逻辑
 ```
 
 ## 环境准备
 - 最低兼容 Android 4.2（SDK API Level 17），建议使用 Android 5.0 （SDK API Level 21）及以上版本
 - Android Studio 3.5及以上版本
-  
+
 ## 运行示例
 
 ### 第一步：创建TRTC的应用
 1. 一键进入腾讯云实时音视频控制台的[应用管理](https://console.cloud.tencent.com/trtc/app)界面，选择创建应用，输入应用名称，例如 `TUIKitDemo` ，单击 **创建**；
 2. 点击对应应用条目后的**应用信息**，具体位置如下图所示：
-    <img src="https://qcloudimg.tencent-cloud.cn/raw/62f58d310dde3de2d765e9a460b8676a.png" width="900">
+   <img src="https://qcloudimg.tencent-cloud.cn/raw/62f58d310dde3de2d765e9a460b8676a.png" width="900">
 3. 进入应用信息后，按下图操作，记录SDKAppID和密钥：
-    <img src="https://qcloudimg.tencent-cloud.cn/raw/bea06852e22a33c77cb41d287cac25db.png" width="900">
+   <img src="https://qcloudimg.tencent-cloud.cn/raw/bea06852e22a33c77cb41d287cac25db.png" width="900">
 
 >! 本功能同时使用了腾讯云 [实时音视频 TRTC](https://cloud.tencent.com/document/product/647/16788) 和 [即时通信 IM](https://cloud.tencent.com/document/product/269) 两个基础 PaaS 服务，开通实时音视频后会同步开通即时通信 IM 服务。 即时通信 IM 属于增值服务，详细计费规则请参见 [即时通信 IM 价格说明](https://cloud.tencent.com/document/product/269/11673)。
 
@@ -32,12 +32,12 @@ TUIChorus 合唱场景您需要开通推拉流，用于主唱端推流，听众�
 [](id:ui.step2)
 ### 第三步：下载源码，配置工程
 1. 克隆或者直接下载此仓库源码，**欢迎 Star**，感谢~~
-2. 找到并打开 `Android/Debug/src/main/java/com/tencent/liteav/debug/GenerateTestUserSig.java` 文件。
+2. 找到并打开 `Android/debug/src/main/java/com/tencent/liteav/debug/GenerateTestUserSig.java` 文件。
 3. 配置 `GenerateTestUserSig.java` 文件中的相关参数：
-	<img src="https://qcloudimg.tencent-cloud.cn/raw/624da9c6c806f166d9f552043fa93e7c.png" width="900">
-	- SDKAPPID：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的 SDKAppID。
-	- SECRETKEY：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的秘钥信息。
-	- URL_FETCH_PUSH_URL：默认为占位符（PLACEHOLDER），请设置为第二步中记录下的推拉流地址。
+   <img src="https://qcloudimg.tencent-cloud.cn/raw/624da9c6c806f166d9f552043fa93e7c.png" width="900">
+    - SDKAPPID：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的 SDKAppID。
+    - SECRETKEY：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的秘钥信息。
+    - URL_FETCH_PUSH_URL：默认为占位符（PLACEHOLDER），请设置为第二步中记录下的推拉流地址。
 
 ### 第四步：编译运行
 使用 Android Studio 打开源码目录 `TUIChorus/Android`，待Android Studio工程同步完成后，连接真机单击 **运行按钮** 即可开始体验本APP。
