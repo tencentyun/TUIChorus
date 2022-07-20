@@ -202,6 +202,9 @@ public class FloatWindow implements IChorusFloatWindowCallback {
     private class FloatingOnTouchListener implements View.OnTouchListener {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
+            if (mWindowManager == null) {
+                return mIsMove;
+            }
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mIsMove = false;
@@ -241,6 +244,9 @@ public class FloatWindow implements IChorusFloatWindowCallback {
 
     //悬浮窗贴边动画,只移动到左边
     public void startScroll() {
+        if (mWindowManager == null) {
+            return;
+        }
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(mCurX, 0).setDuration(300);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -256,6 +262,9 @@ public class FloatWindow implements IChorusFloatWindowCallback {
 
     //计算高度,防止悬浮窗上下越界
     private void calculateHeight() {
+        if (mWindowManager == null) {
+            return;
+        }
         int height = mRootView.getHeight();
         int screenHeight = mWindowManager.getDefaultDisplay().getHeight();
         //获取系统状态栏的高度

@@ -1,5 +1,7 @@
 package com.tencent.liteav.tuichorus.model.impl.trtc;
 
+import static com.tencent.liteav.TXLiteAVCode.ERR_TRTC_USER_SIG_CHECK_FAILED;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,18 +61,18 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     public void enterRoom(int sdkAppId, int roomId, String userId, String userSign, int role, TXCallback callback) {
         if (sdkAppId == 0 || roomId == 0 || TextUtils.isEmpty(userId) || TextUtils.isEmpty(userSign)) {
             // 参数非法，可能执行了退房，或者登出
-            TRTCLogger.e(TAG, "enter trtc room fail. params invalid. roomId:" + roomId +
-                    " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
+            TRTCLogger.e(TAG, "enter trtc room fail. params invalid. roomId:" + roomId
+                    + " userId:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
             if (callback != null) {
-                callback.onCallback(-1, "enter trtc room fail. params invalid. room id:" +
-                        roomId + " user id:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
+                callback.onCallback(-1, "enter trtc room fail. params invalid. room id:"
+                        + roomId + " user id:" + userId + " sign is empty:" + TextUtils.isEmpty(userSign));
             }
             return;
         }
         mUserId = userId;
         mEnterRoomCallback = callback;
-        TRTCLogger.i(TAG, "enter room, sdkAppId:" + sdkAppId + " roomId:" + roomId + " userId:" +
-                userId + " sign:" + TextUtils.isEmpty(userId));
+        TRTCLogger.i(TAG, "enter room, sdkAppId:" + sdkAppId + " roomId:" + roomId + " userId:"
+                + userId + " sign:" + TextUtils.isEmpty(userId));
         mTRTCParams = new TRTCCloudDef.TRTCParams();
         mTRTCParams.sdkAppId = sdkAppId;
         mTRTCParams.userId = userId;
@@ -144,7 +146,8 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
                 mEnterRoomCallback.onCallback(0, "enter room success.");
             } else {
                 mIsInRoom = false;
-                mEnterRoomCallback.onCallback((int) l, "enter room fail");
+                mEnterRoomCallback.onCallback((int) l, l == ERR_TRTC_USER_SIG_CHECK_FAILED
+                        ? "userSig invalid, please login again" : "enter room fail");
             }
         }
     }
@@ -200,7 +203,8 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     }
 
     @Override
-    public void onNetworkQuality(final TRTCCloudDef.TRTCQuality trtcQuality, final ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
+    public void onNetworkQuality(final TRTCCloudDef.TRTCQuality trtcQuality,
+                                 final ArrayList<TRTCCloudDef.TRTCQuality> arrayList) {
         if (mDelegate != null) {
             mDelegate.onNetworkQuality(trtcQuality, arrayList);
         }
@@ -250,7 +254,8 @@ public class TRTCChorusRoomService extends TRTCCloudListener {
     }
 
     public void setSpeaker(boolean useSpeaker) {
-        mTRTCCloud.setAudioRoute(useSpeaker ? TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER : TRTCCloudDef.TRTC_AUDIO_ROUTE_EARPIECE);
+        mTRTCCloud.setAudioRoute(useSpeaker ? TRTCCloudDef.TRTC_AUDIO_ROUTE_SPEAKER
+                : TRTCCloudDef.TRTC_AUDIO_ROUTE_EARPIECE);
     }
 
     public void setAudioCaptureVolume(int volume) {

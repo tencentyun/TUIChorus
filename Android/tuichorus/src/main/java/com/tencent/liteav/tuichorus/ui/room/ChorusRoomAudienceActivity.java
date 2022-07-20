@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.tencent.liteav.debug.BuildConfig;
+import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomDef;
@@ -200,7 +200,7 @@ public class ChorusRoomAudienceActivity extends ChorusRoomBaseActivity {
         // 开始进房
         enterRoom();
         TUILogin.addLoginListener(mTUILoginListener);
-        mBtnReport.setVisibility(BuildConfig.RTCube_APPSTORE ? View.VISIBLE : View.GONE);
+        mBtnReport.setVisibility(RTCubeUtils.isRTCubeApp(this) ? View.VISIBLE : View.GONE);
         mBtnReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
