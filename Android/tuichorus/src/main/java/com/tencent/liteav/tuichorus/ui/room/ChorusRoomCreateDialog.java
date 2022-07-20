@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.tencent.liteav.basic.RTCubeUtils;
 import com.tencent.liteav.basic.UserModelManager;
-import com.tencent.liteav.debug.BuildConfig;
 import com.tencent.liteav.tuichorus.R;
 import com.tencent.liteav.tuichorus.model.TRTCChorusRoomCallback;
 import com.tencent.liteav.tuichorus.ui.floatwindow.FloatWindow;
@@ -108,13 +108,14 @@ public class ChorusRoomCreateDialog extends BottomSheetDialog {
             ToastUtils.showLong(getContext().getText(R.string.tuichorus_warning_room_name_too_long));
             return;
         }
-        ChorusRoomAnchorActivity.createRoom(getContext(), roomName, mUserId, mUserName, mCoverUrl, mAudioQuality, mNeedRequest, mPushUrl, mPlayUrl);
+        ChorusRoomAnchorActivity.createRoom(getContext(), roomName, mUserId, mUserName,
+                mCoverUrl, mAudioQuality, mNeedRequest, mPushUrl, mPlayUrl);
         dismiss();
     }
 
     private void initView() {
         mRoomNameEt = (EditText) findViewById(R.id.et_room_name);
         mEnterTv = (TextView) findViewById(R.id.tv_enter);
-        mRoomNameEt.setFocusableInTouchMode(!BuildConfig.RTCube_APPSTORE);
+        mRoomNameEt.setFocusableInTouchMode(!RTCubeUtils.isRTCubeApp(getContext()));
     }
 }

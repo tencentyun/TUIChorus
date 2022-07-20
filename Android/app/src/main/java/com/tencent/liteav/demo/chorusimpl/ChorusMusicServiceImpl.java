@@ -579,7 +579,12 @@ public class ChorusMusicServiceImpl extends ChorusMusicService {
                 return;
             }
             Gson gson = new Gson();
-            ChorusJsonData jsonData = gson.fromJson(customStr, ChorusJsonData.class);
+            ChorusJsonData jsonData;
+            try {
+                jsonData = gson.fromJson(customStr, ChorusJsonData.class);
+            } catch (Exception e) {
+                return;
+            }
             String businessID = jsonData.getBusinessID();
             if (!ChorusConstants.CHORUS_VALUE_CMD_BUSINESSID.equals(businessID)) {
                 return;
