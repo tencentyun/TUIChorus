@@ -7,12 +7,11 @@
 
 ```
 TUIChorus
-├─ App              // Chorus 主页UI代码以及用到的图片及国际化字符串资源文件夹
-├─ Debug            // 工程调试运行所需的关键业务代码文件夹
-├─ Login            // 登录UI及业务逻辑代码文件夹
-├─ Resources        // Chorus 功能所需的图片、国际化字符串资源文件夹
-├─ Source           // Chorus 核心业务逻辑代码文件夹
-└─ TXAppBasic       // 工程依赖的基础组件
+├─ Example                // 工程模块，主要提供 TUIChorus 的测试页面
+├─ Resources              // Chorus 功能所需的图片、国际化字符串资源文件夹
+├─ Source                 // Chorus 核心业务逻辑代码文件夹
+├─ TXAppBasic             // 工程依赖的基础组件
+└─ TUIChorus.podspec      // TUIChorus 组件 pod 接入文件
 ```
 
 ## 环境准备
@@ -38,16 +37,16 @@ TUIChorus 合唱场景您需要开通推拉流，用于主唱端推流，听众�
 [](id:ui.step2)
 ### 第三步：下载源码，配置工程
 1. 克隆或者直接下载此仓库源码，**欢迎 Star**，感谢~~
-2. 找到并打开 `iOS/Debug/GenerateTestUserSig.swift` 文件。
+2. 找到并打开 `Example/Debug/GenerateTestUserSig.swift` 文件。
 3. 配置 `GenerateTestUserSig.swift` 文件中的相关参数：
-	<img src="https://liteav.sdk.qcloud.com/doc/res/trtc/picture/zh-cn/sdkappid_secretkey_ios.png" width="900">
-	- SDKAPPID：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的 SDKAppID。
-	- SECRETKEY：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的秘钥信息。
+    <img src="https://liteav.sdk.qcloud.com/doc/res/trtc/picture/zh-cn/sdkappid_secretkey_ios.png" width="900">
+    - SDKAPPID：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的 SDKAppID。
+    - SECRETKEY：默认为占位符（PLACEHOLDER），请设置为第一步中记录下的秘钥信息。
 
 ### 第四步：编译运行
 
-1. 打开终端进入到`iOS/Podfile`文件所在目录下，执行`pod install`命令。
-2. 使用 Xcode（11.0及以上的版本）打开源码工程 `iOS/TUIChorusApp.xcworkspace`，单击 **运行按钮** 即可开始体验本APP。
+1. 打开终端进入到`Example/Podfile`文件所在目录下，执行`pod install`命令。
+2. 使用 Xcode（11.0及以上的版本）打开源码工程 `Example/TUIChorusApp.xcworkspace`，单击 **运行按钮** 即可开始体验本APP。
 
 ### 第五步：示例体验
 

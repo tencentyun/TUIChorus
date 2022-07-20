@@ -3,8 +3,8 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/6/24.
-//
-// 赠送礼物面板
+//  Copyright © 2022 Tencent. All rights reserved.
+//  赠送礼物面板
 
 import Foundation
 import SnapKit

@@ -3,10 +3,11 @@
 //  Alamofire
 //
 //  Created by adams on 2021/7/14.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TXAppBasic
+import TUICore
 
 protocol TRTCChorusViewModelFactory {
     func makeChorusViewModel(roomInfo: ChorusRoomInfo, roleType: ChorusRoleType) -> TRTCChorusViewModel
@@ -37,6 +38,13 @@ public class TRTCChorusViewController: UIViewController {
         } else {
             viewModel.enterRoom()
         }
+#if RTCube_APPSTORE
+        let selector = NSSelectorFromString("showAlertUserLiveTips")
+        if responds(to: selector) {
+            perform(selector)
+        }
+#endif
+        TUILogin.add(self)
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -64,8 +72,39 @@ public class TRTCChorusViewController: UIViewController {
     }
     
     deinit {
+        TUILogin.remove(self)
         TRTCLog.out("deinit \(type(of: self))")
     }
+}
+
+// MARK: - TUILoginListener
+extension TRTCChorusViewController: TUILoginListener {
+    public func onConnecting() {
+        
+    }
+    
+    public func onConnectSuccess() {
+        
+    }
+    
+    public func onConnectFailed(_ code: Int32, err: String!) {
+        
+    }
+    
+    public func onKickedOffline() {
+        if TRTCChorusFloatingWindowManager.shared().windowIsShowing {
+            TRTCChorusFloatingWindowManager.shared().closeWindowAndExitRoom()
+        } else {
+            viewModel.exitRoom {
+                
+            }
+        }
+    }
+    
+    public func onUserSigExpired() {
+        
+    }
+    
 }
 
 extension TRTCChorusViewController: TRTCChorusViewNavigator {

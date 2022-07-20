@@ -3,7 +3,7 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/7/14.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TXAppBasic
@@ -734,6 +734,13 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
             chorusRoom.exitRoom(callback: nil)
             viewNavigator?.popToPrevious()
         }
+#if RTCube_APPSTORE
+        guard isOwner else { return }
+        let selector = NSSelectorFromString("showAlertUserLiveTimeOut")
+        if UIViewController.responds(to: selector) {
+            UIViewController.perform(selector)
+        }
+#endif
     }
     
     func onRoomInfoChange(roomInfo: ChorusRoomInfo) {

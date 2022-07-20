@@ -3,7 +3,7 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/7/14.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TXAppBasic
@@ -42,6 +42,9 @@ class TRTCCreateChorusRootView: UIView {
         textView.textColor = .black
         textView.layer.cornerRadius = 20
         textView.backgroundColor = UIColor(hex: "F4F5F9")
+#if RTCube_APPSTORE
+        textView.isUserInteractionEnabled = false
+#endif
         return textView
     }()
     

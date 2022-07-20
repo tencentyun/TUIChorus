@@ -3,7 +3,7 @@
 //  TUIChorus
 //
 //  Created by gg on 2021/7/8.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import Foundation
 

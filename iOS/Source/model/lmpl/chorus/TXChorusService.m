@@ -3,7 +3,7 @@
 //  Alamofire
 //
 //  Created by adams on 2021/7/14.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 #import "TXChorusService.h"
 #import "TXChorusCommonDef.h"
@@ -256,6 +256,8 @@
             [self unInitIMListener];
             [self cleanRoomStatus];
         } else {
+            [self unInitIMListener];
+            [self cleanRoomStatus];
             if (callback) {
                 callback(code, desc ?: @"destroy room failed");
             }
@@ -652,6 +654,7 @@
     if (![groupID isEqualToString:self.mRoomId]) {
         return;
     }
+    [self unInitIMListener];
     [self cleanRoomStatus];
     if ([self canDelegateResponseMethod:@selector(onRoomDestroyWithRoomId:)]) {
         [self.delegate onRoomDestroyWithRoomId:groupID];
