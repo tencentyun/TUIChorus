@@ -3,7 +3,7 @@
 //  VTTDemo
 //
 //  Created by adams on 2021/7/16.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 

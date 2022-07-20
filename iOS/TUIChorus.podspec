@@ -3,11 +3,7 @@ Pod::Spec.new do |spec|
   spec.version      = '1.0.0'
   spec.platform     = :ios
   spec.ios.deployment_target = '11.0'
-  spec.license      = { :type => 'Proprietary',
-      :text => <<-LICENSE
-        copyright 2017 tencent Ltd. All rights reserved.
-        LICENSE
-       }
+  spec.license      = { :type => 'MIT', :file => 'LICENSE' }
   spec.homepage     = 'https://cloud.tencent.com/document/product/269/3794'
   spec.documentation_url = 'https://cloud.tencent.com/document/product/269/9147'
   spec.authors      = 'tencent video cloud'
@@ -21,7 +17,8 @@ Pod::Spec.new do |spec|
   spec.dependency 'Toast-Swift'
   spec.dependency 'Kingfisher', '<= 6.3.1'
   spec.dependency 'TXAppBasic'
-  spec.dependency 'TXIMSDK_Plus_iOS', '~> 5.7.1435'
+  spec.dependency 'TXIMSDK_Plus_iOS', '>= 5.7.1435'
+  spec.dependency 'TUICore'
   
   #OC第三方库
   spec.dependency 'MJExtension'

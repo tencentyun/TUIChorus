@@ -3,7 +3,7 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/7/14.
-//
+//  Copyright © 2022 Tencent. All rights reserved.
 
 import UIKit
 import TXAppBasic

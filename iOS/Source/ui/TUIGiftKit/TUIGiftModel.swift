@@ -3,8 +3,8 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/6/24.
-//
-// 礼物模型及模型管理类
+//  Copyright © 2022 Tencent. All rights reserved.
+//  礼物模型及模型管理类
 
 import Foundation
 

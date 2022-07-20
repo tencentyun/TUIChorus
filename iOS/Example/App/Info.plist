@@ -15,13 +15,13 @@
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>10.4.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2632</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Chorus 需要访问您的麦克风权限</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Chorus 需要访问您的麦克风权限</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

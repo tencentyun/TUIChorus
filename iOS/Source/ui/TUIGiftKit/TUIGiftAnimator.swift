@@ -3,8 +3,8 @@
 //  TUIChorus
 //
 //  Created by adams on 2021/6/25.
-//
-// 礼物播放动画管理类 目前不支持大礼物
+//  Copyright © 2022 Tencent. All rights reserved.
+//  礼物播放动画管理类 目前不支持大礼物
 
 import Foundation
 

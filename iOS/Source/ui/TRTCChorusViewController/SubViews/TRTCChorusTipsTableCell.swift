@@ -16,7 +16,7 @@ extension String {
 
 class TRTCChorusTipsWelcomCell: UITableViewCell {
     
-    static let urlText = "https://cloud.tencent.com"
+    static let urlText = "https://cloud.tencent.com/document/product/647/61858"
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
