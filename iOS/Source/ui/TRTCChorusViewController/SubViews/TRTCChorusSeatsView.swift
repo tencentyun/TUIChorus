@@ -84,7 +84,7 @@ class TRTCChorusSeatsView: UIView {
         activateConstraints()
         bindInteraction()
         DispatchQueue.main.async {
-            let path = ChorusBundle().path(forResource: "ChorusPlaying", ofType: "gif") ?? ""
+            let path = chorusBundle().path(forResource: "ChorusPlaying", ofType: "gif") ?? ""
             let url = URL.init(fileURLWithPath: path)
             let provider = LocalFileImageDataProvider.init(fileURL: url)
             self.chorusGifImageView.kf.setImage(with: provider)
@@ -118,7 +118,7 @@ class TRTCChorusSeatsView: UIView {
             make.size.equalTo(anchorSeatView.snp.size)
         }
         
-        let imageSize = UIImage.init(contentsOfFile:  ChorusBundle().path(forResource: "ChorusPlaying", ofType: "gif")!)!.size
+        let imageSize = UIImage.init(contentsOfFile:  chorusBundle().path(forResource: "ChorusPlaying", ofType: "gif")!)!.size
         let imageScale = imageSize.width / imageSize.height
         
         chorusGifImageView.snp.makeConstraints { make in
@@ -289,7 +289,7 @@ extension TRTCChorusNetworkQualityView {
             case .ethernetOrWiFi:
                 networkImageHeadName = "Wifi-signal"
         }
-        networkQualityImageView.image = UIImage.init(named: networkImageHeadName + getNetworkIcon(), in: ChorusBundle(), compatibleWith: nil)
+        networkQualityImageView.image = UIImage.init(named: networkImageHeadName + getNetworkIcon(), in: chorusBundle(), compatibleWith: nil)
     }
     
     public func update(networkQuality: TRTCChorusNetworkQuality) {
@@ -297,9 +297,9 @@ extension TRTCChorusNetworkQualityView {
         self.networkQualityTitleLabel.text = getNetworkText()
         self.networkQualityTitleLabel.textColor = getNetworkTextColor()
         if getNetworkIcon() == "04" {
-            self.networkQualityImageView.image = UIImage.init(named: "lock", in: ChorusBundle(), compatibleWith: nil)
+            self.networkQualityImageView.image = UIImage.init(named: "lock", in: chorusBundle(), compatibleWith: nil)
         } else {
-            self.networkQualityImageView.image = UIImage.init(named: networkImageHeadName + getNetworkIcon(), in: ChorusBundle(), compatibleWith: nil)
+            self.networkQualityImageView.image = UIImage.init(named: networkImageHeadName + getNetworkIcon(), in: chorusBundle(), compatibleWith: nil)
         }
     }
     
@@ -346,9 +346,9 @@ extension TRTCChorusNetworkQualityView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let normalText = ChorusLocalize("Demo.TRTC.Chorus.normal")
-    static let generalText = ChorusLocalize("Demo.TRTC.Chorus.general")
-    static let poorText = ChorusLocalize("Demo.TRTC.Chorus.poor")
-    static let unknownText = ChorusLocalize("Demo.TRTC.Chorus.unknown")
+    static let normalText = chorusLocalize("Demo.TRTC.Chorus.normal")
+    static let generalText = chorusLocalize("Demo.TRTC.Chorus.general")
+    static let poorText = chorusLocalize("Demo.TRTC.Chorus.poor")
+    static let unknownText = chorusLocalize("Demo.TRTC.Chorus.unknown")
 }
 

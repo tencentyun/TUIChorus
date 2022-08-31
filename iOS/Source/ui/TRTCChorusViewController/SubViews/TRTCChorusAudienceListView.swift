@@ -145,8 +145,8 @@ extension TRTCChorusAudienceListView: UITableViewDataSource {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let closeText = ChorusLocalize("Demo.TRTC.Salon.close")
-    static let inviteHandsupText = ChorusLocalize("Demo.TRTC.Chorus.invitehandsup")
+    static let closeText = chorusLocalize("Demo.TRTC.Salon.close")
+    static let inviteHandsupText = chorusLocalize("Demo.TRTC.Chorus.invitehandsup")
 }
 
 

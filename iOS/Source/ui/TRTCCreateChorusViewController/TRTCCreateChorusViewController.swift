@@ -37,7 +37,7 @@ public class TRTCCreateChorusViewController: UIViewController {
         title = .controllerTitle
         
         let backBtn = UIButton(type: .custom)
-        backBtn.setImage(UIImage(named: "navigationbar_back", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        backBtn.setImage(UIImage(named: "navigationbar_back", in: chorusBundle(), compatibleWith: nil), for: .normal)
         backBtn.addTarget(self, action: #selector(cancel), for: .touchUpInside)
         backBtn.sizeToFit()
         let backItem = UIBarButtonItem(customView: backBtn)
@@ -83,5 +83,5 @@ extension TRTCCreateChorusViewController: TRTCCreateChorusViewResponder {
 }
 
 private extension String {
-    static let controllerTitle = ChorusLocalize("Demo.TRTC.Chorus.createvoicechatroom")
+    static let controllerTitle = chorusLocalize("Demo.TRTC.Chorus.createvoicechatroom")
 }

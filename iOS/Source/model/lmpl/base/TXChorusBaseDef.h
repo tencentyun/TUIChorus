@@ -9,10 +9,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-FOUNDATION_EXPORT void TUIChorusLog(NSString *format, ...);
+FOUNDATION_EXPORT void tuiChorusLog(NSString *format, ...);
 
 // 使用TRTCCloud apiLog，日志会写入本地
-#define TRTCLog(fmt, ...) TUIChorusLog((@"TRTC LOG:%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
+#define TRTCLog(fmt, ...) tuiChorusLog((@"TRTC LOG:%s [Line %d] " fmt), __PRETTY_FUNCTION__, __LINE__, ##__VA_ARGS__)
 
 @class TXChorusUserInfo;
 @class TXChorusRoomInfo;

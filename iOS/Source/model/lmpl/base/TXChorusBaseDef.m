@@ -15,7 +15,7 @@
 
 @end
 
-void TUIChorusLog(NSString *format, ...){
+void tuiChorusLog(NSString *format, ...){
     if (!format || ![format isKindOfClass:[NSString class]] || format.length == 0) {
         return;
     }

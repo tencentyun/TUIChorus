@@ -59,8 +59,8 @@ typedef enum : NSUInteger {
 
 @implementation TRTCChorusRoom
 
-static TRTCChorusRoom *_instance;
-static dispatch_once_t onceToken;
+static TRTCChorusRoom *gInstance;
+static dispatch_once_t gOnceToken;
 
 - (instancetype)init {
     self = [super init];
@@ -114,17 +114,17 @@ static dispatch_once_t onceToken;
 
 #pragma mark - TRTCChorus 实现
 + (instancetype)sharedInstance {
-    dispatch_once(&onceToken, ^{
-        _instance = [[TRTCChorusRoom alloc] init];
-        [TXChorusService sharedInstance].delegate = _instance;
-        [ChorusTRTCService sharedInstance].delegate = _instance;
+    dispatch_once(&gOnceToken, ^{
+        gInstance = [[TRTCChorusRoom alloc] init];
+        [TXChorusService sharedInstance].delegate = gInstance;
+        [ChorusTRTCService sharedInstance].delegate = gInstance;
     });
-    return _instance;
+    return gInstance;
 }
 
 + (void)destroySharedInstance {
-    onceToken = 0;
-    _instance = nil;
+    gOnceToken = 0;
+    gInstance = nil;
 }
 
 - (void)setDelegateQueue:(dispatch_queue_t)queue {
@@ -228,17 +228,19 @@ static dispatch_once_t onceToken;
     }];
 }
 
-- (void)enterTRTCRoomInnerWithRoomId:(NSString *)roomId userId:(NSString *)userId userSign:(NSString *)userSig role:(NSInteger)role callback:(ActionCallback)callback {
+- (void)enterTRTCRoomInnerWithRoomId:(NSString *)roomId userId:(NSString *)userId userSign:(NSString
+ *)userSig role:(NSInteger)role callback:(ActionCallback)callback {
     TRTCLog(@"start enter trtc room.");
     @weakify(self)
     [self.roomTRTCService enableRealtimeChorus:YES];
-    [self.roomTRTCService enterRoomWithSdkAppId:self.mSDKAppID roomId:roomId userId:userId userSign:userSig role:role callback:^(int code, NSString * _Nonnull message) {
+    [self.roomTRTCService enterRoomWithSdkAppId:self.mSDKAppID roomId:roomId userId:userId
+     userSign:userSig role:role callback:^(int code, NSString * _Nonnull message) {
         @strongify(self)
         if (!self) {
             return;
         }
         if (code == 0) {
-            if (role == kTRTCRoleAnchorValue) {
+            if (role == KTRTCRoleAnchorValue) {
                 self.chorusRole = TRTCChorusRoleAnchor;
             }
             if (self.chorusRole == TRTCChorusRoleAudience) {
@@ -306,7 +308,7 @@ static dispatch_once_t onceToken;
                 return;
             }
             if (code == 0) {
-                [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig role:kTRTCRoleAnchorValue callback:callback];
+                [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig role:KTRTCRoleAnchorValue callback:callback];
                 return;
             } else {
                 [self runOnDelegateQueue:^{
@@ -527,7 +529,8 @@ static dispatch_once_t onceToken;
         
         if (self.chorusRole == TRTCChorusRoleAudience) {
             // 观众上麦需要进入TRTC房间
-            [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig role:kTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
+            [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig
+             role:KTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
                 @strongify(self)
                 if (!self) {
                     return;
@@ -560,7 +563,7 @@ static dispatch_once_t onceToken;
         if (self.chorusRole == TRTCChorusRoleChorus) {
             if (self.chorusManager.isChorusOn) {
                 [self runOnDelegateQueue:^{
-                    callback(-1, ChorusLocalize(@"Demo.TRTC.Chorus.cannotleavetheseat"));
+                    callback(-1, chorusLocalize(@"Demo.TRTC.Chorus.cannotleavetheseat"));
                 }];
                 return;
             }
@@ -748,7 +751,8 @@ static dispatch_once_t onceToken;
         }];
         
         // 观众上麦需要进入TRTC房间
-        [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig role:kTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
+        [self enterTRTCRoomInnerWithRoomId:self.roomID userId:self.userId userSign:self.userSig
+         role:KTRTCRoleAudienceValue callback:^(int code, NSString * _Nonnull message) {
             @strongify(self)
             if (!self) {
                 return;
@@ -924,7 +928,8 @@ static dispatch_once_t onceToken;
         }
         self.currentPlayingMusicID = musicID;
         
-        [self.chorusManager startChorus:[NSString stringWithFormat:@"%d", musicID] url:url reason:self.chorusRole == TRTCChorusRoleAnchor ? ChorusStartReasonLocal : ChorusStartReasonRemote];
+        [self.chorusManager startChorus:[NSString stringWithFormat:@"%d", musicID] url:url
+         reason:self.chorusRole == TRTCChorusRoleAnchor ? ChorusStartReasonLocal : ChorusStartReasonRemote];
     }];
 }
 

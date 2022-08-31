@@ -30,7 +30,7 @@ class TRTCChorusSoundEffectAlert : TRTCChorusAlertContentView {
     
     lazy var helpBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "helpUrl", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "helpUrl", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.isHidden = true
         return btn
     }()
@@ -354,7 +354,7 @@ class TRTCChorusSoundEffectSliderCell: TRTCChorusSoundEffectBaseCell {
     
     lazy var slider: TRTCChorusSoundEffectSlider = {
         let slider = TRTCChorusSoundEffectSlider(frame: .zero)
-        slider.setThumbImage(UIImage(named: "Slider", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        slider.setThumbImage(UIImage(named: "Slider", in: chorusBundle(), compatibleWith: nil), for: .normal)
         slider.minimumTrackTintColor = UIColor(hex: "F95F91")
         slider.maximumTrackTintColor = UIColor(hex: "F4F5F9")
         return slider
@@ -419,8 +419,8 @@ class TRTCChorusSoundEffectPlayingCell: TRTCChorusSoundEffectBaseCell {
     }()
     lazy var playBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "bgm_play", in: ChorusBundle(), compatibleWith: nil), for: .normal)
-        btn.setImage(UIImage(named: "bgm_pause", in: ChorusBundle(), compatibleWith: nil), for: .selected)
+        btn.setImage(UIImage(named: "bgm_play", in: chorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "bgm_pause", in: chorusBundle(), compatibleWith: nil), for: .selected)
         return btn
     }()
     
@@ -459,7 +459,7 @@ class TRTCChorusSoundEffectPlayingCell: TRTCChorusSoundEffectBaseCell {
 
 class TRTCChorusSoundEffectDetailCell: TRTCChorusSoundEffectBaseCell {
     lazy var arrowImageView: UIImageView = {
-        let imageV = UIImageView(image: UIImage(named: "detail", in: ChorusBundle(), compatibleWith: nil))
+        let imageV = UIImageView(image: UIImage(named: "detail", in: chorusBundle(), compatibleWith: nil))
         return imageV
     }()
     
@@ -670,14 +670,14 @@ class TRTCChorusSoundEffectCellForCollectionCell: UICollectionViewCell {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let effectTitleText = ChorusLocalize("ASKit.MainMenu.Title")
-    static let voiceChangeText = ChorusLocalize("ASKit.MainMenu.VoiceChangeTitle")
-    static let reverbText = ChorusLocalize("ASKit.MainMenu.Reverberation")
-    static let auditionText = ChorusLocalize("ASKit.MusicSelectMenu.Title")
-    static let bringHeadphoneText = ChorusLocalize("Demo.TRTC.Chorus.useearphones")
-    static let copyrightText = ChorusLocalize("Demo.TRTC.Chorus.copyrights")
-    static let selectMusicText = ChorusLocalize("ASKit.MainMenu.SelectMusic")
-    static let musicVolumeText = ChorusLocalize("ASKit.MainMenu.MusicVolum")
-    static let vocalVolumeText = ChorusLocalize("ASKit.MainMenu.PersonVolum")
-    static let vocalRiseFallText = ChorusLocalize("ASKit.MainMenu.PersonPitch")
+    static let effectTitleText = chorusLocalize("ASKit.MainMenu.Title")
+    static let voiceChangeText = chorusLocalize("ASKit.MainMenu.VoiceChangeTitle")
+    static let reverbText = chorusLocalize("ASKit.MainMenu.Reverberation")
+    static let auditionText = chorusLocalize("ASKit.MusicSelectMenu.Title")
+    static let bringHeadphoneText = chorusLocalize("Demo.TRTC.Chorus.useearphones")
+    static let copyrightText = chorusLocalize("Demo.TRTC.Chorus.copyrights")
+    static let selectMusicText = chorusLocalize("ASKit.MainMenu.SelectMusic")
+    static let musicVolumeText = chorusLocalize("ASKit.MainMenu.MusicVolum")
+    static let vocalVolumeText = chorusLocalize("ASKit.MainMenu.PersonVolum")
+    static let vocalRiseFallText = chorusLocalize("ASKit.MainMenu.PersonPitch")
 }

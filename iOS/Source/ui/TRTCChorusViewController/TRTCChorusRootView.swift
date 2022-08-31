@@ -57,10 +57,10 @@ class TRTCChorusRootView: UIView {
     
     lazy var mainMenuView: TRTCChorusMainMenuView = {
         let icons: [IconTuple] = [
-            IconTuple(normal: UIImage(named: "room_message", in: ChorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_message", in: ChorusBundle(), compatibleWith: nil)!, type: .message),
-            IconTuple(normal: UIImage(named: "room_leave_mic", in: ChorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_leave_mic", in: ChorusBundle(), compatibleWith: nil)!, type: .micoff),
-            IconTuple(normal: UIImage(named: "room_voice_off", in: ChorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_voice_on", in: ChorusBundle(), compatibleWith: nil)!, type: .mute),
-            IconTuple(normal: UIImage(named: "gift", in: ChorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "gift", in: ChorusBundle(), compatibleWith: nil)!, type: .gift),
+            IconTuple(normal: UIImage(named: "room_message", in: chorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_message", in: chorusBundle(), compatibleWith: nil)!, type: .message),
+            IconTuple(normal: UIImage(named: "room_leave_mic", in: chorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_leave_mic", in: chorusBundle(), compatibleWith: nil)!, type: .micoff),
+            IconTuple(normal: UIImage(named: "room_voice_off", in: chorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "room_voice_on", in: chorusBundle(), compatibleWith: nil)!, type: .mute),
+            IconTuple(normal: UIImage(named: "gift", in: chorusBundle(), compatibleWith: nil)!, selected: UIImage(named: "gift", in: chorusBundle(), compatibleWith: nil)!, type: .gift),
         ]
         icons.forEach { (icon) in
             switch icon.type {
@@ -445,11 +445,11 @@ extension TRTCChorusRootView: TRTCChorusViewResponder {
 
 //MARK: - internationalization string
 fileprivate extension String {
-    static let mutedText = ChorusLocalize("Demo.TRTC.Salon.seatmuted")
-    static let unmutedText = ChorusLocalize("Demo.TRTC.Salon.seatunmuted")
-    static let acceptText = ChorusLocalize("Demo.TRTC.LiveRoom.accept")
-    static let refuseText = ChorusLocalize("Demo.TRTC.LiveRoom.refuse")
-    static let selectText = ChorusLocalize("Demo.TRTC.Salon.pleaseselect")
-    static let cancelText = ChorusLocalize("Demo.TRTC.LiveRoom.cancel")
-    static let seatmutedText = ChorusLocalize("Demo.TRTC.Chorus.onseatmuted")
+    static let mutedText = chorusLocalize("Demo.TRTC.Salon.seatmuted")
+    static let unmutedText = chorusLocalize("Demo.TRTC.Salon.seatunmuted")
+    static let acceptText = chorusLocalize("Demo.TRTC.LiveRoom.accept")
+    static let refuseText = chorusLocalize("Demo.TRTC.LiveRoom.refuse")
+    static let selectText = chorusLocalize("Demo.TRTC.Salon.pleaseselect")
+    static let cancelText = chorusLocalize("Demo.TRTC.LiveRoom.cancel")
+    static let seatmutedText = chorusLocalize("Demo.TRTC.Chorus.onseatmuted")
 }

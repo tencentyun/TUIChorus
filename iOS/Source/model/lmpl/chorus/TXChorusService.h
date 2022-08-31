@@ -27,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onInviteeCancelledWithIdentifier:(NSString *)identifier invitee:(NSString *)invitee;
 @end
 
-static int CHORUS_SERVICE_CODE_ERROR = -1;
+static int gCHORUS_SERVICE_CODE_ERROR = -1;
 
 @interface TXChorusService : NSObject
 @property (nonatomic, weak) id<TXChorusRoomServiceDelegate> delegate;

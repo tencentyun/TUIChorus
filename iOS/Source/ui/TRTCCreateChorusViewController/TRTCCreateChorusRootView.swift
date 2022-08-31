@@ -38,7 +38,7 @@ class TRTCCreateChorusRootView: UIView {
         let textView = UITextView(frame: .zero)
         textView.font = UIFont(name: "PingFangSC-Regular", size: 16)
         textView.textContainerInset = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        textView.text = LocalizeReplaceXX(.defaultCreateText, viewModel.userName).subString(toByteLength: createRoomTextMaxByteLength)
+        textView.text = localizeReplaceXX(.defaultCreateText, viewModel.userName).subString(toByteLength: createRoomTextMaxByteLength)
         textView.textColor = .black
         textView.layer.cornerRadius = 20
         textView.backgroundColor = UIColor(hex: "F4F5F9")
@@ -75,7 +75,8 @@ class TRTCCreateChorusRootView: UIView {
         self.screenShot = screenShot
         super.init(frame: frame)
         bindInteraction()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameChange(noti:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardFrameChange(noti:)),
+         name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
     
     deinit {
@@ -187,7 +188,7 @@ class TRTCCreateChorusRootView: UIView {
     
     private func enterRoom() {
         if textView.text == String.placeholderTitleText {
-            viewModel.roomName = LocalizeReplaceXX(.defaultCreateText, viewModel.userName)
+            viewModel.roomName = localizeReplaceXX(.defaultCreateText, viewModel.userName)
         }
         else {
             viewModel.roomName = textView.text
@@ -253,8 +254,8 @@ extension UITextView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let titleText = ChorusLocalize("Demo.TRTC.Chorus.roomsubject")
-    static let placeholderTitleText = ChorusLocalize("Demo.TRTC.Chorus.enterroomsubject")
-    static let createText = ChorusLocalize("Demo.TRTC.Chorus.join")
-    static let defaultCreateText = ChorusLocalize("Demo.TRTC.Chorus.xxxsroom")
+    static let titleText = chorusLocalize("Demo.TRTC.Chorus.roomsubject")
+    static let placeholderTitleText = chorusLocalize("Demo.TRTC.Chorus.enterroomsubject")
+    static let createText = chorusLocalize("Demo.TRTC.Chorus.join")
+    static let defaultCreateText = chorusLocalize("Demo.TRTC.Chorus.xxxsroom")
 }

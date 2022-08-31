@@ -130,8 +130,8 @@ class TRTCChorusAudienceAlert: TRTCChorusAlertContentView {
     
     lazy var unlockBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "lock", in: ChorusBundle(), compatibleWith: nil), for: .normal)
-        btn.setImage(UIImage(named: "unlock", in: ChorusBundle(), compatibleWith: nil), for: .selected)
+        btn.setImage(UIImage(named: "lock", in: chorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "unlock", in: chorusBundle(), compatibleWith: nil), for: .selected)
         btn.setTitle(.lockText, for: .normal)
         btn.setTitle(.unlockText, for: .selected)
         btn.titleLabel?.font = UIFont(name: "PingFangSC-Medium", size: 14)
@@ -358,12 +358,12 @@ class TRTCChorusAudienceCell: UITableViewCell {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let audienceText = ChorusLocalize("Demo.TRTC.Chorus.audience")
-    static let unlockText = ChorusLocalize("Demo.TRTC.Chorus.unlock")
-    static let lockText = ChorusLocalize("Demo.TRTC.Chorus.lock")
-    static let agreeText = ChorusLocalize("Demo.TRTC.Chorus.agree")
-    static let inviteText = ChorusLocalize("Demo.TRTC.Chorus.invite")
-    static let earMonitorText = ChorusLocalize("Demo.TRTC.Chorus.earmonitor")
-    static let backText = ChorusLocalize("Demo.TRTC.Chorus.back")
-    static let bgmText = ChorusLocalize("ASKit.MainMenu.BGM")
+    static let audienceText = chorusLocalize("Demo.TRTC.Chorus.audience")
+    static let unlockText = chorusLocalize("Demo.TRTC.Chorus.unlock")
+    static let lockText = chorusLocalize("Demo.TRTC.Chorus.lock")
+    static let agreeText = chorusLocalize("Demo.TRTC.Chorus.agree")
+    static let inviteText = chorusLocalize("Demo.TRTC.Chorus.invite")
+    static let earMonitorText = chorusLocalize("Demo.TRTC.Chorus.earmonitor")
+    static let backText = chorusLocalize("Demo.TRTC.Chorus.back")
+    static let bgmText = chorusLocalize("ASKit.MainMenu.BGM")
 }

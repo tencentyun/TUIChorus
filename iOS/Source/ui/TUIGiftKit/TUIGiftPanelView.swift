@@ -236,5 +236,5 @@ class TUIGiftPanelCell: UICollectionViewCell {
 }
 
 fileprivate extension String {
-    static let giftTitleText = ChorusLocalize("Demo.TRTC.Chorus.gift")
+    static let giftTitleText = chorusLocalize("Demo.TRTC.Chorus.gift")
 }

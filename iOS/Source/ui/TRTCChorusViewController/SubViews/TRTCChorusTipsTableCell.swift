@@ -32,7 +32,7 @@ class TRTCChorusTipsWelcomCell: UITableViewCell {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         let urlStr = TRTCChorusTipsWelcomCell.urlText
-        let totalStr = LocalizeReplaceXX(.welcomeText, urlStr)
+        let totalStr = localizeReplaceXX(.welcomeText, urlStr)
         let urlColor = UIColor(hex: "0063FF") ?? UIColor.blue
         let totalRange = NSRange(location: 0, length: totalStr.count)
         var urlRange = totalRange
@@ -202,7 +202,7 @@ class TRTCChorusTipsTableCell: UITableViewCell {
             var textInfo = "\(model.content)"
             if model.userName.count > 0 {
                 if model.content.contains("xxx") {
-                    textInfo = LocalizeReplaceXX(model.content, model.userName)
+                    textInfo = localizeReplaceXX(model.content, model.userName)
                 }
                 else {
                     textInfo = "\(model.userName):\(model.content)"
@@ -223,7 +223,7 @@ class TRTCChorusTipsTableCell: UITableViewCell {
         case .agreed:
             var textInfo = "\(model.content)"
             if model.content.contains("xxx") {
-                textInfo = LocalizeReplaceXX(model.content, model.userName)
+                textInfo = localizeReplaceXX(model.content, model.userName)
             }
             else {
                 textInfo = "\(model.userName):\(model.content)"
@@ -237,7 +237,7 @@ class TRTCChorusTipsTableCell: UITableViewCell {
         case .manage_song:
             var textInfo = "\(model.content)"
             if model.content.contains("xxx") {
-                textInfo = LocalizeReplaceXX(model.content, model.userName)
+                textInfo = localizeReplaceXX(model.content, model.userName)
             }
             else {
                 textInfo = "\(model.userName):\(model.content)"
@@ -252,7 +252,7 @@ class TRTCChorusTipsTableCell: UITableViewCell {
         default:
             var textInfo = "\(model.content)"
             if model.content.contains("xxx") {
-                textInfo = LocalizeReplaceXX(model.content, model.userName)
+                textInfo = localizeReplaceXX(model.content, model.userName)
             }
             else {
                 textInfo = "\(model.userName):\(model.content)"
@@ -328,7 +328,7 @@ class TRTCChorusTipsTableCell: UITableViewCell {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let acceptText = ChorusLocalize("Demo.TRTC.LiveRoom.accept")
-    static let welcomeText = ChorusLocalize("Demo.TRTC.Chorus.welcome")
-    static let manageSongText = ChorusLocalize("Demo.TRTC.Chorus.manageselectedsongs")
+    static let acceptText = chorusLocalize("Demo.TRTC.LiveRoom.accept")
+    static let welcomeText = chorusLocalize("Demo.TRTC.Chorus.welcome")
+    static let manageSongText = chorusLocalize("Demo.TRTC.Chorus.manageselectedsongs")
 }

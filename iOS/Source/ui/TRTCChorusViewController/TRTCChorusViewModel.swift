@@ -257,7 +257,7 @@ extension TRTCChorusViewModel {
         }
         else {
             if mSelfSeatIndex != -1 {
-                viewResponder?.showToast(message: LocalizeReplaceXX(.isInxxSeatText, String(mSelfSeatIndex + 1)))
+                viewResponder?.showToast(message: localizeReplaceXX(.isInxxSeatText, String(mSelfSeatIndex + 1)))
                 return
             }
             guard model.seatIndex != -1 else {
@@ -331,7 +331,7 @@ extension TRTCChorusViewModel {
                 self.effectViewModel.viewResponder?.onManageSongBtnClick()
             }
         }
-        showNotifyMsg(messsage: LocalizeReplaceThreeCharacter(.xxSeatSelectzzSongText, "\(music.seatIndex + 1)", "xxx", music.musicName), userName: music.bookUserName, type: isOwner ? .manage_song : .normal, action: action)
+        showNotifyMsg(messsage: localizeReplaceThreeCharacter(.xxSeatSelectzzSongText, "\(music.seatIndex + 1)", "xxx", music.musicName), userName: music.bookUserName, type: isOwner ? .manage_song : .normal, action: action)
     }
     
     /// 观众开始上麦
@@ -360,7 +360,7 @@ extension TRTCChorusViewModel {
                 if code == 0 {
                     self.viewResponder?.showToast(message: .reqSentText)
                 } else {
-                    self.viewResponder?.showToast(message: LocalizeReplaceXX(.reqSendFailedxxText, message))
+                    self.viewResponder?.showToast(message: localizeReplaceXX(.reqSendFailedxxText, message))
                 }
             }
             currentInvitateSeatIndex = seatIndex
@@ -388,7 +388,7 @@ extension TRTCChorusViewModel {
     
     private func recvPickSeat(identifier: String, cmd: String, content: String) {
         guard let seatIndex = Int.init(content) else { return }
-        viewResponder?.showAlert(info: (title: .alertText, message: LocalizeReplaceXX(.invitexxSeatText, String(seatIndex))), sureAction: { [weak self] in
+        viewResponder?.showAlert(info: (title: .alertText, message: localizeReplaceXX(.invitexxSeatText, String(seatIndex))), sureAction: { [weak self] in
             guard let `self` = self else { return }
             self.chorusRoom.acceptInvitation(identifier: identifier) { [weak self] (code, message) in
                 guard let `self` = self else { return }
@@ -417,7 +417,7 @@ extension TRTCChorusViewModel {
         // 显示到通知栏
         let audinece = memberAudienceDic[inviter]
         let seatIndex = (Int.init(content) ?? 0)
-        let content = LocalizeReplaceXX(.applyxxSeatText, String(seatIndex + 1))
+        let content = localizeReplaceXX(.applyxxSeatText, String(seatIndex + 1))
         let msgEntity = MsgEntity.init(userId: inviter, userName: audinece?.userInfo.userName ?? inviter, content: content, invitedId: identifier, type: .wait_agree)
         msgEntityList.append(msgEntity)
         viewResponder?.refreshMsgView()
@@ -497,7 +497,7 @@ extension TRTCChorusViewModel {
             if code == 0 {
                 self.viewResponder?.showToast(message: .audienceSuccessText)
             } else {
-                self.viewResponder?.showToast(message: LocalizeReplaceXX(.audienceFailedxxText, message))
+                self.viewResponder?.showToast(message: localizeReplaceXX(.audienceFailedxxText, message))
             }
         }
     }
@@ -561,7 +561,7 @@ extension TRTCChorusViewModel {
         notifyMsg(entity: entity)
         chorusRoom.sendRoomTextMsg(message: message) { [weak self] (code, message) in
             guard let `self` = self else { return }
-            self.viewResponder?.showToast(message: code == 0 ? .sendSuccessText :  LocalizeReplaceXX(.sendFailedText, message))
+            self.viewResponder?.showToast(message: code == 0 ? .sendSuccessText :  localizeReplaceXX(.sendFailedText, message))
         }
     }
     
@@ -822,11 +822,11 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
     }
     
     func onSeatClose(index: Int, isClose: Bool) {
-        showNotifyMsg(messsage: LocalizeReplace(.ownerxxSeatText, isClose ? .banSeatText : .unmuteOneText, String(index + 1)), userName: "")
+        showNotifyMsg(messsage: localizeReplace(.ownerxxSeatText, isClose ? .banSeatText : .unmuteOneText, String(index + 1)), userName: "")
     }
     
     func onAnchorEnterSeat(index: Int, user: ChorusUserInfo) {
-        showNotifyMsg(messsage: LocalizeReplace(.beyySeatText, "xxx", String(index + 1)), userName: user.userName)
+        showNotifyMsg(messsage: localizeReplace(.beyySeatText, "xxx", String(index + 1)), userName: user.userName)
         if user.userId == TRTCChorusIMManager.sharedManager().curUserID {
             if index == 0 {
                 userType = .anchor
@@ -842,7 +842,7 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
     }
     
     func onAnchorLeaveSeat(index: Int, user: ChorusUserInfo) {
-        showNotifyMsg(messsage: LocalizeReplace(.audienceyySeatText, "xxx", String(index + 1)), userName: user.userName)
+        showNotifyMsg(messsage: localizeReplace(.audienceyySeatText, "xxx", String(index + 1)), userName: user.userName)
         if user.userId == TRTCChorusIMManager.sharedManager().curUserID {
             userType = .audience
             refreshView()
@@ -870,7 +870,7 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
     }
     
     func onAudienceEnter(userInfo: ChorusUserInfo) {
-        showNotifyMsg(messsage: LocalizeReplaceXX(.inRoomText, "xxx"), userName: userInfo.userName)
+        showNotifyMsg(messsage: localizeReplaceXX(.inRoomText, "xxx"), userName: userInfo.userName)
         // 主播端(房主)
         let memberEntityModel = AudienceInfoModel.init(type: 0, userInfo: userInfo) { [weak self] (index) in
             guard let `self` = self else { return }
@@ -890,7 +890,7 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
     }
     
     func onAudienceExit(userInfo: ChorusUserInfo) {
-        showNotifyMsg(messsage: LocalizeReplaceXX(.exitRoomText, "xxx"), userName: userInfo.userName)
+        showNotifyMsg(messsage: localizeReplaceXX(.exitRoomText, "xxx"), userName: userInfo.userName)
         memberAudienceList.removeAll { (model) -> Bool in
             return model.userInfo.userId == userInfo.userId
         }
@@ -1008,7 +1008,7 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
                     guard let `self` = self else { return }
                     if code == 0 {
                         guard let audience = self.memberAudienceDic[seatInvitation.inviteUserId] else { return }
-                        self.viewResponder?.showToast(message: LocalizeReplaceXX(.hugHandsupSuccessText, audience.userInfo.userName))
+                        self.viewResponder?.showToast(message: localizeReplaceXX(.hugHandsupSuccessText, audience.userInfo.userName))
                     }
                 }
             }
@@ -1018,7 +1018,7 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
     func onInviteeRejected(identifier: String, invitee: String) {
         if let seatInvitation = mPickSeatInvitationDic.removeValue(forKey: identifier) {
             guard let audience = memberAudienceDic[seatInvitation.inviteUserId] else { return }
-            viewResponder?.showToast(message: LocalizeReplaceXX(.refuseBespeakerText, audience.userInfo.userName))
+            viewResponder?.showToast(message: localizeReplaceXX(.refuseBespeakerText, audience.userInfo.userName))
             changeAudience(status: AudienceInfoModel.TYPE_IDEL, user: audience.userInfo)
         }
     }
@@ -1045,67 +1045,67 @@ extension TRTCChorusViewModel: TRTCChorusRoomDelegate {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let seatmutedText = ChorusLocalize("Demo.TRTC.Chorus.onseatmuted")
-    static let micmutedText = ChorusLocalize("Demo.TRTC.Salon.micmuted")
-    static let micunmutedText = ChorusLocalize("Demo.TRTC.Salon.micunmuted")
-    static let mutedText = ChorusLocalize("Demo.TRTC.Chorus.ismuted")
-    static let unmutedText = ChorusLocalize("Demo.TRTC.Chorus.isunmuted")
-    static let seatuninitText = ChorusLocalize("Demo.TRTC.Salon.seatlistnotinit")
-    static let enterSuccessText = ChorusLocalize("Demo.TRTC.Salon.enterroomsuccess")
-    static let enterFailedText = ChorusLocalize("Demo.TRTC.Salon.enterroomfailed")
-    static let createRoomFailedText = ChorusLocalize("Demo.TRTC.LiveRoom.createroomfailed")
-    static let meText = ChorusLocalize("Demo.TRTC.LiveRoom.me")
-    static let sendSuccessText = ChorusLocalize("Demo.TRTC.Chorus.sendsuccess")
-    static let sendFailedText = ChorusLocalize("Demo.TRTC.Chorus.sendfailedxx")
-    static let cupySeatSuccessText = ChorusLocalize("Demo.TRTC.Salon.hostoccupyseatsuccess")
-    static let cupySeatFailedText = ChorusLocalize("Demo.TRTC.Salon.hostoccupyseatfailed")
-    static let onlyAnchorOperationText = ChorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
-    static let seatLockedText = ChorusLocalize("Demo.TRTC.Chorus.seatislockedandcanthandup")
-    static let audienceText = ChorusLocalize("Demo.TRTC.Salon.audience")
-    static let otherAnchorText = ChorusLocalize("Demo.TRTC.Chorus.otheranchor")
-    static let isInxxSeatText = ChorusLocalize("Demo.TRTC.Chorus.isinxxseat")
-    static let notInitText = ChorusLocalize("Demo.TRTC.Chorus.seatisnotinittocanthandsup")
-    static let handsupText = ChorusLocalize("Demo.TRTC.Salon.handsup")
-    static let totaxxText = ChorusLocalize("Demo.TRTC.Chorus.totaxx")
-    static let unmuteOneText = ChorusLocalize("Demo.TRTC.Chorus.unmuteone")
-    static let muteOneText = ChorusLocalize("Demo.TRTC.Chorus.muteone")
-    static let makeAudienceText = ChorusLocalize("Demo.TRTC.Chorus.makeoneaudience")
-    static let inviteHandsupText = ChorusLocalize("Demo.TRTC.Chorus.invitehandsup")
-    static let banSeatText = ChorusLocalize("Demo.TRTC.Chorus.banseat")
-    static let liftbanSeatText = ChorusLocalize("Demo.TRTC.Chorus.liftbanseat")
-    static let seatBusyText = ChorusLocalize("Demo.TRTC.Chorus.seatisbusy")
-    static let sendInviteSuccessText = ChorusLocalize("Demo.TRTC.Chorus.sendinvitesuccess")
-    static let reqExpiredText = ChorusLocalize("Demo.TRTC.Salon.reqisexpired")
-    static let acceptReqFailedText = ChorusLocalize("Demo.TRTC.Salon.acceptreqfailed")
-    static let audienceSuccessText = ChorusLocalize("Demo.TRTC.Salon.audiencesuccess")
-    static let audienceFailedxxText = ChorusLocalize("Demo.TRTC.Salon.audiencefailedxx")
-    static let beingArchonText = ChorusLocalize("Demo.TRTC.Salon.isbeingarchon")
-    static let roomNotReadyText = ChorusLocalize("Demo.TRTC.Salon.roomnotready")
-    static let reqSentText = ChorusLocalize("Demo.TRTC.Chorus.reqsentandwaitforarchondeal")
-    static let reqSendFailedxxText = ChorusLocalize("Demo.TRTC.Chorus.reqsendfailedxx")
-    static let handsupSuccessText = ChorusLocalize("Demo.TRTC.Salon.successbecomespaker")
-    static let handsupFailedText = ChorusLocalize("Demo.TRTC.Salon.failedbecomespaker")
+    static let seatmutedText = chorusLocalize("Demo.TRTC.Chorus.onseatmuted")
+    static let micmutedText = chorusLocalize("Demo.TRTC.Salon.micmuted")
+    static let micunmutedText = chorusLocalize("Demo.TRTC.Salon.micunmuted")
+    static let mutedText = chorusLocalize("Demo.TRTC.Chorus.ismuted")
+    static let unmutedText = chorusLocalize("Demo.TRTC.Chorus.isunmuted")
+    static let seatuninitText = chorusLocalize("Demo.TRTC.Salon.seatlistnotinit")
+    static let enterSuccessText = chorusLocalize("Demo.TRTC.Salon.enterroomsuccess")
+    static let enterFailedText = chorusLocalize("Demo.TRTC.Salon.enterroomfailed")
+    static let createRoomFailedText = chorusLocalize("Demo.TRTC.LiveRoom.createroomfailed")
+    static let meText = chorusLocalize("Demo.TRTC.LiveRoom.me")
+    static let sendSuccessText = chorusLocalize("Demo.TRTC.Chorus.sendsuccess")
+    static let sendFailedText = chorusLocalize("Demo.TRTC.Chorus.sendfailedxx")
+    static let cupySeatSuccessText = chorusLocalize("Demo.TRTC.Salon.hostoccupyseatsuccess")
+    static let cupySeatFailedText = chorusLocalize("Demo.TRTC.Salon.hostoccupyseatfailed")
+    static let onlyAnchorOperationText = chorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
+    static let seatLockedText = chorusLocalize("Demo.TRTC.Chorus.seatislockedandcanthandup")
+    static let audienceText = chorusLocalize("Demo.TRTC.Salon.audience")
+    static let otherAnchorText = chorusLocalize("Demo.TRTC.Chorus.otheranchor")
+    static let isInxxSeatText = chorusLocalize("Demo.TRTC.Chorus.isinxxseat")
+    static let notInitText = chorusLocalize("Demo.TRTC.Chorus.seatisnotinittocanthandsup")
+    static let handsupText = chorusLocalize("Demo.TRTC.Salon.handsup")
+    static let totaxxText = chorusLocalize("Demo.TRTC.Chorus.totaxx")
+    static let unmuteOneText = chorusLocalize("Demo.TRTC.Chorus.unmuteone")
+    static let muteOneText = chorusLocalize("Demo.TRTC.Chorus.muteone")
+    static let makeAudienceText = chorusLocalize("Demo.TRTC.Chorus.makeoneaudience")
+    static let inviteHandsupText = chorusLocalize("Demo.TRTC.Chorus.invitehandsup")
+    static let banSeatText = chorusLocalize("Demo.TRTC.Chorus.banseat")
+    static let liftbanSeatText = chorusLocalize("Demo.TRTC.Chorus.liftbanseat")
+    static let seatBusyText = chorusLocalize("Demo.TRTC.Chorus.seatisbusy")
+    static let sendInviteSuccessText = chorusLocalize("Demo.TRTC.Chorus.sendinvitesuccess")
+    static let reqExpiredText = chorusLocalize("Demo.TRTC.Salon.reqisexpired")
+    static let acceptReqFailedText = chorusLocalize("Demo.TRTC.Salon.acceptreqfailed")
+    static let audienceSuccessText = chorusLocalize("Demo.TRTC.Salon.audiencesuccess")
+    static let audienceFailedxxText = chorusLocalize("Demo.TRTC.Salon.audiencefailedxx")
+    static let beingArchonText = chorusLocalize("Demo.TRTC.Salon.isbeingarchon")
+    static let roomNotReadyText = chorusLocalize("Demo.TRTC.Salon.roomnotready")
+    static let reqSentText = chorusLocalize("Demo.TRTC.Chorus.reqsentandwaitforarchondeal")
+    static let reqSendFailedxxText = chorusLocalize("Demo.TRTC.Chorus.reqsendfailedxx")
+    static let handsupSuccessText = chorusLocalize("Demo.TRTC.Salon.successbecomespaker")
+    static let handsupFailedText = chorusLocalize("Demo.TRTC.Salon.failedbecomespaker")
     
-    static let alertText = ChorusLocalize("Demo.TRTC.LiveRoom.prompt")
-    static let invitexxSeatText = ChorusLocalize("Demo.TRTC.Chorus.anchorinvitexxseat")
-    static let refuseHandsupText = ChorusLocalize("Demo.TRTC.Chorus.refusehandsupreq")
-    static let applyxxSeatText = ChorusLocalize("Demo.TRTC.Chorus.applyforxxseat")
-    static let closeRoomText = ChorusLocalize("Demo.TRTC.Salon.archonclosedroom")
-    static let seatlistWrongText = ChorusLocalize("Demo.TRTC.Chorus.seatlistwentwrong")
-    static let beyySeatText = ChorusLocalize("Demo.TRTC.Chorus.xxbeyyseat")
-    static let audienceyySeatText = ChorusLocalize("Demo.TRTC.Chorus.xxaudienceyyseat")
-    static let bemutedxxText = ChorusLocalize("Demo.TRTC.Chorus.xxisbemuted")
-    static let beunmutedxxText = ChorusLocalize("Demo.TRTC.Chorus.xxisbeunmuted")
-    static let ownerxxSeatText = ChorusLocalize("Demo.TRTC.Chorus.ownerxxyyseat")
-    static let banText = ChorusLocalize("Demo.TRTC.Chorus.ban")
-    static let inRoomText = ChorusLocalize("Demo.TRTC.LiveRoom.xxinroom")
-    static let exitRoomText = ChorusLocalize("Demo.TRTC.Chorus.xxexitroom")
-    static let hugHandsupSuccessText = ChorusLocalize("Demo.TRTC.Chorus.hugxxhandsupsuccess")
-    static let refuseBespeakerText = ChorusLocalize("Demo.TRTC.Chorus.refusebespeaker")
-    static let sureToLeaveSeatText = ChorusLocalize("Demo.TRTC.Chorus.alertdeleteallmusic")
-    static let takeSeatText = ChorusLocalize("Demo.TRTC.Chorus.micon")
-    static let lockSeatText = ChorusLocalize("Demo.TRTC.Chorus.lockseat")
-    static let unlockSeatText = ChorusLocalize("Demo.TRTC.Chorus.unlockseat")
-    static let xxSeatSelectzzSongText = ChorusLocalize("Demo.TRTC.Chorus.xxmicyyselectzz")
-    static let cannotleavetheseatText = ChorusLocalize("Demo.TRTC.Chorus.cannotleavetheseat")
+    static let alertText = chorusLocalize("Demo.TRTC.LiveRoom.prompt")
+    static let invitexxSeatText = chorusLocalize("Demo.TRTC.Chorus.anchorinvitexxseat")
+    static let refuseHandsupText = chorusLocalize("Demo.TRTC.Chorus.refusehandsupreq")
+    static let applyxxSeatText = chorusLocalize("Demo.TRTC.Chorus.applyforxxseat")
+    static let closeRoomText = chorusLocalize("Demo.TRTC.Salon.archonclosedroom")
+    static let seatlistWrongText = chorusLocalize("Demo.TRTC.Chorus.seatlistwentwrong")
+    static let beyySeatText = chorusLocalize("Demo.TRTC.Chorus.xxbeyyseat")
+    static let audienceyySeatText = chorusLocalize("Demo.TRTC.Chorus.xxaudienceyyseat")
+    static let bemutedxxText = chorusLocalize("Demo.TRTC.Chorus.xxisbemuted")
+    static let beunmutedxxText = chorusLocalize("Demo.TRTC.Chorus.xxisbeunmuted")
+    static let ownerxxSeatText = chorusLocalize("Demo.TRTC.Chorus.ownerxxyyseat")
+    static let banText = chorusLocalize("Demo.TRTC.Chorus.ban")
+    static let inRoomText = chorusLocalize("Demo.TRTC.LiveRoom.xxinroom")
+    static let exitRoomText = chorusLocalize("Demo.TRTC.Chorus.xxexitroom")
+    static let hugHandsupSuccessText = chorusLocalize("Demo.TRTC.Chorus.hugxxhandsupsuccess")
+    static let refuseBespeakerText = chorusLocalize("Demo.TRTC.Chorus.refusebespeaker")
+    static let sureToLeaveSeatText = chorusLocalize("Demo.TRTC.Chorus.alertdeleteallmusic")
+    static let takeSeatText = chorusLocalize("Demo.TRTC.Chorus.micon")
+    static let lockSeatText = chorusLocalize("Demo.TRTC.Chorus.lockseat")
+    static let unlockSeatText = chorusLocalize("Demo.TRTC.Chorus.unlockseat")
+    static let xxSeatSelectzzSongText = chorusLocalize("Demo.TRTC.Chorus.xxmicyyselectzz")
+    static let cannotleavetheseatText = chorusLocalize("Demo.TRTC.Chorus.cannotleavetheseat")
 }

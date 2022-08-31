@@ -308,14 +308,14 @@ fileprivate class TRTCChorusFloatingWindow: UIWindow {
     
 //    lazy var muteBtn: UIButton = {
 //        let btn = UIButton(type: .custom)
-//        btn.setImage(UIImage(named: "volume", in: ChorusBundle(), compatibleWith: nil), for: .normal)
-//        btn.setImage(UIImage(named: "volume_off", in: ChorusBundle(), compatibleWith: nil), for: .selected)
+//        btn.setImage(UIImage(named: "volume", in: chorusBundle(), compatibleWith: nil), for: .normal)
+//        btn.setImage(UIImage(named: "volume_off", in: chorusBundle(), compatibleWith: nil), for: .selected)
 //        return btn
 //    }()
     
     lazy var closeBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "close", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "close", in: chorusBundle(), compatibleWith: nil), for: .normal)
         return btn
     }()
     
@@ -327,10 +327,10 @@ fileprivate class TRTCChorusFloatingWindow: UIWindow {
 }
 
 fileprivate extension String {
-    static let exitText = ChorusLocalize("Demo.TRTC.Chorus.exit")
-    static let sureToExitText = ChorusLocalize("Demo.TRTC.Chorus.isvoicingandsuretoexit")
-    static let acceptText = ChorusLocalize("Demo.TRTC.LiveRoom.accept")
-    static let refuseText = ChorusLocalize("Demo.TRTC.LiveRoom.refuse")
-    static let mutedText = ChorusLocalize("Demo.TRTC.Chorus.ismuted")
-    static let unmutedText = ChorusLocalize("Demo.TRTC.Chorus.isunmuted")
+    static let exitText = chorusLocalize("Demo.TRTC.Chorus.exit")
+    static let sureToExitText = chorusLocalize("Demo.TRTC.Chorus.isvoicingandsuretoexit")
+    static let acceptText = chorusLocalize("Demo.TRTC.LiveRoom.accept")
+    static let refuseText = chorusLocalize("Demo.TRTC.LiveRoom.refuse")
+    static let mutedText = chorusLocalize("Demo.TRTC.Chorus.ismuted")
+    static let unmutedText = chorusLocalize("Demo.TRTC.Chorus.isunmuted")
 }
