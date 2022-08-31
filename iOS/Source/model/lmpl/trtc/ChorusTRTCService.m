@@ -46,7 +46,8 @@ static const int TC_TRTC_FRAMEWORK   = 1;
     [self.mTRTCCloud exitRoom];
 }
 
-- (void)enterRoomWithSdkAppId:(UInt32)sdkAppId roomId:(NSString *)roomId userId:(NSString *)userId userSign:(NSString *)userSign role:(NSInteger)role callback:(TXChorusCallback _Nullable)callback {
+- (void)enterRoomWithSdkAppId:(UInt32)sdkAppId roomId:(NSString *)roomId userId:(NSString *)userId
+ userSign:(NSString *)userSign role:(NSInteger)role callback:(TXChorusCallback _Nullable)callback {
     BOOL isParamError = NO;
     if (roomId == nil || [roomId isEqualToString:@""]) {
         isParamError = YES;

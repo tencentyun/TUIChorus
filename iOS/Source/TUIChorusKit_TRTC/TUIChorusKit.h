@@ -3,6 +3,7 @@
 //  Pods
 //
 //  Created by adams on 2021/7/14.
+//  Copyright © 2021 Tencent. All rights reserved.
 //
 
 #ifndef TUIChorusKit_h

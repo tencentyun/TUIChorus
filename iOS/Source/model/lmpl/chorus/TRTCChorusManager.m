@@ -18,21 +18,21 @@
 #define CHORUS_LOG_TAG TRTCChorusManager
 
 //麦上相关
-#define kChorusCmd @"cmd"
-#define kChorusTimestampPlay @"startPlayMusicTS"
-#define kChorusTimestampStop @"requestStopTS"
-#define kChorusMusicID @"music_id"
-#define kChorusMusicDuration @"music_duration"
-#define kChorusCmdStart @"startChorus"
-#define kChorusCmdStop @"stopChorus"
+#define KChorusCmd @"cmd"
+#define KChorusTimestampPlay @"startPlayMusicTS"
+#define KChorusTimestampStop @"requestStopTS"
+#define KChorusMusicID @"music_id"
+#define KChorusMusicDuration @"music_duration"
+#define KChorusCmdStart @"startChorus"
+#define KChorusCmdStop @"stopChorus"
 #define CHORUS_MUSIC_START_DELAY 3000
 #define CHORUS_PRELOAD_MUSIC_DELAY 400
 
 //麦下相关
 #define CHORUS_SEI_PAYLOAD_TYPE 242
-#define V2TXLiveMode_SIMPLE 101
-#define kMusicCurrentTs @"musicCurrentTS"
-#define kMusicCurrentId @"musicCurrentId"
+#define V2TXLIVEMODE_SIMPLE 101
+#define KMusicCurrentTs @"musicCurrentTS"
+#define KMusicCurrentId @"musicCurrentId"
 
 @interface TRTCCloud(ChorusLog)
 // 打印一些合唱的关键log到本地日志中
@@ -228,23 +228,23 @@
         return;
     }
     
-    NSObject *cmdObj = [json objectForKey:kChorusCmd];
+    NSObject *cmdObj = [json objectForKey:KChorusCmd];
     if(![cmdObj isKindOfClass:[NSString class]]) {
         [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager ignore command, userId:%@, cmdObj is not a NSString, current_ntp:%ld", userId, [TXLiveBase getNetworkTimestamp]]];
         return;
     }
     
     
-    NSString *musicId = [json objectForKey:kChorusMusicID];
+    NSString *musicId = [json objectForKey:KChorusMusicID];
     if ([musicId intValue] == 0) {
         TRTCLog(@"%@", [NSString stringWithFormat:@"TRTCChorus ignore command, userId:%@, musicID is zero, current_ntp:%ld", userId, [TXLiveBase getNetworkTimestamp]]);
         return;
     }
-    self.musicDuration = [[json objectForKey:kChorusMusicDuration] integerValue];
+    self.musicDuration = [[json objectForKey:KChorusMusicDuration] integerValue];
     
     NSString *cmd = (NSString *)cmdObj;
-    if ([cmd isEqualToString:kChorusCmdStart]) {
-        NSObject *startPlayMusicTsObj = [json objectForKey:kChorusTimestampPlay];
+    if ([cmd isEqualToString:KChorusCmdStart]) {
+        NSObject *startPlayMusicTsObj = [json objectForKey:KChorusTimestampPlay];
         if (!startPlayMusicTsObj || (![startPlayMusicTsObj isKindOfClass:[NSNumber class]])){
             [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager ignore start command, userId:%@, startPlayMusicTS not found, current_ntp:%ld", userId, [TXLiveBase getNetworkTimestamp]]];
             return;
@@ -252,7 +252,9 @@
         NSInteger startPlayMusicTs = ((NSNumber *)startPlayMusicTsObj).longLongValue;
         if (startPlayMusicTs < self.requestStopChorusTs) {
             //当前收到的命令是在请求停止合唱之前发出的，需要忽略掉，否则会导致请求停止后又开启了合唱
-            [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager receive kStartChorusMsg that sent before requesting stop, ignore. userId:%@, startPlayMusicTs:%ld, requestStopChorusTs:%ld, current_ntp:%ld", userId, startPlayMusicTs, self.requestStopChorusTs, [TXLiveBase getNetworkTimestamp]]];
+            [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:
+            @"TRTCChorusManager receive kStartChorusMsg that sent before requesting stop, ignore. userId:%@, startPlayMusicTs:%ld, requestStopChorusTs:%ld, current_ntp:%ld",
+            userId, startPlayMusicTs, self.requestStopChorusTs, [TXLiveBase getNetworkTimestamp]]];
             return;
         }
         if (self.isChorusOn == NO) {
@@ -278,8 +280,8 @@
                 }
             }];
         }
-    } else if ([cmd isEqualToString:kChorusCmdStop]) {
-        NSObject *requestStopTsObj = [json objectForKey:kChorusTimestampStop];
+    } else if ([cmd isEqualToString:KChorusCmdStop]) {
+        NSObject *requestStopTsObj = [json objectForKey:KChorusTimestampStop];
         if (!requestStopTsObj || (![requestStopTsObj isKindOfClass:[NSNumber class]])) {
             [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager ignore stop command, requestStopTS not found, userId:%@, current_ntp:%ld", userId, [TXLiveBase getNetworkTimestamp]]];
             return;
@@ -305,7 +307,7 @@
                                                          options:NSJSONReadingMutableContainers
                                                            error:&error];
     if (!error) {
-        NSObject *musicIdObj = [json objectForKey:kMusicCurrentId];
+        NSObject *musicIdObj = [json objectForKey:KMusicCurrentId];
         if (musicIdObj && [musicIdObj isKindOfClass:[NSNumber class]]) {
             int32_t musicId = ((NSNumber *)musicIdObj).intValue;
             if (self.currentPlayMusicID != musicId) {
@@ -315,7 +317,7 @@
             [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager onReceiveSeiMessage ignored, music id not found, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
         }
         
-        NSObject *progressObj = [json objectForKey:kMusicCurrentTs];
+        NSObject *progressObj = [json objectForKey:KMusicCurrentTs];
         if (progressObj && [progressObj isKindOfClass:[NSNumber class]]) {
             NSInteger progress = ((NSNumber *)progressObj).integerValue;
             //通知歌曲进度，用户会在这里进行歌词的滚动
@@ -408,7 +410,7 @@
 #pragma mark - cdn相关
 - (void)initPusher {
     [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager initPusher, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
-    self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:V2TXLiveMode_SIMPLE];
+    self.pusher = [[V2TXLivePusher alloc] initWithLiveMode:V2TXLIVEMODE_SIMPLE];
     [self.pusher setObserver:self];
     V2TXLiveVideoEncoderParam *param = [V2TXLiveVideoEncoderParam new];
     param.videoResolution = V2TXLiveVideoResolution960x540;
@@ -509,7 +511,9 @@
                     [self.delegate onMusicPrepareToPlay:self.currentPlayMusicID];
                 }
             }];
-            [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager start play music, current_progress:%ld, current_ntp:%ld", [[self audioEffecManager] getMusicCurrentPosInMS:self.currentPlayMusicID], [TXLiveBase getNetworkTimestamp]]];
+            [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:
+            @"TRTCChorusManager start play music, current_progress:%ld, current_ntp:%ld", [[self
+            audioEffecManager] getMusicCurrentPosInMS:self.currentPlayMusicID], [TXLiveBase getNetworkTimestamp]]];
         } else {
             [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager start play music failed %ld, current_ntp:%ld", errCode, [TXLiveBase getNetworkTimestamp]]];
             [self clearChorusState];
@@ -536,8 +540,8 @@
         }];
         if (self.pusher.isPushing) {
             NSDictionary *progressMsg = @{
-                kMusicCurrentTs: @([[self audioEffecManager] getMusicCurrentPosInMS:self.currentPlayMusicID]),
-                kMusicCurrentId: @(self.currentPlayMusicID),
+                KMusicCurrentTs: @([[self audioEffecManager] getMusicCurrentPosInMS:self.currentPlayMusicID]),
+                KMusicCurrentId: @(self.currentPlayMusicID),
             };
             NSString *jsonString = [self jsonStringFrom:progressMsg];
             [self.pusher sendSeiMessage:CHORUS_SEI_PAYLOAD_TYPE data:[jsonString dataUsingEncoding:NSUTF8StringEncoding]];
@@ -570,7 +574,8 @@
         [self preloadMusic:self.musicParam.path startMs:0];
         if (!self.delayStartChorusMusicTimer) {
             NSInteger initialTime = [TXLiveBase getNetworkTimestamp];
-            self.delayStartChorusMusicTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+            self.delayStartChorusMusicTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
+             dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
             dispatch_source_set_timer(self.delayStartChorusMusicTimer, DISPATCH_TIME_NOW, DISPATCH_TIME_FOREVER, 0);
             dispatch_source_set_event_handler(self.delayStartChorusMusicTimer, ^{
                 while (true) {
@@ -582,7 +587,8 @@
                             [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager schedulePlayMusic abort, chorus has been stopped, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]];
                             break;
                         }
-                        [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock onProgress:progressBlock onComplete:completedBlock];
+                        [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock
+                         onProgress:progressBlock onComplete:completedBlock];
                         break;
                     }
                 }
@@ -590,13 +596,15 @@
             dispatch_resume(_delayStartChorusMusicTimer);
         }
     } else {
-        [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock onProgress:progressBlock onComplete:completedBlock];
+        [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock onProgress:progressBlock
+         onComplete:completedBlock];
         if (delayMs < 0) {
             NSInteger startMS = -delayMs + CHORUS_PRELOAD_MUSIC_DELAY;
             [self preloadMusic:self.musicParam.path startMs:startMS];
             if (!self.preloadMusicTimer) {
                 NSInteger initialTime = [TXLiveBase getNetworkTimestamp];
-                self.preloadMusicTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
+                self.preloadMusicTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
+                 dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0));
                 dispatch_source_set_timer(self.preloadMusicTimer, DISPATCH_TIME_NOW, DISPATCH_TIME_FOREVER, 0);
                 dispatch_source_set_event_handler(self.preloadMusicTimer, ^{
                     while (true) {
@@ -608,7 +616,8 @@
                                 TRTCLog(@"%@",[NSString stringWithFormat:@"TRTCChorusManager schedulePlayMusic abort, chorus has been stopped, current_ntp:%ld", [TXLiveBase getNetworkTimestamp]]);
                                 break;
                             }
-                            [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock onProgress:progressBlock onComplete:completedBlock];
+                            [[self audioEffecManager] startPlayMusic:self.musicParam onStart:startBlock
+                             onProgress:progressBlock onComplete:completedBlock];
                             TRTCLog(@"%@",[NSString stringWithFormat:@"TRTCChorusManager calling startPlayMusic, startMs:%ld, current_ntp:%ld", startMS, [TXLiveBase getNetworkTimestamp]]);
                             break;
                         }
@@ -639,10 +648,10 @@
 #pragma mark - 发送合唱信令相关
 - (void)sendStartChorusMsg {
     NSDictionary *json = @{
-        kChorusCmd: kChorusCmdStart,
-        kChorusTimestampPlay: @(self.startPlayChorusMusicTs),
-        kChorusMusicID: [NSString stringWithFormat:@"%d",self.currentPlayMusicID],
-        kChorusMusicDuration: [NSString stringWithFormat:@"%ld",self.musicDuration],
+        KChorusCmd: KChorusCmdStart,
+        KChorusTimestampPlay: @(self.startPlayChorusMusicTs),
+        KChorusMusicID: [NSString stringWithFormat:@"%d",self.currentPlayMusicID],
+        KChorusMusicDuration: [NSString stringWithFormat:@"%ld",self.musicDuration],
     };
     NSString *jsonString = [self jsonStringFrom:json];
     [self sendCustomMessage:jsonString reliable:NO];
@@ -650,9 +659,9 @@
 
 - (void)sendStopChorusMsg {
     NSDictionary *json = @{
-        kChorusCmd: kChorusCmdStop,
-        kChorusTimestampStop: @(self.requestStopChorusTs),
-        kChorusMusicID: [NSString stringWithFormat:@"%d",self.currentPlayMusicID],
+        KChorusCmd: KChorusCmdStop,
+        KChorusTimestampStop: @(self.requestStopChorusTs),
+        KChorusMusicID: [NSString stringWithFormat:@"%d",self.currentPlayMusicID],
     };
     NSString *jsonString = [self jsonStringFrom:json];
     [self sendCustomMessage:jsonString reliable:YES];

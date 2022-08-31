@@ -62,7 +62,7 @@ class TRTCChorusTopView: UIView {
     
     public func reloadRoomInfo(_ info: ChorusRoomInfo) {
         roomTitleLabel.text = info.roomName
-        roomDescLabel.text = LocalizeReplaceXX(.roomIdDescText, String(info.roomID))
+        roomDescLabel.text = localizeReplaceXX(.roomIdDescText, String(info.roomID))
         setNeedsDisplay()
     }
     
@@ -103,7 +103,7 @@ class TRTCChorusTopView: UIView {
     
     private let shareBtn : UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "share", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "share", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         btn.isHidden = true
         return btn
@@ -111,14 +111,14 @@ class TRTCChorusTopView: UIView {
     
     private let closeBtn : UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "exit", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "exit", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         return btn
     }()
     
     private let reportBtn : UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "chorus_report", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "chorus_report", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         return btn
     }()
@@ -138,7 +138,7 @@ class TRTCChorusTopView: UIView {
     
     private let nextBtn : UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "room_scrollright", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "room_scrollright", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         return btn
     }()
@@ -379,10 +379,10 @@ extension TRTCChorusTopView : UICollectionViewDelegate {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let roomTitleText = ChorusLocalize("Demo.TRTC.Chorus.roomname")
-    static let roomIdDescText = ChorusLocalize("Demo.TRTC.Chorus.roomidxx")
-    static let welcomeText = ChorusLocalize("Demo.TRTC.Chorus.xxenterroom")
-    static let exitText = ChorusLocalize("Demo.TRTC.Chorus.exit")
-    static let sureToExitText = ChorusLocalize("Demo.TRTC.Chorus.isvoicingandsuretoexit")
-    static let alertToMicoffText = ChorusLocalize("Demo.TRTC.Chorus.quitandgetoff")
+    static let roomTitleText = chorusLocalize("Demo.TRTC.Chorus.roomname")
+    static let roomIdDescText = chorusLocalize("Demo.TRTC.Chorus.roomidxx")
+    static let welcomeText = chorusLocalize("Demo.TRTC.Chorus.xxenterroom")
+    static let exitText = chorusLocalize("Demo.TRTC.Chorus.exit")
+    static let sureToExitText = chorusLocalize("Demo.TRTC.Chorus.isvoicingandsuretoexit")
+    static let alertToMicoffText = chorusLocalize("Demo.TRTC.Chorus.quitandgetoff")
 }

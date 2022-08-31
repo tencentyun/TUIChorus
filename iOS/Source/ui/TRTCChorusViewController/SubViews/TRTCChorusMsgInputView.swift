@@ -152,8 +152,8 @@ class TRTCChorusMsgInputView: UIView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let saysmtText = ChorusLocalize("Demo.TRTC.Chorus.saysomething")
-    static let sendText = ChorusLocalize("Demo.TRTC.LiveRoom.send")
+    static let saysmtText = chorusLocalize("Demo.TRTC.Chorus.saysomething")
+    static let sendText = chorusLocalize("Demo.TRTC.LiveRoom.send")
 
 }
 

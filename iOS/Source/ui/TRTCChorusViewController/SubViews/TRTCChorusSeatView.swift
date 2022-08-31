@@ -53,7 +53,7 @@ class TRTCChorusSeatView: UIView {
     let avatarImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage.init(named: "Chorus_placeholder_avatar", in: ChorusBundle(), compatibleWith: nil)
+        imageView.image = UIImage.init(named: "Chorus_placeholder_avatar", in: chorusBundle(), compatibleWith: nil)
         imageView.layer.masksToBounds = true
         return imageView
     }()
@@ -61,7 +61,7 @@ class TRTCChorusSeatView: UIView {
     let muteImageView: UIImageView = {
         let imageView = UIImageView.init(frame: .zero)
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage.init(named: "audience_voice_off", in: ChorusBundle(), compatibleWith: nil)
+        imageView.image = UIImage.init(named: "audience_voice_off", in: chorusBundle(), compatibleWith: nil)
         imageView.isHidden = true
         return imageView
     }()
@@ -137,7 +137,7 @@ class TRTCChorusSeatView: UIView {
         if model.isUsed {
             // 有人
             if let userSeatInfo = model.seatUser {
-                let placeholder = UIImage.init(named: "avatar2_100", in: ChorusBundle(), compatibleWith: nil)
+                let placeholder = UIImage.init(named: "avatar2_100", in: chorusBundle(), compatibleWith: nil)
                 let avatarStr = TRTCChorusIMManager.sharedManager().checkAvatar(userSeatInfo.userAvatar)
                 if let avatarURL = URL.init(string: avatarStr) {
                     avatarImageView.kf.setImage(with: avatarURL, placeholder: placeholder)
@@ -148,13 +148,13 @@ class TRTCChorusSeatView: UIView {
             }
         } else {
             // 无人
-            avatarImageView.image = UIImage.init(named: "seatDefault", in: ChorusBundle(), compatibleWith: nil)
-            nameLabel.text = LocalizeReplaceXX(.seatIndexText, "\(seatIndex + 1)")
+            avatarImageView.image = UIImage.init(named: "seatDefault", in: chorusBundle(), compatibleWith: nil)
+            nameLabel.text = localizeReplaceXX(.seatIndexText, "\(seatIndex + 1)")
         }
         
         if model.isClosed {
             // close 状态
-            avatarImageView.image = UIImage.init(named: "room_lockseat", in: ChorusBundle(), compatibleWith: nil)
+            avatarImageView.image = UIImage.init(named: "room_lockseat", in: chorusBundle(), compatibleWith: nil)
             speakView.isHidden = true
             muteImageView.isHidden = true
             return
@@ -172,10 +172,10 @@ class TRTCChorusSeatView: UIView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let handsupText = ChorusLocalize("Demo.TRTC.Chorus.presshandsup")
-    static let lockedText = ChorusLocalize("Demo.TRTC.Chorus.islocked")
-    static let inviteHandsupText = ChorusLocalize("Demo.TRTC.Chorus.invitehandsup")
-    static let seatIndexText = ChorusLocalize("Demo.TRTC.Chorus.xxmic")
+    static let handsupText = chorusLocalize("Demo.TRTC.Chorus.presshandsup")
+    static let lockedText = chorusLocalize("Demo.TRTC.Chorus.islocked")
+    static let inviteHandsupText = chorusLocalize("Demo.TRTC.Chorus.invitehandsup")
+    static let seatIndexText = chorusLocalize("Demo.TRTC.Chorus.xxmic")
 }
 
 

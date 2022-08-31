@@ -124,7 +124,7 @@ class TRTCChorusAudienceTableViewCell: UITableViewCell {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let acceptText = ChorusLocalize("Demo.TRTC.LiveRoom.accept")
-    static let inviteText = ChorusLocalize("Demo.TRTC.LiveRoom.invite")
+    static let acceptText = chorusLocalize("Demo.TRTC.LiveRoom.accept")
+    static let inviteText = chorusLocalize("Demo.TRTC.LiveRoom.invite")
 }
 

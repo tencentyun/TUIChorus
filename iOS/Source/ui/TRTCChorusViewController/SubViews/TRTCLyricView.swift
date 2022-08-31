@@ -19,7 +19,7 @@ class TRTCLyricView: UIView {
     }()
     
     lazy var bgView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "lyric_bg", in: ChorusBundle(), compatibleWith: nil))
+        let imageView = UIImageView(image: UIImage(named: "lyric_bg", in: chorusBundle(), compatibleWith: nil))
         return imageView
     }()
     
@@ -38,7 +38,7 @@ class TRTCLyricView: UIView {
     }()
     
     lazy var musicIcon: UIImageView = {
-        let imageView = UIImageView(image: UIImage(named: "musicIcon", in: ChorusBundle(), compatibleWith: nil))
+        let imageView = UIImageView(image: UIImage(named: "musicIcon", in: chorusBundle(), compatibleWith: nil))
         return imageView
     }()
     
@@ -75,7 +75,7 @@ class TRTCLyricView: UIView {
     
     lazy var voiceChangeBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "room_bgmusic", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "room_bgmusic", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         btn.isHidden = true
         return btn
@@ -83,7 +83,7 @@ class TRTCLyricView: UIView {
     
     lazy var soundEffectBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setImage(UIImage(named: "tuning", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "tuning", in: chorusBundle(), compatibleWith: nil), for: .normal)
         btn.adjustsImageWhenHighlighted = false
         btn.isHidden = true
         return btn
@@ -182,7 +182,7 @@ class TRTCLyricView: UIView {
     func updateLrcView(music: ChorusMusicModel?) {
         if let music = music {
             setMusicDetail(show: true)
-            seatIndexLabel.text = LocalizeReplaceXX(.seatIndexText, "\(music.seatIndex + 1)")
+            seatIndexLabel.text = localizeReplaceXX(.seatIndexText, "\(music.seatIndex + 1)")
             userNameLabel.text = music.bookUserName
             musicNameLabel.text = music.musicName
             currentMusicID = music.musicID
@@ -502,10 +502,10 @@ extension TRTCLyricView {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let songSelectorText = ChorusLocalize("Demo.TRTC.Chorus.selectsong")
-    static let voiceChangeTitleText = ChorusLocalize("ASKit.MainMenu.VoiceChangeTitle")
-    static let placeholderText = ChorusLocalize("Demo.TRTC.Chorus.nosongs")
-    static let seatIndexText = ChorusLocalize("Demo.TRTC.Chorus.xxmic")
-    static let notInSeatText = ChorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
-    static let startChorusText = ChorusLocalize("Demo.TRTC.Chorus.StartChorus")
+    static let songSelectorText = chorusLocalize("Demo.TRTC.Chorus.selectsong")
+    static let voiceChangeTitleText = chorusLocalize("ASKit.MainMenu.VoiceChangeTitle")
+    static let placeholderText = chorusLocalize("Demo.TRTC.Chorus.nosongs")
+    static let seatIndexText = chorusLocalize("Demo.TRTC.Chorus.xxmic")
+    static let notInSeatText = chorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
+    static let startChorusText = chorusLocalize("Demo.TRTC.Chorus.StartChorus")
 }

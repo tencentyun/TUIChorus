@@ -49,7 +49,7 @@
         self.isInitIMSDK = [self.imManager initSDK:sdkAppId config:config];
         if (!self.isInitIMSDK) {
             if (callback) {
-                callback(CHORUS_SERVICE_CODE_ERROR, @"init im sdk error.");
+                callback(gCHORUS_SERVICE_CODE_ERROR, @"init im sdk error.");
             }
             return;
         }
@@ -85,13 +85,13 @@
 - (void)logout:(TXChorusCallback)callback {
     if (!self.isLogin) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"start logout fail. not login yet");
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"start logout fail. not login yet");
         }
         return;
     }
     if (self.isEnterRoom) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"start logout fail. you are in room, please exit room before logout");
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"start logout fail. you are in room, please exit room before logout");
         }
         return;
     }
@@ -134,7 +134,7 @@
                           callback:(TXChorusCallback _Nullable)callback {
     if (!self.isLogin) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"set profile fail, not login yet.");
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"set profile fail, not login yet.");
         }
         return;
     }
@@ -161,13 +161,13 @@
                     callback:(TXChorusCallback _Nullable)callback {
     if (!self.isLogin) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"im not login yet, create room fail");
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"im not login yet, create room fail");
         }
         return;
     }
     if (self.isEnterRoom) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"you have been in room");
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"you have been in room");
         }
         return;
     }
@@ -198,11 +198,11 @@
         TRTCLog(@"create room error: %d, msg: %@", code, desc);
         NSString *msg = desc ?: @"create room fiald";
         if (code == 10036) {
-            msg = LocalizeReplaceXX(ChorusLocalize(@"Demo.TRTC.Buy.chatroom"), @"https://cloud.tencent.com/document/product/269/11673");
+            msg = localizeReplaceXX(chorusLocalize(@"Demo.TRTC.Buy.chatroom"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10037) {
-            msg = LocalizeReplaceXX(ChorusLocalize(@"Demo.TRTC.Buy.grouplimit"), @"https://cloud.tencent.com/document/product/269/11673");
+            msg = localizeReplaceXX(chorusLocalize(@"Demo.TRTC.Buy.grouplimit"), @"https://cloud.tencent.com/document/product/269/11673");
         } else if (code == 10038) {
-            msg = LocalizeReplaceXX(ChorusLocalize(@"Demo.TRTC.Buy.groupmemberlimit"), @"https://cloud.tencent.com/document/product/269/11673");
+            msg = localizeReplaceXX(chorusLocalize(@"Demo.TRTC.Buy.groupmemberlimit"), @"https://cloud.tencent.com/document/product/269/11673");
         }
         
         if (code == 10025 || code == 10021) {
@@ -487,13 +487,13 @@
 - (void)getUserInfo:(NSArray<NSString *> *)userList callback:(TXChorusUserListCallback _Nullable)callback {
     if (!self.isEnterRoom) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"get user info list fail, not enter room yet", @[]);
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"get user info list fail, not enter room yet", @[]);
         }
         return;
     }
     if (!userList || userList.count == 0) {
         if (callback) {
-            callback(CHORUS_SERVICE_CODE_ERROR, @"get user info list fail, user id list is empty.", @[]);
+            callback(gCHORUS_SERVICE_CODE_ERROR, @"get user info list fail, user id list is empty.", @[]);
         }
         return;
     }
@@ -517,7 +517,8 @@
 }
 
 - (void)getAudienceList:(TXChorusUserListCallback _Nullable)callback {
-    [self.imManager getGroupMemberList:self.mRoomId filter:V2TIM_GROUP_MEMBER_FILTER_COMMON nextSeq:0 succ:^(uint64_t nextSeq, NSArray<V2TIMGroupMemberFullInfo *> *memberList) {
+    [self.imManager getGroupMemberList:self.mRoomId filter:V2TIM_GROUP_MEMBER_FILTER_COMMON
+     nextSeq:0 succ:^(uint64_t nextSeq, NSArray<V2TIMGroupMemberFullInfo *> *memberList) {
         if (memberList) {
             NSMutableArray *resultList = [[NSMutableArray alloc] initWithCapacity:2];
             [memberList enumerateObjectsUsingBlock:^(V2TIMGroupMemberFullInfo * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -579,12 +580,12 @@
     }
     NSString* jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     NSDictionary* dic = [jsonString mj_JSONObject];
-    NSString *version = [dic objectForKey:CHORUS_KEY_VERSION];
-    if (!version || ![version isEqualToString:CHORUS_VALUE_VERSION_STRING]) {
+    NSString *version = [dic objectForKey:gCHORUS_KEY_VERSION];
+    if (!version || ![version isEqualToString:gCHORUS_VALUE_VERSION_STRING]) {
         TRTCLog(@"protocol version is not match, ignore msg");
         return;
     }
-    NSNumber* action = [dic objectForKey:CHORUS_KEY_ACTION];
+    NSNumber* action = [dic objectForKey:gCHORUS_KEY_ACTION];
     if (!action) {
         TRTCLog(@"action can't parse from data");
         return;
@@ -601,7 +602,8 @@
             userInfo.avatarURL = info.faceURL;
             userInfo.userName = info.nickName;
             if ([self canDelegateResponseMethod:@selector(onRoomRecvRoomCustomMsg:cmd:message:userInfo:)]) {
-                [self.delegate onRoomRecvRoomCustomMsg:self.mRoomId cmd:cusPair[CHORUS_KEY_CMD] message:cusPair[CHORUS_KEY_MESSAGE] userInfo:userInfo];
+                [self.delegate onRoomRecvRoomCustomMsg:self.mRoomId cmd:cusPair[gCHORUS_KEY_CMD]
+                 message:cusPair[gCHORUS_KEY_MESSAGE] userInfo:userInfo];
             }
         }
             break;
@@ -773,27 +775,28 @@
 
 
 #pragma mark - V2TIMSignalingListener
-- (void)onReceiveNewInvitation:(NSString *)inviteID inviter:(NSString *)inviter groupID:(NSString *)groupID inviteeList:(NSArray<NSString *> *)inviteeList data:(NSString *)data{
+- (void)onReceiveNewInvitation:(NSString *)inviteID inviter:(NSString *)inviter groupID:(NSString
+ *)groupID inviteeList:(NSArray<NSString *> *)inviteeList data:(NSString *)data{
     NSDictionary *dic = [data mj_JSONObject];
     if (![dic isKindOfClass:[NSDictionary class]]) {
         TRTCLog(@"parse data error");
         return;
     }
-    NSInteger version = [[dic objectForKey:CHORUS_KEY_VERSION] integerValue];
-    if (version < CHORUS_VALUE_BASIC_VERSION) {
+    NSInteger version = [[dic objectForKey:gCHORUS_KEY_VERSION] integerValue];
+    if (version < gCHORUS_VALUE_BASIC_VERSION) {
         TRTCLog(@"protocol version is nil or not match, ignore c2c msg");
         return;
     }
-    NSString *businessID = [dic objectForKey:CHORUS_KEY_BUSINESS_ID];
-    if (!businessID || ![businessID isEqualToString:CHORUS_VALUE_BUSINESS_ID]) {
+    NSString *businessID = [dic objectForKey:gCHORUS_KEY_BUSINESS_ID];
+    if (!businessID || ![businessID isEqualToString:gCHORUS_VALUE_BUSINESS_ID]) {
         TRTCLog(@"bussiness id error");
         return;
     }
     
-    NSDictionary *cmdData = [dic objectForKey:CHORUS_KEY_DATA];
-    NSString *cmd = [cmdData objectForKey:CHORUS_KEY_CMD];
-    NSString *content = [cmdData objectForKey:CHORUS_KEY_SEATNUMBER];
-    int roomID = [[cmdData objectForKey:CHORUS_KEY_ROOM_ID] intValue];
+    NSDictionary *cmdData = [dic objectForKey:gCHORUS_KEY_DATA];
+    NSString *cmd = [cmdData objectForKey:gCHORUS_KEY_CMD];
+    NSString *content = [cmdData objectForKey:gCHORUS_KEY_SEATNUMBER];
+    int roomID = [[cmdData objectForKey:gCHORUS_KEY_ROOM_ID] intValue];
     if ([self.mRoomId intValue] != roomID) {
         TRTCLog(@"room id is not right");
         return;
@@ -869,7 +872,7 @@
     } fail:^(int code, NSString *desc) {
         @strongify(self)
         if (!self) { return; }
-        if (code == ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
+        if (code == gERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
             TRTCLog(@"modify group attrs conflict, now get group attrs");
             [self getGroupAttrsWithCallBack:^(int code, NSString * _Nonnull message) {
                 @strongify(self)
@@ -1001,7 +1004,7 @@
             callback(0, @"modify group attrs success");
         }
     } fail:^(int code, NSString *desc) {
-        if (code == ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
+        if (code == gERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT) {
             @strongify(self)
             TRTCLog(@"modify group attrs conflict, now get group attrs");
             [self getGroupAttrsWithCallBack:nil];
@@ -1042,14 +1045,14 @@
 
 - (NSString *)sendInvitation:(NSString *)cmd userId:(NSString *)userId content:(NSString *)content callback:(TXChorusCallback _Nullable)callback {
     NSDictionary *dic = @{
-        CHORUS_KEY_VERSION:@(CHORUS_VALUE_VERSION),
-        CHORUS_KEY_BUSINESS_ID:CHORUS_VALUE_BUSINESS_ID,
-        CHORUS_KEY_PLATFORM:CHORUS_VALUE_PLATFORM,
-        CHORUS_KEY_EXTRAINFO:@"",
-        CHORUS_KEY_DATA:@{
-                CHORUS_KEY_ROOM_ID:@(self.mRoomId.intValue),
-                CHORUS_KEY_CMD:cmd,
-                CHORUS_KEY_SEATNUMBER:content,
+        gCHORUS_KEY_VERSION:@(gCHORUS_VALUE_VERSION),
+        gCHORUS_KEY_BUSINESS_ID:gCHORUS_VALUE_BUSINESS_ID,
+        gCHORUS_KEY_PLATFORM:gCHORUS_VALUE_PLATFORM,
+        gCHORUS_KEY_EXTRAINFO:@"",
+        gCHORUS_KEY_DATA:@{
+                gCHORUS_KEY_ROOM_ID:@(self.mRoomId.intValue),
+                gCHORUS_KEY_CMD:cmd,
+                gCHORUS_KEY_SEATNUMBER:content,
         },
     };
     NSString *jsonString = [dic mj_JSONString];
@@ -1069,9 +1072,9 @@
 - (void)acceptInvitation:(NSString *)identifier callback:(TXChorusCallback _Nullable)callback {
     TRTCLog(@"accept %@", identifier);
     NSDictionary *dic = @{
-        CHORUS_KEY_VERSION:@(CHORUS_VALUE_VERSION),
-        CHORUS_KEY_BUSINESS_ID:CHORUS_VALUE_BUSINESS_ID,
-        CHORUS_KEY_PLATFORM:CHORUS_VALUE_PLATFORM,
+        gCHORUS_KEY_VERSION:@(gCHORUS_VALUE_VERSION),
+        gCHORUS_KEY_BUSINESS_ID:gCHORUS_VALUE_BUSINESS_ID,
+        gCHORUS_KEY_PLATFORM:gCHORUS_VALUE_PLATFORM,
     };
     NSString *jsonString = [dic mj_JSONString];
     [self.imManager accept:identifier data:jsonString succ:^{
@@ -1090,9 +1093,9 @@
 - (void)rejectInvitaiton:(NSString *)identifier callback:(TXChorusCallback _Nullable)callback {
     TRTCLog(@"reject %@", identifier);
     NSDictionary *dic = @{
-        CHORUS_KEY_VERSION:@(CHORUS_VALUE_VERSION),
-        CHORUS_KEY_BUSINESS_ID:CHORUS_VALUE_BUSINESS_ID,
-        CHORUS_KEY_PLATFORM:CHORUS_VALUE_PLATFORM,
+        gCHORUS_KEY_VERSION:@(gCHORUS_VALUE_VERSION),
+        gCHORUS_KEY_BUSINESS_ID:gCHORUS_VALUE_BUSINESS_ID,
+        gCHORUS_KEY_PLATFORM:gCHORUS_VALUE_PLATFORM,
     };
     NSString *jsonString = [dic mj_JSONString];
     [self.imManager reject:identifier data:jsonString succ:^{
@@ -1111,9 +1114,9 @@
 - (void)cancelInvitation:(NSString *)identifier callback:(TXChorusCallback _Nullable)callback {
     TRTCLog(@"cancel %@", identifier);
     NSDictionary *dic = @{
-        CHORUS_KEY_VERSION:@(CHORUS_VALUE_VERSION),
-        CHORUS_KEY_BUSINESS_ID:CHORUS_VALUE_BUSINESS_ID,
-        CHORUS_KEY_PLATFORM:CHORUS_VALUE_PLATFORM,
+        gCHORUS_KEY_VERSION:@(gCHORUS_VALUE_VERSION),
+        gCHORUS_KEY_BUSINESS_ID:gCHORUS_VALUE_BUSINESS_ID,
+        gCHORUS_KEY_PLATFORM:gCHORUS_VALUE_PLATFORM,
     };
     NSString *jsonString = [dic mj_JSONString];
     [self.imManager cancel:identifier data:jsonString succ:^{

@@ -146,7 +146,7 @@ class TRTCChorusSongSelectorTableViewCell: UITableViewCell {
             guard let model = model else {
                 return
             }
-            headerImageView.image = UIImage(named: "music_default", in: ChorusBundle(), compatibleWith: nil)
+            headerImageView.image = UIImage(named: "music_default", in: chorusBundle(), compatibleWith: nil)
             titleLabel.text = model.musicName
             descLabel.text = model.singer
             songSelectBtn.isEnabled = !model.isSelected
@@ -247,7 +247,7 @@ class TRTCChorusSongSelectorTableViewCell: UITableViewCell {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let songSelectorText = ChorusLocalize("Demo.TRTC.Chorus.selectsong")
-    static let selectedSongText = ChorusLocalize("Demo.TRTC.Chorus.selectedsong")
-    static let permissionDeniedText = ChorusLocalize("Permission denied")
+    static let songSelectorText = chorusLocalize("Demo.TRTC.Chorus.selectsong")
+    static let selectedSongText = chorusLocalize("Demo.TRTC.Chorus.selectedsong")
+    static let permissionDeniedText = chorusLocalize("Permission denied")
 }

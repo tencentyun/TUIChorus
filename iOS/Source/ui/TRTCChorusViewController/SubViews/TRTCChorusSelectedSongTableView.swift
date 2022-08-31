@@ -95,7 +95,7 @@ extension TRTCChorusSelectedSongTableView: UITableViewDataSource, UITableViewDel
             let index = indexPath.item
             if index == 0 {
                 scell.playImageView.isHidden = false
-                let path = ChorusBundle().path(forResource: "playing", ofType: "gif") ?? ""
+                let path = chorusBundle().path(forResource: "playing", ofType: "gif") ?? ""
                 scell.playImageView.kf.setImage(with: URL(fileURLWithPath: path))
                 scell.sortLabel.text = ""
                 scell.sortLabel.isHidden = true
@@ -214,7 +214,7 @@ class TRTCChorusSelectedSongTableViewCell: UITableViewCell {
     lazy var topBtn: UIButton = {
         let btn = UIButton(type: .custom)
         btn.adjustsImageWhenHighlighted = false
-        btn.setImage(UIImage(named: "top", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+        btn.setImage(UIImage(named: "top", in: chorusBundle(), compatibleWith: nil), for: .normal)
         return btn
     }()
     
@@ -224,14 +224,14 @@ class TRTCChorusSelectedSongTableViewCell: UITableViewCell {
                 return
             }
             if let url = URL(string: model.bookUserAvatar) {
-                headerImageView.kf.setImage(with: .network(url), placeholder: UIImage(named: "voiceChange_loli_sel", in: ChorusBundle(), compatibleWith: nil))
+                headerImageView.kf.setImage(with: .network(url), placeholder: UIImage(named: "voiceChange_loli_sel", in: chorusBundle(), compatibleWith: nil))
             }
             else {
-                headerImageView.image = UIImage(named: "voiceChange_loli_sel", in: ChorusBundle(), compatibleWith: nil)
+                headerImageView.image = UIImage(named: "voiceChange_loli_sel", in: chorusBundle(), compatibleWith: nil)
             }
             titleLabel.text = model.musicName
-            authorLabel.text = LocalizeReplaceXX(.originSingerText, model.singer)
-            micOrderLabel.text = LocalizeReplaceXX(.seatIndexText, "\(model.seatIndex + 1)")
+            authorLabel.text = localizeReplaceXX(.originSingerText, model.singer)
+            micOrderLabel.text = localizeReplaceXX(.seatIndexText, "\(model.seatIndex + 1)")
             userNameLabel.text = model.bookUserName
         }
     }
@@ -337,15 +337,15 @@ class TRTCChorusSelectedSongTableViewCell: UITableViewCell {
         case .playing:
             topBtn.isHidden = false
             topBtn.isEnabled = true
-            topBtn.setImage(UIImage(named: "switchSong", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+            topBtn.setImage(UIImage(named: "switchSong", in: chorusBundle(), compatibleWith: nil), for: .normal)
         case .nextPlay:
             topBtn.isHidden = false
             topBtn.isEnabled = false
-            topBtn.setImage(UIImage(named: "top", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+            topBtn.setImage(UIImage(named: "top", in: chorusBundle(), compatibleWith: nil), for: .normal)
         case .list:
             topBtn.isHidden = false
             topBtn.isEnabled = true
-            topBtn.setImage(UIImage(named: "top", in: ChorusBundle(), compatibleWith: nil), for: .normal)
+            topBtn.setImage(UIImage(named: "top", in: chorusBundle(), compatibleWith: nil), for: .normal)
         case .hide:
             topBtn.isHidden = true
         }
@@ -353,7 +353,7 @@ class TRTCChorusSelectedSongTableViewCell: UITableViewCell {
 }
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let deleteText = ChorusLocalize("Demo.TRTC.Chorus.delete")
-    static let seatIndexText = ChorusLocalize("Demo.TRTC.Chorus.xxmic")
-    static let originSingerText = ChorusLocalize("Demo.TRTC.Chorus.singerisxx")
+    static let deleteText = chorusLocalize("Demo.TRTC.Chorus.delete")
+    static let seatIndexText = chorusLocalize("Demo.TRTC.Chorus.xxmic")
+    static let originSingerText = chorusLocalize("Demo.TRTC.Chorus.singerisxx")
 }

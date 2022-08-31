@@ -269,7 +269,7 @@ fileprivate extension UIButton {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let songSelectorText = ChorusLocalize("Demo.TRTC.Chorus.Songorder")
-    static let selectedSongText = ChorusLocalize("Demo.TRTC.Chorus.ordered")
+    static let songSelectorText = chorusLocalize("Demo.TRTC.Chorus.Songorder")
+    static let selectedSongText = chorusLocalize("Demo.TRTC.Chorus.ordered")
 }
 

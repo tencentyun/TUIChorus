@@ -210,11 +210,11 @@ class TRTCChorusSoundEffectViewModel: NSObject {
     lazy var reverbDataSource: [TRTCAudioEffectCellModel] = {
         var res: [TRTCAudioEffectCellModel] = []
         let titleArray = [
-            ChorusLocalize("ASKit.MenuItem.No effect"),
-            ChorusLocalize("ASKit.MenuItem.Karaoke room"),
-            ChorusLocalize("ASKit.MenuItem.Metallic"),
-            ChorusLocalize("ASKit.MenuItem.Deep"),
-            ChorusLocalize("ASKit.MenuItem.Resonant"),
+            chorusLocalize("ASKit.MenuItem.No effect"),
+            chorusLocalize("ASKit.MenuItem.Karaoke room"),
+            chorusLocalize("ASKit.MenuItem.Metallic"),
+            chorusLocalize("ASKit.MenuItem.Deep"),
+            chorusLocalize("ASKit.MenuItem.Resonant"),
             ]
         let iconNameArray = [
             "originState_nor",
@@ -238,9 +238,9 @@ class TRTCChorusSoundEffectViewModel: NSObject {
             let model = TRTCAudioEffectCellModel()
             model.actionID = index
             model.title = title
-            model.selected = title == ChorusLocalize("ASKit.MenuItem.No effect")
-            model.icon = UIImage(named: normalIconName, in: ChorusBundle(), compatibleWith: nil)
-            model.selectIcon = UIImage(named: selectIconName, in: ChorusBundle(), compatibleWith: nil)
+            model.selected = title == chorusLocalize("ASKit.MenuItem.No effect")
+            model.icon = UIImage(named: normalIconName, in: chorusBundle(), compatibleWith: nil)
+            model.selectIcon = UIImage(named: selectIconName, in: chorusBundle(), compatibleWith: nil)
             model.action = { [weak self] in
                 guard let `self` = self else { return }
                 let type = self.switch2ReverbType(index)
@@ -258,11 +258,11 @@ class TRTCChorusSoundEffectViewModel: NSObject {
         var res: [TRTCAudioEffectCellModel] = []
         
         let titleArray =
-            [ChorusLocalize("ASKit.MenuItem.Original"),
-             ChorusLocalize("ASKit.MenuItem.Naughty boy"),
-             ChorusLocalize("ASKit.MenuItem.Little girl"),
-             ChorusLocalize("ASKit.MenuItem.Middle-aged man"),
-             ChorusLocalize("ASKit.MenuItem.Ethereal voice"),
+            [chorusLocalize("ASKit.MenuItem.Original"),
+             chorusLocalize("ASKit.MenuItem.Naughty boy"),
+             chorusLocalize("ASKit.MenuItem.Little girl"),
+             chorusLocalize("ASKit.MenuItem.Middle-aged man"),
+             chorusLocalize("ASKit.MenuItem.Ethereal voice"),
              ]
         
         let iconNameArray = [
@@ -288,9 +288,9 @@ class TRTCChorusSoundEffectViewModel: NSObject {
             let model = TRTCAudioEffectCellModel()
             model.title = title
             model.actionID = index
-            model.selected = title == ChorusLocalize("ASKit.MenuItem.Original")
-            model.icon = UIImage(named: normalIconName, in: ChorusBundle(), compatibleWith: nil)
-            model.selectIcon = UIImage(named: selectedIconName, in: ChorusBundle(), compatibleWith: nil)
+            model.selected = title == chorusLocalize("ASKit.MenuItem.Original")
+            model.icon = UIImage(named: normalIconName, in: chorusBundle(), compatibleWith: nil)
+            model.selectIcon = UIImage(named: selectedIconName, in: chorusBundle(), compatibleWith: nil)
             model.action = { [weak self] in
                 guard let `self` = self else { return }
                 let type = self.switch2VoiceChangeType(index)
@@ -341,8 +341,8 @@ class TRTCChorusSoundEffectViewModel: NSObject {
 
 /// MARK: - internationalization string
 fileprivate extension String {
-    static let musicTitle1Text = ChorusLocalize("Demo.TRTC.Chorus.musicname1")
-    static let musicTitle2Text = ChorusLocalize("Demo.TRTC.Chorus.musicname2")
-    static let musicTitle3Text = ChorusLocalize("Demo.TRTC.Chorus.musicname3")
-    static let notInSeatText = ChorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
+    static let musicTitle1Text = chorusLocalize("Demo.TRTC.Chorus.musicname1")
+    static let musicTitle2Text = chorusLocalize("Demo.TRTC.Chorus.musicname2")
+    static let musicTitle3Text = chorusLocalize("Demo.TRTC.Chorus.musicname3")
+    static let notInSeatText = chorusLocalize("Demo.TRTC.Chorus.onlyanchorcanoperation")
 }
