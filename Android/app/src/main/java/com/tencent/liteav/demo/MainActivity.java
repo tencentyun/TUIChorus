@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView       mTextEnterRoom;
     private TRTCChorusRoom mTRTCChorusRoom;
 
-    private static final String ROOM_COVER_ARRAY[] = {
+    private static final String[] ROOM_COVER_ARRAY = {
             "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover1.png",
             "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover2.png",
             "https://liteav-test-1252463788.cos.ap-guangzhou.myqcloud.com/voice_room/voice_room_cover3.png",
@@ -161,21 +161,23 @@ public class MainActivity extends AppCompatActivity {
     private void initData() {
         final UserModel userModel = UserModelManager.getInstance().getUserModel();
         mTRTCChorusRoom = TRTCChorusRoom.sharedInstance(this);
-        mTRTCChorusRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig, new TRTCChorusRoomCallback.ActionCallback() {
-            @Override
-            public void onCallback(int code, String msg) {
-                if (code == 0) {
-                    mTRTCChorusRoom.setSelfProfile(userModel.userName, userModel.userAvatar, new TRTCChorusRoomCallback.ActionCallback() {
-                        @Override
-                        public void onCallback(int code, String msg) {
-                            if (code == 0) {
-                                Log.d(TAG, "setSelfProfile success");
-                            }
+        mTRTCChorusRoom.login(GenerateTestUserSig.SDKAPPID, userModel.userId, userModel.userSig,
+                new TRTCChorusRoomCallback.ActionCallback() {
+                    @Override
+                    public void onCallback(int code, String msg) {
+                        if (code == 0) {
+                            mTRTCChorusRoom.setSelfProfile(userModel.userName, userModel.userAvatar,
+                                    new TRTCChorusRoomCallback.ActionCallback() {
+                                        @Override
+                                        public void onCallback(int code, String msg) {
+                                            if (code == 0) {
+                                                Log.d(TAG, "setSelfProfile success");
+                                            }
+                                        }
+                                    });
                         }
-                    });
-                }
-            }
-        });
+                    }
+                });
     }
 
     private void createRoom() {
@@ -213,7 +215,8 @@ public class MainActivity extends AppCompatActivity {
                                 if (isFinishing()) {
                                     return;
                                 }
-                                dialog.showRoomCreateDialog(userId, userName, coverUrl, TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT, true, pusherURLDefault, flvPlayURL);
+                                dialog.showRoomCreateDialog(userId, userName, coverUrl,
+                                        TRTCCloudDef.TRTC_AUDIO_QUALITY_DEFAULT, true, pusherURLDefault, flvPlayURL);
                             }
                         });
                     } catch (JSONException e) {
@@ -303,8 +306,9 @@ public class MainActivity extends AppCompatActivity {
         String filename = savePath + "/" + name;
         File dir = new File(savePath);
         // 如果目录不存在，创建这个目录
-        if (!dir.exists())
+        if (!dir.exists()) {
             dir.mkdir();
+        }
         try {
             if (!(new File(filename)).exists()) {
                 InputStream is = context.getResources().getAssets().open(name);

@@ -7,14 +7,9 @@ public class ChorusMusicModel extends ChorusMusicInfo {
 
     @Override
     public String toString() {
-        return "MusicModel {" +
-                "musicId='" + musicId +
-                ", musicName='" + musicName + '\'' +
-                ", singer='" + singer + '\'' +
-                ", lrcUrl='" + lrcUrl + '\'' +
-                ", contentUrl=" + contentUrl + '\'' +
-                ", bookUser=" + bookUser + '\'' +
-                ", isSelected=" + isSelected +
-                '}';
+        return "ChorusMusicModel{"
+                + "bookUser='" + bookUser + '\''
+                + ", isSelected=" + isSelected
+                + '}';
     }
 }

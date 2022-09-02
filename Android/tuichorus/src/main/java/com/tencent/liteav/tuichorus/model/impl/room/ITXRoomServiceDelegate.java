@@ -13,9 +13,9 @@ public interface ITXRoomServiceDelegate {
 
     void onRoomRecvRoomCustomMsg(String roomId, String cmd, String message, TXUserInfo userInfo);
 
-    void onRoomInfoChange(TXRoomInfo TXRoomInfo);
+    void onRoomInfoChange(TXRoomInfo txRoomInfo);
 
-    void onSeatInfoListChange(List<TXSeatInfo> TXSeatInfoList);
+    void onSeatInfoListChange(List<TXSeatInfo> txSeatInfoList);
 
     void onRoomAudienceEnter(TXUserInfo userInfo);
 

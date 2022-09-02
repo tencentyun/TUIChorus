@@ -1128,28 +1128,28 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void onRoomInfoChange(final TXRoomInfo tXRoomInfo) {
+    public void onRoomInfoChange(final TXRoomInfo txRoomInfo) {
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
                 TRTCChorusRoomDef.RoomInfo roomInfo = new TRTCChorusRoomDef.RoomInfo();
-                roomInfo.roomName = tXRoomInfo.roomName;
+                roomInfo.roomName = txRoomInfo.roomName;
                 int translateRoomId = Integer.valueOf(mRoomId);
                 try {
-                    translateRoomId = Integer.parseInt(tXRoomInfo.roomId);
+                    translateRoomId = Integer.parseInt(txRoomInfo.roomId);
                 } catch (NumberFormatException e) {
                     TRTCLogger.e(TAG, e.getMessage());
                 }
                 roomInfo.roomId = translateRoomId;
-                roomInfo.ownerId = tXRoomInfo.ownerId;
-                roomInfo.ownerName = tXRoomInfo.ownerName;
-                roomInfo.coverUrl = tXRoomInfo.cover;
-                roomInfo.memberCount = tXRoomInfo.memberCount;
-                roomInfo.needRequest = (tXRoomInfo.needRequest == 1);
+                roomInfo.ownerId = txRoomInfo.ownerId;
+                roomInfo.ownerName = txRoomInfo.ownerName;
+                roomInfo.coverUrl = txRoomInfo.cover;
+                roomInfo.memberCount = txRoomInfo.memberCount;
+                roomInfo.needRequest = (txRoomInfo.needRequest == 1);
                 if (mDelegate != null) {
                     mDelegate.onRoomInfoChange(roomInfo);
                 }
-                mPlayUrl = tXRoomInfo.playUrl;
+                mPlayUrl = txRoomInfo.playUrl;
                 //主播不需要去播放
                 if (mRole != TRTCCloudDef.TRTCRoleAudience) {
                     return;
@@ -1163,12 +1163,12 @@ public class TRTCChorusRoomImpl extends TRTCChorusRoom implements ITXRoomService
     }
 
     @Override
-    public void onSeatInfoListChange(final List<TXSeatInfo> tXSeatInfoList) {
+    public void onSeatInfoListChange(final List<TXSeatInfo> txSeatInfoList) {
         runOnDelegateThread(new Runnable() {
             @Override
             public void run() {
                 List<TRTCChorusRoomDef.SeatInfo> seatInfoList = new ArrayList<>();
-                for (TXSeatInfo seatInfo : tXSeatInfoList) {
+                for (TXSeatInfo seatInfo : txSeatInfoList) {
                     TRTCChorusRoomDef.SeatInfo info = new TRTCChorusRoomDef.SeatInfo();
                     info.userId = seatInfo.user;
                     info.mute = seatInfo.mute;

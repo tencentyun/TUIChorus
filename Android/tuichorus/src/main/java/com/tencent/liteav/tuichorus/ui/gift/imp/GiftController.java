@@ -1,8 +1,10 @@
 package com.tencent.liteav.tuichorus.ui.gift.imp;
 
 import android.content.Context;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -31,26 +33,29 @@ public class GiftController {
      * @param rows         行数
      * @return
      */
-    public View viewPagerItem(final Context context, final int pageIndex, List<GiftInfo> giftInfoList, int columns, int rows) {
-        LayoutInflater    inflater          = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View              layout            = inflater.inflate(R.layout.tuichorus_layout_gift_panel, null);
-        RecyclerView      recyclerView      = (RecyclerView) layout.findViewById(R.id.chart_face_gv);
+    public View viewPagerItem(final Context context, final int pageIndex,
+                              List<GiftInfo> giftInfoList, int columns, int rows) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.tuichorus_layout_gift_panel, null);
+        RecyclerView recyclerView = (RecyclerView) layout.findViewById(R.id.chart_face_gv);
         GridLayoutManager girdLayoutManager = new GridLayoutManager(context, columns);
         recyclerView.setLayoutManager(girdLayoutManager);
-        List<GiftInfo> subList      = new ArrayList<>();
-        int            maxPageItems = columns * rows;
-        int            startIndex   = pageIndex * maxPageItems;
-        int endIndex = maxPageItems * (pageIndex + 1) > giftInfoList.size() ?
-                giftInfoList.size() : maxPageItems * (pageIndex + 1);
+        List<GiftInfo> subList = new ArrayList<>();
+        int maxPageItems = columns * rows;
+        int startIndex = pageIndex * maxPageItems;
+        int endIndex = maxPageItems * (pageIndex + 1) > giftInfoList.size()
+                ? giftInfoList.size() : maxPageItems * (pageIndex + 1);
         subList.addAll(giftInfoList.subList(startIndex, endIndex));
-        final GiftPanelAdapter mGvAdapter = new GiftPanelAdapter(recyclerView, pageIndex, subList, context, mSelectGiftInfoList);
+        final GiftPanelAdapter mGvAdapter = new GiftPanelAdapter(recyclerView,
+                pageIndex, subList, context, mSelectGiftInfoList);
         recyclerView.setAdapter(mGvAdapter);
         mGvAdapter.setOnItemClickListener(new GiftPanelAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, GiftInfo giftInfo, int position, int index) {
                 mSelectGiftInfo = giftInfo;
                 mSelectGiftPageIndex = index;
-                mGiftClickListener.onClick(position,giftInfo);
+                mGiftClickListener.onClick(position, giftInfo);
             }
         });
         return recyclerView;
