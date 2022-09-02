@@ -94,6 +94,8 @@ public class GiftBulletFrameLayout extends FrameLayout implements Handler.Callba
             case MSG_START_ANIMATION:
                 startAnimationForMsg();
                 break;
+            default:
+                break;
         }
         return true;
     }

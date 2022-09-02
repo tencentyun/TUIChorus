@@ -10,13 +10,13 @@ public class ChorusMusicInfo {
 
     @Override
     public String toString() {
-        return "MusicModel {" +
-                "musicId='" + musicId +
-                ", songName='" + musicName + '\'' +
-                ", singer='" + singer + '\'' +
-                ", lrcUrl='" + lrcUrl + '\'' +
-                ", coverUrl=" + coverUrl + '\'' +
-                ", contentUrl=" + contentUrl + '\'' +
-                '}';
+        return "ChorusMusicInfo{"
+                + "musicId='" + musicId + '\''
+                + ", musicName='" + musicName + '\''
+                + ", singer='" + singer + '\''
+                + ", lrcUrl='" + lrcUrl + '\''
+                + ", coverUrl='" + coverUrl + '\''
+                + ", contentUrl='" + contentUrl + '\''
+                + '}';
     }
 }

@@ -23,28 +23,28 @@ public class VttLyricsFileReader extends LyricsFileReader {
     /**
      * 歌曲名 字符串
      */
-    private final static String LEGAL_SONGNAME_PREFIX   = "[ti:";
+    private static final String LEGAL_SONGNAME_PREFIX   = "[ti:";
     /**
      * 歌手名 字符串
      */
-    private final static String LEGAL_SINGERNAME_PREFIX = "[ar:";
+    private static final String LEGAL_SINGERNAME_PREFIX = "[ar:";
     /**
      * 时间补偿值 字符串
      */
-    private final static String LEGAL_OFFSET_PREFIX     = "[offset:";
+    private static final String LEGAL_OFFSET_PREFIX     = "[offset:";
     /**
      * 歌词上传者
      */
-    private final static String LEGAL_BY_PREFIX         = "[by:";
-    private final static String LEGAL_HASH_PREFIX       = "[hash:";
+    private static final String LEGAL_BY_PREFIX         = "[by:";
+    private static final String LEGAL_HASH_PREFIX       = "[hash:";
     /**
      * 专辑
      */
-    private final static String LEGAL_AL_PREFIX         = "[al:";
-    private final static String LEGAL_SIGN_PREFIX       = "[sign:";
-    private final static String LEGAL_QQ_PREFIX         = "[qq:";
-    private final static String LEGAL_TOTAL_PREFIX      = "[total:";
-    private final static String LEGAL_LANGUAGE_PREFIX   = "[language:";
+    private static final String LEGAL_AL_PREFIX         = "[al:";
+    private static final String LEGAL_SIGN_PREFIX       = "[sign:";
+    private static final String LEGAL_QQ_PREFIX         = "[qq:";
+    private static final String LEGAL_TOTAL_PREFIX      = "[total:";
+    private static final String LEGAL_LANGUAGE_PREFIX   = "[language:";
 
     @Override
     public LyricsInfo readInputStream(InputStream in) throws Exception {
@@ -53,10 +53,10 @@ public class VttLyricsFileReader extends LyricsFileReader {
         if (in != null) {
 
             TreeMap<Integer, LyricsLineInfo> lyricsLineInfos = new TreeMap<>();
-            Map<String, Object>              lyricsTags      = new HashMap<>();
-            int                              index           = 0;
-            String                           lyricsTextStr   = "";
-            String                           lyricsLine      = "";
+            Map<String, Object> lyricsTags = new HashMap<>();
+            int index = 0;
+            String lyricsTextStr = "";
+            String lyricsLine = "";
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             while ((lyricsTextStr = reader.readLine()) != null) {
@@ -92,9 +92,9 @@ public class VttLyricsFileReader extends LyricsFileReader {
     }
 
     private String dateToMilliseconds(String inputString) {
-        long    milliseconds = -1;
-        Pattern pattern      = Pattern.compile("(\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})");
-        Matcher matcher      = pattern.matcher(inputString);
+        long milliseconds = -1;
+        Pattern pattern = Pattern.compile("(\\d{2}):(\\d{2}):(\\d{2}).(\\d{3})");
+        Matcher matcher = pattern.matcher(inputString);
         if (matcher.matches()) {
             milliseconds = Long.parseLong(matcher.group(1)) * 3600000L
                     + Long.parseLong(matcher.group(2)) * 60000
@@ -107,6 +107,7 @@ public class VttLyricsFileReader extends LyricsFileReader {
         return Long.toString(milliseconds);
     }
 
+
     /**
      * 解析歌词
      *
@@ -115,11 +116,12 @@ public class VttLyricsFileReader extends LyricsFileReader {
      * @param lyricsIfno
      * @return
      */
-    private LyricsLineInfo parserLineInfos(Map<String, Object> lyricsTags, String lineInfo, LyricsInfo lyricsIfno) throws Exception {
+    private LyricsLineInfo parserLineInfos(Map<String, Object> lyricsTags,
+                                           String lineInfo, LyricsInfo lyricsIfno) throws Exception {
         LyricsLineInfo lyricsLineInfo = null;
         if (lineInfo.startsWith(LEGAL_SONGNAME_PREFIX)) {
             int startIndex = LEGAL_SONGNAME_PREFIX.length();
-            int endIndex   = lineInfo.lastIndexOf("]");
+            int endIndex = lineInfo.lastIndexOf("]");
             lyricsTags.put(LyricsTag.TAG_TITLE, lineInfo.substring(startIndex, endIndex));
         } else {
             // 匹配歌词行
@@ -130,31 +132,34 @@ public class VttLyricsFileReader extends LyricsFileReader {
                 // [此行开始时刻距0时刻的毫秒数,此行持续的毫秒数]<0,此字持续的毫秒数,0>歌
                 // 获取行的出现时间和结束时间
                 int mStartIndex = matcher.start();
-                int mEndIndex   = matcher.end();
-                String lineTime[] = lineInfo.substring(mStartIndex + 1,
+                int mEndIndex = matcher.end();
+                String[] lineTime = lineInfo.substring(mStartIndex + 1,
                         mEndIndex - 1).split(",");
 
                 int startTime = Integer.parseInt(lineTime[0]);
-                int endTime   = Integer.parseInt(lineTime[1]);
+                int endTime = Integer.parseInt(lineTime[1]);
                 lyricsLineInfo.setEndTime(endTime);
                 lyricsLineInfo.setStartTime(startTime);
                 // 获取歌词信息
                 String lineContent = lineInfo.substring(mEndIndex, lineInfo.length());
 
                 // 歌词匹配的正则表达式
-                String  regex              = "\\<\\d+,\\d+,\\d+\\>";
+                String regex = "\\<\\d+,\\d+,\\d+\\>";
                 Pattern lyricsWordsPattern = Pattern.compile(regex);
                 Matcher lyricsWordsMatcher = lyricsWordsPattern
                         .matcher(lineContent);
 
                 // 歌词分隔
-                String   lineLyricsTemp[] = lineContent.split(regex);
-                String[] lyricsWords      = getLyricsWords(lineLyricsTemp);
+                String[] lineLyricsTemp = lineContent.split(regex);
+                String[] lyricsWords = getLyricsWords(lineLyricsTemp);
                 lyricsLineInfo.setLyricsWords(lyricsWords);
 
                 // 获取每个歌词的时间
-                int wordsDisInterval[] = new int[lyricsWords.length];
-                int index              = 0;
+                int[] wordsDisInterval = new int[lyricsWords.length];
+                int previousWordStartPlayTime = 0;
+                int previousWordPlayDuration = 0;
+                int index = 0;
+
                 while (lyricsWordsMatcher.find()) {
 
                     //验证
@@ -165,10 +170,18 @@ public class VttLyricsFileReader extends LyricsFileReader {
                     String wordsDisIntervalStr = lyricsWordsMatcher.group();
                     String wordsDisIntervalStrTemp = wordsDisIntervalStr
                             .substring(wordsDisIntervalStr.indexOf('<') + 1, wordsDisIntervalStr.lastIndexOf('>'));
-                    String wordsDisIntervalTemp[] = wordsDisIntervalStrTemp
-                            .split(",");
-                    wordsDisInterval[index++] = Integer
-                            .parseInt(wordsDisIntervalTemp[1]);
+                    String[] wordsDisIntervalTemp = wordsDisIntervalStrTemp.split(",");
+
+                    // 兼容逻辑，为了避免歌词语料中某些字的播放Duration不正确
+                    int currentWordPlayTime = previousWordStartPlayTime + previousWordPlayDuration;
+                    if (index > 0 && currentWordPlayTime != Integer.parseInt(wordsDisIntervalTemp[0])) {
+                        wordsDisInterval[index - 1] =
+                                Integer.parseInt(wordsDisIntervalTemp[0]) - previousWordStartPlayTime;
+                    }
+
+                    previousWordStartPlayTime = Integer.parseInt(wordsDisIntervalTemp[0]);
+                    previousWordPlayDuration = Integer.parseInt(wordsDisIntervalTemp[1]);
+                    wordsDisInterval[index++] = previousWordPlayDuration;
                 }
                 lyricsLineInfo.setWordsDisInterval(wordsDisInterval);
 
@@ -187,7 +200,7 @@ public class VttLyricsFileReader extends LyricsFileReader {
      * @return
      */
     private String[] getLyricsWords(String[] lineLyricsTemp) throws Exception {
-        String temp[] = null;
+        String[] temp = null;
         if (lineLyricsTemp.length < 2) {
             return new String[lineLyricsTemp.length];
         }

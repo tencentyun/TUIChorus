@@ -26,13 +26,17 @@ public class GiftInfo {
 
     @Override
     public String toString() {
-        return "GiftInfo{" +
-                "giftId='" + giftId + '\'' +
-                ", giftPicUrl='" + giftPicUrl + '\'' +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", isSelected=" + isSelected +
-                '}';
+        return "GiftInfo{"
+                + "giftId='" + giftId + '\''
+                + ", giftPicUrl='" + giftPicUrl + '\''
+                + ", lottieUrl='" + lottieUrl + '\''
+                + ", title='" + title + '\''
+                + ", price=" + price
+                + ", type=" + type
+                + ", isSelected=" + isSelected
+                + ", sendUser='" + sendUser + '\''
+                + ", sendUserHeadIcon='" + sendUserHeadIcon + '\''
+                + '}';
     }
 
     /**
