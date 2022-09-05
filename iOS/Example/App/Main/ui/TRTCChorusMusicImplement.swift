@@ -40,44 +40,44 @@ public class TRTCChorusMusicImplement: NSObject {
     
     private var chorusMusicList: [ChorusMusicInfo] = []
     private func loadChorusMusicList() {
-        let t1 = ChorusBundle().path(forResource: "后来_伴奏", ofType: "mp3") ?? ""
-        let l1 = ChorusBundle().path(forResource: "后来_歌词", ofType: "vtt") ?? ""
+        let t1 = chorusBundle().path(forResource: "后来_伴奏", ofType: "mp3") ?? ""
+        let l1 = chorusBundle().path(forResource: "后来_歌词", ofType: "vtt") ?? ""
         let model1 = ChorusMusicInfo(title: "后来_伴奏", coverUrl: "", author: "刘若英", path: t1, lrcPath: l1, musicID: 1001)
         
-        let t2 = ChorusBundle().path(forResource: "后来_原唱", ofType: "mp3") ?? ""
-        let l2 = ChorusBundle().path(forResource: "后来_歌词", ofType: "vtt") ?? ""
+        let t2 = chorusBundle().path(forResource: "后来_原唱", ofType: "mp3") ?? ""
+        let l2 = chorusBundle().path(forResource: "后来_歌词", ofType: "vtt") ?? ""
         let model2 = ChorusMusicInfo(title: "后来_原唱", coverUrl: "", author: "刘若英", path: t2, lrcPath: l2, musicID: 1002)
         
-        let t3 = ChorusBundle().path(forResource: "情非得已_伴奏", ofType: "mp3") ?? ""
-        let l3 = ChorusBundle().path(forResource: "情非得已_歌词", ofType: "vtt") ?? ""
+        let t3 = chorusBundle().path(forResource: "情非得已_伴奏", ofType: "mp3") ?? ""
+        let l3 = chorusBundle().path(forResource: "情非得已_歌词", ofType: "vtt") ?? ""
         let model3 = ChorusMusicInfo(title: "情非得已_伴奏", coverUrl: "", author: "庾澄庆", path: t3, lrcPath: l3, musicID: 1003)
         
-        let t4 = ChorusBundle().path(forResource: "情非得已_原唱", ofType: "mp3") ?? ""
-        let l4 = ChorusBundle().path(forResource: "情非得已_歌词", ofType: "vtt") ?? ""
+        let t4 = chorusBundle().path(forResource: "情非得已_原唱", ofType: "mp3") ?? ""
+        let l4 = chorusBundle().path(forResource: "情非得已_歌词", ofType: "vtt") ?? ""
         let model4 = ChorusMusicInfo(title: "情非得已_原唱", coverUrl: "", author: "庾澄庆", path: t4, lrcPath: l4, musicID: 1004)
         
-        let t5 = ChorusBundle().path(forResource: "星晴_伴奏", ofType: "mp3") ?? ""
-        let l5 = ChorusBundle().path(forResource: "星晴_歌词", ofType: "vtt") ?? ""
+        let t5 = chorusBundle().path(forResource: "星晴_伴奏", ofType: "mp3") ?? ""
+        let l5 = chorusBundle().path(forResource: "星晴_歌词", ofType: "vtt") ?? ""
         let model5 = ChorusMusicInfo(title: "星晴_伴奏", coverUrl: "", author: "周杰伦", path: t5, lrcPath: l5, musicID: 1005)
         
-        let t6 = ChorusBundle().path(forResource: "星晴_原唱", ofType: "mp3") ?? ""
-        let l6 = ChorusBundle().path(forResource: "星晴_歌词", ofType: "vtt") ?? ""
+        let t6 = chorusBundle().path(forResource: "星晴_原唱", ofType: "mp3") ?? ""
+        let l6 = chorusBundle().path(forResource: "星晴_歌词", ofType: "vtt") ?? ""
         let model6 = ChorusMusicInfo(title: "星晴_原唱", coverUrl: "", author: "周杰伦", path: t6, lrcPath: l6, musicID: 1006)
         
-        let t7 = ChorusBundle().path(forResource: "暖暖_伴奏", ofType: "mp3") ?? ""
-        let l7 = ChorusBundle().path(forResource: "暖暖_歌词", ofType: "vtt") ?? ""
+        let t7 = chorusBundle().path(forResource: "暖暖_伴奏", ofType: "mp3") ?? ""
+        let l7 = chorusBundle().path(forResource: "暖暖_歌词", ofType: "vtt") ?? ""
         let model7 = ChorusMusicInfo(title: "暖暖_伴奏", coverUrl: "", author: "梁静茹", path: t7, lrcPath: l7, musicID: 1007)
         
-        let t8 = ChorusBundle().path(forResource: "暖暖_原唱", ofType: "mp3") ?? ""
-        let l8 = ChorusBundle().path(forResource: "暖暖_歌词", ofType: "vtt") ?? ""
+        let t8 = chorusBundle().path(forResource: "暖暖_原唱", ofType: "mp3") ?? ""
+        let l8 = chorusBundle().path(forResource: "暖暖_歌词", ofType: "vtt") ?? ""
         let model8 = ChorusMusicInfo(title: "暖暖_原唱", coverUrl: "", author: "梁静茹", path: t8, lrcPath: l8, musicID: 1008)
         
-        let t9 = ChorusBundle().path(forResource: "简单爱_伴奏", ofType: "mp3") ?? ""
-        let l9 = ChorusBundle().path(forResource: "简单爱_歌词", ofType: "vtt") ?? ""
+        let t9 = chorusBundle().path(forResource: "简单爱_伴奏", ofType: "mp3") ?? ""
+        let l9 = chorusBundle().path(forResource: "简单爱_歌词", ofType: "vtt") ?? ""
         let model9 = ChorusMusicInfo(title: "简单爱_伴奏", coverUrl: "", author: "周杰伦", path: t9, lrcPath: l9, musicID: 1009)
         
-        let t10 = ChorusBundle().path(forResource: "简单爱_原唱", ofType: "mp3") ?? ""
-        let l10 = ChorusBundle().path(forResource: "简单爱_歌词", ofType: "vtt") ?? ""
+        let t10 = chorusBundle().path(forResource: "简单爱_原唱", ofType: "mp3") ?? ""
+        let l10 = chorusBundle().path(forResource: "简单爱_歌词", ofType: "vtt") ?? ""
         let model10 = ChorusMusicInfo(title: "简单爱_原唱", coverUrl: "", author: "周杰伦", path: t10, lrcPath: l10, musicID: 1010)
         
         chorusMusicList.removeAll()
@@ -109,32 +109,32 @@ extension TRTCChorusMusicImplement {
     
     // 准备播放，发通知，收到通知后应准备好歌词
     func notiPrepare(musicID: String) {
-        sendNoti(instruction: CHORUS_VALUE_CMD_INSTRUCTION_MPREPARE, content: musicID)
+        sendNoti(instruction: gCHORUS_VALUE_CMD_INSTRUCTION_MPREPARE, content: musicID)
     }
     
     // 播放完成时，应给房主发送complete消息
     func notiComplete(musicID: String) {
         serviceDelegate?.onShouldSetLyric(musicID: "0")
-        sendNoti(instruction: CHORUS_VALUE_CMD_INSTRUCTION_MCOMPLETE, content: musicID)
+        sendNoti(instruction: gCHORUS_VALUE_CMD_INSTRUCTION_MCOMPLETE, content: musicID)
     }
     
     // 给某人发送应该播放音乐了（下一个是你）
     func sendShouldPlay(userID: String, musicID: String) {
-        sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MPLAYMUSIC, userID: userID, musicID: musicID)
+        sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MPLAYMUSIC, userID: userID, musicID: musicID)
     }
     
     // 给某人发送应该停止了（被切歌了）
     func sendShouldStop(userID: String, musicID: String) {
-        sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MSTOP, userID: userID, musicID: musicID)
+        sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MSTOP, userID: userID, musicID: musicID)
     }
     
     // 发送请求已点列表
     func sendRequestSelectedList() {
-        sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MGETLIST, userID: ownerID, musicID: "")
+        sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MGETLIST, userID: ownerID, musicID: "")
     }
     
     func sendDeleteAll() {
-        sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MDELETEALL, userID: ownerID, musicID: "")
+        sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MDELETEALL, userID: ownerID, musicID: "")
     }
     
     // 广播通知列表发生变化
@@ -151,7 +151,7 @@ extension TRTCChorusMusicImplement {
         
         guard let data = try? JSONSerialization.data(withJSONObject: list, options: .prettyPrinted) else { return }
         guard let message = String(data: data, encoding: .utf8) else { return }
-        sendNoti(instruction: CHORUS_VALUE_CMD_INSTRUCTION_MLISTCHANGE, content: message)
+        sendNoti(instruction: gCHORUS_VALUE_CMD_INSTRUCTION_MLISTCHANGE, content: message)
     }
 }
 
@@ -166,31 +166,31 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
     
     private func getSignallingHeader() -> [String : Any] {
         return [
-            CHORUS_KEY_VERSION : CHORUS_VALUE_VERSION,
-            CHORUS_KEY_BUSINESS_ID : CHORUS_VALUE_BUSINESS_ID,
-            CHORUS_KEY_PLATFORM : CHORUS_VALUE_PLATFORM,
+            gCHORUS_KEY_VERSION : gCHORUS_VALUE_VERSION,
+            gCHORUS_KEY_BUSINESS_ID : gCHORUS_VALUE_BUSINESS_ID,
+            gCHORUS_KEY_PLATFORM : gCHORUS_VALUE_PLATFORM,
         ]
     }
     
     private func makeInviteSignalling(instruction: String, musicID: String) -> [String : Any] {
         var header = getSignallingHeader()
         let data: [String : Any] = [
-            CHORUS_KEY_ROOM_ID : roomInfo.roomID,
-            CHORUS_KEY_INSTRUCTION : instruction,
-            CHORUS_KEY_INVITAITON_CONTENT : musicID
+            gCHORUS_KEY_ROOM_ID : roomInfo.roomID,
+            gCHORUS_KEY_INSTRUCTION : instruction,
+            gCHORUS_KEY_INVITAITON_CONTENT : musicID
         ]
-        header[CHORUS_KEY_DATA] = data
+        header[gCHORUS_KEY_DATA] = data
         return header
     }
     
     private func makeSignalling(instruction: String, content: String) -> [String : Any] {
         var header = getSignallingHeader()
         let data: [String : Any] = [
-            CHORUS_KEY_ROOM_ID : roomInfo.roomID,
-            CHORUS_KEY_INSTRUCTION : instruction,
-            CHORUS_KEY_INVITAITON_CONTENT : content
+            gCHORUS_KEY_ROOM_ID : roomInfo.roomID,
+            gCHORUS_KEY_INSTRUCTION : instruction,
+            gCHORUS_KEY_INVITAITON_CONTENT : content
         ]
-        header[CHORUS_KEY_DATA] = data
+        header[gCHORUS_KEY_DATA] = data
         return header
     }
     
@@ -223,17 +223,17 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             debugPrint("___ signalling validate failed")
             return
         }
-        guard let instruction = dic[CHORUS_KEY_INSTRUCTION] as? String else {
+        guard let instruction = dic[gCHORUS_KEY_INSTRUCTION] as? String else {
             debugPrint("___ not contains instruction key")
             return
         }
         debugPrint("___ recv instruction: \(instruction)")
-        guard let musicID = dic[CHORUS_KEY_INVITAITON_CONTENT] as? String else {
+        guard let musicID = dic[gCHORUS_KEY_INVITAITON_CONTENT] as? String else {
             debugPrint("___ music_id error")
             return
         }
         switch instruction {
-        case CHORUS_VALUE_CMD_INSTRUCTION_MPICK:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MPICK:
             guard isOwner else { return }
             var music: ChorusMusicModel?
             for m in chorusMusicList {
@@ -274,7 +274,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             else {
                 debugPrint("___ not found music")
             }
-        case CHORUS_VALUE_CMD_INSTRUCTION_MPLAYMUSIC:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MPLAYMUSIC:
             var model: ChorusMusicModel?
             lockSelectedList()
             let list = chorusMusicSelectedList
@@ -300,7 +300,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             else {
                 debugPrint("___ not found music")
             }
-        case CHORUS_VALUE_CMD_INSTRUCTION_MGETLIST:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MGETLIST:
             guard isOwner else { return }
             lockSelectedList()
             let list = chorusMusicSelectedList
@@ -314,7 +314,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             if let first = list.first {
                 notiPrepare(musicID: String(first.musicID))
             }
-        case CHORUS_VALUE_CMD_INSTRUCTION_MSTOP:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MSTOP:
             var model: ChorusMusicModel?
             lockSelectedList()
             for selected in chorusMusicSelectedList {
@@ -326,7 +326,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             unlockSelectedList()
             guard let music = model else { return }
             serviceDelegate?.onShouldStopPlay(music)
-        case CHORUS_VALUE_CMD_INSTRUCTION_MDELETE:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MDELETE:
             lockSelectedList()
             let list = chorusMusicSelectedList
             unlockSelectedList()
@@ -339,7 +339,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
                     break
                 }
             }
-        case CHORUS_VALUE_CMD_INSTRUCTION_MDELETEALL:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MDELETEALL:
             guard isOwner else { return }
             var index = IndexSet()
             lockSelectedList()
@@ -364,21 +364,21 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             debugPrint("___ signalling validate failed")
             return
         }
-        guard let instruction = dic[CHORUS_KEY_INSTRUCTION] as? String else {
+        guard let instruction = dic[gCHORUS_KEY_INSTRUCTION] as? String else {
             debugPrint("___ not contains instruction key")
             return
         }
         debugPrint("___ recv noti: \(instruction)")
-        guard let content = dic[CHORUS_KEY_INVITAITON_CONTENT] as? String else {
+        guard let content = dic[gCHORUS_KEY_INVITAITON_CONTENT] as? String else {
             debugPrint("___ content error")
             return
         }
         switch instruction {
-        case CHORUS_VALUE_CMD_INSTRUCTION_MPREPARE:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MPREPARE:
             debugPrint("___ recv prepare content: \(content)")
             serviceDelegate?.onShouldSetLyric(musicID: content)
             currentLrc = content
-        case CHORUS_VALUE_CMD_INSTRUCTION_MLISTCHANGE:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MLISTCHANGE:
             guard let data = content.data(using: .utf8) else { return }
             guard let list = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [ [String:Any] ] else {
                 return
@@ -400,7 +400,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
             chorusMusicSelectedList = selectedList
             unlockSelectedList()
             serviceDelegate?.onMusicListChange(musicInfoList: selectedList, reason: 0)
-        case CHORUS_VALUE_CMD_INSTRUCTION_MCOMPLETE:
+        case gCHORUS_VALUE_CMD_INSTRUCTION_MCOMPLETE:
             debugPrint("___ recv complete content: \(content)")
             if let current = currentLrc {
                 if current == content {
@@ -444,21 +444,21 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
     
     func validateSignallingHeader(data: Data) -> [String:Any]? {
         guard let obj = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String : Any] else { return nil }
-        if obj.keys.contains(CHORUS_KEY_VERSION) {
-            guard let version = obj[CHORUS_KEY_VERSION] as? Int else {
+        if obj.keys.contains(gCHORUS_KEY_VERSION) {
+            guard let version = obj[gCHORUS_KEY_VERSION] as? Int else {
                 return nil
             }
-            if version < CHORUS_VALUE_BASIC_VERSION {
-                return nil
-            }
-        }
-        if obj.keys.contains(CHORUS_KEY_BUSINESS_ID) {
-            guard let businessID = obj[CHORUS_KEY_BUSINESS_ID] as? String, businessID == CHORUS_VALUE_BUSINESS_ID else {
+            if version < gCHORUS_VALUE_BASIC_VERSION {
                 return nil
             }
         }
-        if obj.keys.contains(CHORUS_KEY_DATA) {
-            guard let data = obj[CHORUS_KEY_DATA] as? [String : Any] else {
+        if obj.keys.contains(gCHORUS_KEY_BUSINESS_ID) {
+            guard let businessID = obj[gCHORUS_KEY_BUSINESS_ID] as? String, businessID == gCHORUS_VALUE_BUSINESS_ID else {
+                return nil
+            }
+        }
+        if obj.keys.contains(gCHORUS_KEY_DATA) {
+            guard let data = obj[gCHORUS_KEY_DATA] as? [String : Any] else {
                 return [:]
             }
             return data
@@ -517,7 +517,7 @@ extension TRTCChorusMusicImplement: ChorusMusicService {
             }
         }
         else {
-            sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MPICK, userID: ownerID, musicID: musicID)
+            sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MPICK, userID: ownerID, musicID: musicID)
         }
     }
     
@@ -537,7 +537,7 @@ extension TRTCChorusMusicImplement: ChorusMusicService {
             }
         }
         else {
-            sendInstruction(CHORUS_VALUE_CMD_INSTRUCTION_MDELETE, userID: ownerID, musicID: musicID)
+            sendInstruction(gCHORUS_VALUE_CMD_INSTRUCTION_MDELETE, userID: ownerID, musicID: musicID)
         }
     }
     
