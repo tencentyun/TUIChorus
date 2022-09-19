@@ -1,5 +1,6 @@
 package com.tencent.liteav.demo.chorusimpl;
 
+import com.google.gson.annotations.SerializedName;
 
 public class ChorusJsonData {
 
@@ -42,17 +43,24 @@ public class ChorusJsonData {
 
     public static class Data {
 
-        private String room_id;
+        @SerializedName("room_id")
+        private String roomId;
+
+        @SerializedName("instruction")
         private String instruction;
+
+        @SerializedName("content")
         private String content;
-        private String music_id;
+
+        @SerializedName("music_id")
+        private String musicId;
 
         public String getRoomId() {
-            return room_id;
+            return roomId;
         }
 
-        public void setRoomId(String room_id) {
-            this.room_id = room_id;
+        public void setRoomId(String roomId) {
+            this.roomId = roomId;
         }
 
         public String getInstruction() {
@@ -72,11 +80,11 @@ public class ChorusJsonData {
         }
 
         public String getMusicId() {
-            return music_id;
+            return musicId;
         }
 
-        public void setMusicId(String music_id) {
-            this.music_id = music_id;
+        public void setMusicId(String musicId) {
+            this.musicId = musicId;
         }
     }
 }

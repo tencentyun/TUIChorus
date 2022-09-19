@@ -9,10 +9,10 @@ public class TXUserInfo implements Serializable {
 
     @Override
     public String toString() {
-        return "TXUserInfo{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", avatarURL='" + avatarURL + '\'' +
-                '}';
+        return "TXUserInfo{"
+                + "userId='" + userId + '\''
+                + ", userName='" + userName + '\''
+                + ", avatarURL='" + avatarURL + '\''
+                + '}';
     }
 }

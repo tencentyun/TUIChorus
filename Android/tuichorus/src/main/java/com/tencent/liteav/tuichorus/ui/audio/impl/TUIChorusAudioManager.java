@@ -53,7 +53,7 @@ public class TUIChorusAudioManager implements IAudioEffectPanelDelegate {
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
-    public synchronized static TUIChorusAudioManager getInstance() {
+    public static synchronized TUIChorusAudioManager getInstance() {
         if (sInstance == null) {
             sInstance = new TUIChorusAudioManager();
         }
@@ -102,9 +102,9 @@ public class TUIChorusAudioManager implements IAudioEffectPanelDelegate {
     }
 
     public void resumeMusic() {
-        if (MUSIC_PLAYING != getCurrentStatus() &&
-                MUSIC_STOP != getCurrentStatus() &&
-                MUSIC_PAUSING != getCurrentStatus()) {
+        if (MUSIC_PLAYING != getCurrentStatus()
+                && MUSIC_STOP != getCurrentStatus()
+                && MUSIC_PAUSING != getCurrentStatus()) {
             mTUIChorus.resumePlayMusic();
             setCurrentStatus(MUSIC_PLAYING);
         }
@@ -185,7 +185,8 @@ public class TUIChorusAudioManager implements IAudioEffectPanelDelegate {
     }
 
     private TXAudioEffectManager.TXVoiceChangerType translateChangerType(int type) {
-        TXAudioEffectManager.TXVoiceChangerType changerType = TXAudioEffectManager.TXVoiceChangerType.TXLiveVoiceChangerType_0;
+        TXAudioEffectManager.TXVoiceChangerType changerType = TXAudioEffectManager
+                .TXVoiceChangerType.TXLiveVoiceChangerType_0;
         switch (type) {
             case AUDIO_VOICECHANGER_TYPE_0:
                 changerType = TXAudioEffectManager.TXVoiceChangerType.TXLiveVoiceChangerType_0;
@@ -223,12 +224,15 @@ public class TUIChorusAudioManager implements IAudioEffectPanelDelegate {
             case AUDIO_VOICECHANGER_TYPE_11:
                 changerType = TXAudioEffectManager.TXVoiceChangerType.TXLiveVoiceChangerType_11;
                 break;
+            default:
+                break;
         }
         return changerType;
     }
 
     private TXAudioEffectManager.TXVoiceReverbType translateReverbType(int type) {
-        TXAudioEffectManager.TXVoiceReverbType reverbType = TXAudioEffectManager.TXVoiceReverbType.TXLiveVoiceReverbType_0;
+        TXAudioEffectManager.TXVoiceReverbType reverbType = TXAudioEffectManager
+                .TXVoiceReverbType.TXLiveVoiceReverbType_0;
         switch (type) {
             case AUDIO_REVERB_TYPE_0:
                 reverbType = TXAudioEffectManager.TXVoiceReverbType.TXLiveVoiceReverbType_0;
@@ -253,6 +257,8 @@ public class TUIChorusAudioManager implements IAudioEffectPanelDelegate {
                 break;
             case AUDIO_REVERB_TYPE_7:
                 reverbType = TXAudioEffectManager.TXVoiceReverbType.TXLiveVoiceReverbType_7;
+                break;
+            default:
                 break;
         }
         return reverbType;

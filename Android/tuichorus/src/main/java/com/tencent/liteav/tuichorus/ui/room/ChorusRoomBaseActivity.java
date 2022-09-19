@@ -105,7 +105,8 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
             R.color.tuichorus_color_msg_7,
     };
 
-    private static final String CHORUS_MUSIC_SERVICE_IMPL_URI = "com.tencent.liteav.demo.chorusimpl.ChorusMusicServiceImpl";
+    private static final String CHORUS_MUSIC_SERVICE_IMPL_URI = "com"
+            + ".tencent.liteav.demo.chorusimpl.ChorusMusicServiceImpl";
 
     protected String                     mSelfUserId;     //进房用户ID
     protected int                        mCurrentRole;    //用户当前角色:主播/听众
@@ -442,7 +443,8 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
                     @Override
                     public void onCallback(int code, String msg) {
                         if (code != 0) {
-                            Toast.makeText(mContext, R.string.tuichorus_toast_sent_message_failure, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mContext, R.string.tuichorus_toast_sent_message_failure,
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -492,7 +494,8 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
                 switchNetworkStatus(remoteQuality.get(0).quality, localQuality.quality);
             }
         } else {
-            switchNetworkStatus(localQuality == null ? TCConstants.TRTCQUALITY_NONE : localQuality.quality, TCConstants.TRTCQUALITY_NONE);
+            switchNetworkStatus(localQuality == null ? TCConstants.TRTCQUALITY_NONE : localQuality.quality,
+                    TCConstants.TRTCQUALITY_NONE);
         }
     }
 
@@ -584,8 +587,8 @@ public class ChorusRoomBaseActivity extends AppCompatActivity implements ChorusR
         if (msg.length() == 0) {
             return;
         }
-        byte[] byte_num = msg.getBytes(StandardCharsets.UTF_8);
-        if (byte_num.length > 160) {
+        byte[] byteNum = msg.getBytes(StandardCharsets.UTF_8);
+        if (byteNum.length > 160) {
             Toast.makeText(this, getString(R.string.tuichorus_toast_please_enter_content), Toast.LENGTH_SHORT).show();
             return;
         }

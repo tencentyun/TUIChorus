@@ -35,12 +35,15 @@ public class LyricsUtils {
      * @param paintColor
      * @param paintHLColor
      */
-    public static void drawDynamiLyrics(Canvas canvas, int lyricsType, Paint paint, Paint paintHL, Paint paintOutline, LyricsLineInfo lyricsLineInfo, float lyricsLineHLWidth, int viewWidth, int lyricsWordIndex, float lyricsWordHLTime, float textY, float paddingLeftOrRight, int[] paintColor, int[] paintHLColor) {
+    public static void drawDynamiLyrics(Canvas canvas, int lyricsType, Paint paint, Paint paintHL, Paint paintOutline,
+                                        LyricsLineInfo lyricsLineInfo, float lyricsLineHLWidth, int viewWidth,
+                                        int lyricsWordIndex, float lyricsWordHLTime, float textY,
+                                        float paddingLeftOrRight, int[] paintColor, int[] paintHLColor) {
         //获取行歌词高亮宽度
         lyricsLineHLWidth = getLineLyricsHLWidth(lyricsType, paint, lyricsLineInfo, lyricsWordIndex, lyricsWordHLTime);
         // 当行歌词
-        String curLyrics       = lyricsLineInfo.getLineLyrics();
-        float  curLrcTextWidth = getTextWidth(paint, curLyrics);
+        String curLyrics = lyricsLineInfo.getLineLyrics();
+        float curLrcTextWidth = getTextWidth(paint, curLyrics);
         // 当前歌词行的x坐标
         float textX = getHLMoveTextX(curLrcTextWidth, lyricsLineHLWidth, viewWidth, paddingLeftOrRight);
         drawOutline(canvas, paintOutline, curLyrics, textX, textY);
@@ -56,7 +59,8 @@ public class LyricsUtils {
      * @param paddingLeftOrRight 左右间隔距离
      * @return
      */
-    public static float getHLMoveTextX(float curLrcTextWidth, float lineLyricsHLWidth, int viewWidth, float paddingLeftOrRight) {
+    public static float getHLMoveTextX(float curLrcTextWidth,
+                                       float lineLyricsHLWidth, int viewWidth, float paddingLeftOrRight) {
         float textX = 0;
         if (curLrcTextWidth > viewWidth) {
             if (lineLyricsHLWidth >= viewWidth / 2) {
@@ -83,7 +87,8 @@ public class LyricsUtils {
      * @param splitLyricsLineNum
      * @return
      */
-    public static int getSplitLyricsRealLineNum(TreeMap<Integer, LyricsLineInfo> lrcLineInfos, int lyricsLineNum, int splitLyricsLineNum) {
+    public static int getSplitLyricsRealLineNum(TreeMap<Integer,
+            LyricsLineInfo> lrcLineInfos, int lyricsLineNum, int splitLyricsLineNum) {
         int realLineNum = 0;
         for (int i = 0; i < lrcLineInfos.size(); i++) {
             if (i != lyricsLineNum) {
@@ -105,19 +110,21 @@ public class LyricsUtils {
      * @param lyricsWordHLTime
      * @return
      */
-    public static float getLineLyricsHLWidth(int lyricsType, Paint paint, LyricsLineInfo lyricsLineInfo, int lyricsWordIndex, float lyricsWordHLTime) {
+    public static float getLineLyricsHLWidth(int lyricsType, Paint paint,
+                                             LyricsLineInfo lyricsLineInfo,
+                                             int lyricsWordIndex, float lyricsWordHLTime) {
         float lineLyricsHLWidth = 0;
 
         // 当行歌词
-        String curLyrics       = lyricsLineInfo.getLineLyrics();
-        float  curLrcTextWidth = LyricsUtils.getTextWidth(paint, curLyrics);
+        String curLyrics = lyricsLineInfo.getLineLyrics();
+        float curLrcTextWidth = LyricsUtils.getTextWidth(paint, curLyrics);
         if (lyricsType == LyricsInfo.LRC || lyricsWordIndex == -2) {
             // 整行歌词
             lineLyricsHLWidth = curLrcTextWidth;
         } else {
             if (lyricsWordIndex != -1) {
-                String lyricsWords[] = lyricsLineInfo.getLyricsWords();
-                int wordsDisInterval[] = lyricsLineInfo
+                String[] lyricsWords = lyricsLineInfo.getLyricsWords();
+                int[] wordsDisInterval = lyricsLineInfo
                         .getWordsDisInterval();
                 // 当前歌词之前的歌词
                 StringBuilder lyricsBeforeWord = new StringBuilder();
@@ -154,11 +161,16 @@ public class LyricsUtils {
      * @param x
      * @param y
      */
-    public static void drawDynamicText(Canvas canvas, Paint paint, Paint paintHL, int[] paintColor, int[] paintHLColor, String text, float hlWidth, float x, float y) {
+    public static void drawDynamicText(Canvas canvas, Paint paint,
+                                       Paint paintHL, int[] paintColor,
+                                       int[] paintHLColor, String text,
+                                       float hlWidth, float x,
+                                       float y) {
         canvas.save();
 
         //设置为上下渐变
-        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
+        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint),
+                x, y, paintColor, null, Shader.TileMode.CLAMP);
         paint.setShader(linearGradient);
         canvas.drawText(text, x, y, paint);
         //设置动感歌词过渡效果
@@ -166,7 +178,8 @@ public class LyricsUtils {
                 y + getRealTextHeight(paint));
 
         //设置为上下渐变
-        LinearGradient linearGradientHL = new LinearGradient(x, y - getTextHeight(paint), x, y, paintHLColor, null, Shader.TileMode.CLAMP);
+        LinearGradient linearGradientHL = new LinearGradient(x, y - getTextHeight(paint),
+                x, y, paintHLColor, null, Shader.TileMode.CLAMP);
         paintHL.setShader(linearGradientHL);
         canvas.drawText(text, x, y, paintHL);
         canvas.restore();
@@ -183,7 +196,8 @@ public class LyricsUtils {
      * @param x
      * @param y
      */
-    public static void drawDynamicText(Canvas canvas, Paint paint, Paint paintHL, String text, float hlWidth, float x, float y) {
+    public static void drawDynamicText(Canvas canvas, Paint paint,
+                                       Paint paintHL, String text, float hlWidth, float x, float y) {
         canvas.save();
         canvas.drawText(text, x, y, paint);
         //设置动感歌词过渡效果
@@ -220,7 +234,8 @@ public class LyricsUtils {
      */
     public static void drawText(Canvas canvas, Paint paint, int[] paintColor, String text, float x, float y) {
         //设置为上下渐变
-        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint), x, y, paintColor, null, Shader.TileMode.CLAMP);
+        LinearGradient linearGradient = new LinearGradient(x, y - getTextHeight(paint),
+                x, y, paintColor, null, Shader.TileMode.CLAMP);
         paint.setShader(linearGradient);
         canvas.drawText(text, x, y, paint);
     }
@@ -272,7 +287,7 @@ public class LyricsUtils {
         List<String> lrcExts = LyricsIOUtils.getSupportLyricsExts();
         for (int i = 0; i < lrcExts.size(); i++) {
             String lrcFilePath = filePathDirectory + File.separator + fileName + "." + lrcExts.get(i);
-            File   lrcFile     = new File(lrcFilePath);
+            File lrcFile = new File(lrcFilePath);
             if (lrcFile.exists()) {
                 return lrcFile;
             }
@@ -288,9 +303,11 @@ public class LyricsUtils {
      * @return
      */
     private static int[] getWordsDisInterval(LyricsLineInfo defLyricsLineInfo, String[] newLyricsWords) {
-        if (newLyricsWords.length == 0) return null;
+        if (newLyricsWords.length == 0) {
+            return null;
+        }
         int[] wordsDisInterval = new int[newLyricsWords.length];
-        int   sumTime          = 0;
+        int sumTime = 0;
         for (int i = 0; i < defLyricsLineInfo.getWordsDisInterval().length; i++) {
             sumTime += defLyricsLineInfo.getWordsDisInterval()[i];
         }
@@ -346,9 +363,9 @@ public class LyricsUtils {
         }
 
         //获取字
-        String[]         lyricsWords = new String[lrcStack.size()];
-        Iterator<String> it          = lrcStack.iterator();
-        int              i           = 0;
+        String[] lyricsWords = new String[lrcStack.size()];
+        Iterator<String> it = lrcStack.iterator();
+        int i = 0;
         while (it.hasNext()) {
             lyricsWords[i++] = it.next();
         }
@@ -366,7 +383,8 @@ public class LyricsUtils {
      * @param playOffset        时间补偿值
      * @return
      */
-    public static int getLineNumber(int lyricsType, TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
+    public static int getLineNumber(int lyricsType, TreeMap<Integer,
+            LyricsLineInfo> lyricsLineTreeMap, long curPlayingTime, long playOffset) {
 
         //添加歌词增量
         long newPlayingTime = curPlayingTime + playOffset;
@@ -374,7 +392,9 @@ public class LyricsUtils {
             //lrc歌词
             for (int i = 0; i < lyricsLineTreeMap.size(); i++) {
 
-                if (newPlayingTime < lyricsLineTreeMap.get(i).getStartTime()) return 0;
+                if (newPlayingTime < lyricsLineTreeMap.get(i).getStartTime()) {
+                    return 0;
+                }
 
                 if (newPlayingTime >= lyricsLineTreeMap.get(i).getStartTime()
                         && i + 1 < lyricsLineTreeMap.size()
@@ -415,16 +435,21 @@ public class LyricsUtils {
      * @param playOffset     时间补偿值
      * @return
      */
-    public static String getLineLrc(int lyricsType, TreeMap<Integer, LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
-        if (lrcLineInfos == null) return null;
-        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
-        if (lyricsLineNum >= lrcLineInfos.size())
+    public static String getLineLrc(int lyricsType, TreeMap<Integer,
+            LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
+        if (lrcLineInfos == null) {
             return null;
+        }
+        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
+        if (lyricsLineNum >= lrcLineInfos.size()) {
+            return null;
+        }
 
         LyricsLineInfo lyricsLineInfo = lrcLineInfos.get(lyricsLineNum);
 
-        if (lyricsLineInfo == null)
+        if (lyricsLineInfo == null) {
             return null;
+        }
         return lyricsLineInfo.getLineLyrics();
     }
 
@@ -437,11 +462,15 @@ public class LyricsUtils {
      * @param playOffset     时间补偿值
      * @return
      */
-    public static String getSplitLineLrc(int lyricsType, TreeMap<Integer, LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
-        if (lrcLineInfos == null) return null;
-        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
-        if (lyricsLineNum >= lrcLineInfos.size())
+    public static String getSplitLineLrc(int lyricsType, TreeMap<Integer,
+            LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
+        if (lrcLineInfos == null) {
             return null;
+        }
+        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
+        if (lyricsLineNum >= lrcLineInfos.size()) {
+            return null;
+        }
         int splitLyricsLineNum = -1;
         if (lyricsType == LyricsInfo.DYNAMIC) {
             splitLyricsLineNum = getSplitDynamicLyricsLineNum(lrcLineInfos, lyricsLineNum, curPlayingTime, playOffset);
@@ -456,8 +485,9 @@ public class LyricsUtils {
 
         LyricsLineInfo lyricsLineInfo = splitLyricsLineInfos.get(splitLyricsLineNum);
 
-        if (lyricsLineInfo == null)
+        if (lyricsLineInfo == null) {
             return null;
+        }
         return lyricsLineInfo.getLineLyrics();
     }
 
@@ -470,16 +500,22 @@ public class LyricsUtils {
      * @param playOffset     时间补偿值
      * @return
      */
-    public static int getLineLrcStartTime(int lyricsType, TreeMap<Integer, LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
-        if (lrcLineInfos == null) return -1;
-        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
-        if (lyricsLineNum >= lrcLineInfos.size())
+    public static int getLineLrcStartTime(int lyricsType,
+                                          TreeMap<Integer, LyricsLineInfo> lrcLineInfos,
+                                          long curPlayingTime, long playOffset) {
+        if (lrcLineInfos == null) {
             return -1;
+        }
+        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
+        if (lyricsLineNum >= lrcLineInfos.size()) {
+            return -1;
+        }
 
         LyricsLineInfo lyricsLineInfo = lrcLineInfos.get(lyricsLineNum);
 
-        if (lyricsLineInfo == null)
+        if (lyricsLineInfo == null) {
             return -1;
+        }
         return lyricsLineInfo.getStartTime();
     }
 
@@ -492,11 +528,15 @@ public class LyricsUtils {
      * @param playOffset     时间补偿值
      * @return
      */
-    public static int getSplitLineLrcStartTime(int lyricsType, TreeMap<Integer, LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
-        if (lrcLineInfos == null) return -1;
-        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
-        if (lyricsLineNum >= lrcLineInfos.size())
+    public static int getSplitLineLrcStartTime(int lyricsType, TreeMap<Integer,
+            LyricsLineInfo> lrcLineInfos, long curPlayingTime, long playOffset) {
+        if (lrcLineInfos == null) {
             return -1;
+        }
+        int lyricsLineNum = getLineNumber(lyricsType, lrcLineInfos, curPlayingTime, playOffset);
+        if (lyricsLineNum >= lrcLineInfos.size()) {
+            return -1;
+        }
         int splitLyricsLineNum = -1;
         if (lyricsType == LyricsInfo.DYNAMIC) {
             splitLyricsLineNum = getSplitDynamicLyricsLineNum(lrcLineInfos, lyricsLineNum, curPlayingTime, playOffset);
@@ -511,8 +551,9 @@ public class LyricsUtils {
 
         LyricsLineInfo lyricsLineInfo = splitLyricsLineInfos.get(splitLyricsLineNum);
 
-        if (lyricsLineInfo == null)
+        if (lyricsLineInfo == null) {
             return -1;
+        }
         return lyricsLineInfo.getStartTime();
     }
 
@@ -526,8 +567,11 @@ public class LyricsUtils {
      * @param paint
      * @return 对原始歌词集合进行修改，并返回含有分割歌词的集合
      */
-    public static TreeMap<Integer, LyricsLineInfo> getSplitLrcLyrics(TreeMap<Integer, LyricsLineInfo> defLyricsLineTreeMap, float textMaxWidth, Paint paint) {
-        if (defLyricsLineTreeMap == null) return null;
+    public static TreeMap<Integer, LyricsLineInfo> getSplitLrcLyrics(TreeMap<Integer,
+            LyricsLineInfo> defLyricsLineTreeMap, float textMaxWidth, Paint paint) {
+        if (defLyricsLineTreeMap == null) {
+            return null;
+        }
         TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap = new TreeMap<Integer, LyricsLineInfo>();
         for (int i = 0; i < defLyricsLineTreeMap.size(); i++) {
             LyricsLineInfo lyricsLineInfo = new LyricsLineInfo();
@@ -548,8 +592,12 @@ public class LyricsUtils {
      * @param paint
      * @return 对原始歌词集合进行修改，并返回含有分割歌词的集合
      */
-    public static TreeMap<Integer, LyricsLineInfo> getSplitDynamicLyrics(TreeMap<Integer, LyricsLineInfo> defLyricsLineTreeMap, float textMaxWidth, Paint paint) {
-        if (defLyricsLineTreeMap == null) return null;
+    public static TreeMap<Integer,
+            LyricsLineInfo> getSplitDynamicLyrics(TreeMap<Integer, LyricsLineInfo> defLyricsLineTreeMap,
+                                                  float textMaxWidth, Paint paint) {
+        if (defLyricsLineTreeMap == null) {
+            return null;
+        }
         TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap = new TreeMap<Integer, LyricsLineInfo>();
         for (int i = 0; i < defLyricsLineTreeMap.size(); i++) {
             LyricsLineInfo lyricsLineInfo = new LyricsLineInfo();
@@ -592,12 +640,13 @@ public class LyricsUtils {
      * @param textMaxWidth
      * @param foreachListener
      */
-    private static void splitLineLyrics(LyricsLineInfo lyricsLineInfo, Paint paint, float textMaxWidth, ForeachListener foreachListener) {
+    private static void splitLineLyrics(LyricsLineInfo lyricsLineInfo,
+                                        Paint paint, float textMaxWidth, ForeachListener foreachListener) {
         String lineLyrics = lyricsLineInfo.getLineLyrics().trim();
         // 行歌词数组
         String[] lyricsWords = lyricsLineInfo.getLyricsWords();
         // 每行的歌词长度
-        int   lineWidth    = (int) paint.measureText(lineLyrics);
+        int lineWidth = (int) paint.measureText(lineLyrics);
         float maxLineWidth = textMaxWidth;
         if (lineWidth > maxLineWidth) {
 
@@ -653,9 +702,9 @@ public class LyricsUtils {
      */
     private static void splitLrcLyrics(LyricsLineInfo lyricsLineInfo, Paint paint, float textMaxWidth) {
         List<LyricsLineInfo> lyricsLineInfos = new ArrayList<LyricsLineInfo>();
-        String               lineLyrics      = lyricsLineInfo.getLineLyrics().trim();
+        String lineLyrics = lyricsLineInfo.getLineLyrics().trim();
         // 每行的歌词长度
-        int   lineWidth    = (int) paint.measureText(lineLyrics);
+        int lineWidth = (int) paint.measureText(lineLyrics);
         float maxLineWidth = textMaxWidth;
         if (lineWidth > maxLineWidth) {
 
@@ -712,13 +761,14 @@ public class LyricsUtils {
     private static LyricsLineInfo getNewLrcLyricsLineInfo(
             LyricsLineInfo lyricsLineInfo, int startIndex, int lastIndex) {
 
-        if (lastIndex < 0)
+        if (lastIndex < 0) {
             return null;
+        }
         LyricsLineInfo newLyricsLineInfo = new LyricsLineInfo();
         // 行开始时间
-        int           lineStartTime = lyricsLineInfo.getStartTime();
-        int           startTime     = lineStartTime;
-        StringBuilder lineLyrics    = new StringBuilder();
+        int lineStartTime = lyricsLineInfo.getStartTime();
+        int startTime = lineStartTime;
+        StringBuilder lineLyrics = new StringBuilder();
         for (int i = startIndex; i <= lastIndex; i++) {
             lineLyrics.append(lyricsLineInfo.getLineLyrics().charAt(i));
         }
@@ -739,18 +789,19 @@ public class LyricsUtils {
     private static LyricsLineInfo getNewLyricsLineInfo(
             LyricsLineInfo lyricsLineInfo, int startIndex, int lastIndex) {
 
-        if (lastIndex < 0)
+        if (lastIndex < 0) {
             return null;
+        }
         LyricsLineInfo newLyricsLineInfo = new LyricsLineInfo();
         // 行开始时间
-        int           lineStartTime        = lyricsLineInfo.getStartTime();
-        int           startTime            = lineStartTime;
-        int           endTime              = 0;
-        StringBuilder lineLyrics           = new StringBuilder();
-        List<String>  lyricsWordsList      = new ArrayList<String>();
+        int lineStartTime = lyricsLineInfo.getStartTime();
+        int startTime = lineStartTime;
+        int endTime = 0;
+        StringBuilder lineLyrics = new StringBuilder();
+        List<String> lyricsWordsList = new ArrayList<String>();
         List<Integer> wordsDisIntervalList = new ArrayList<Integer>();
-        String[]      lyricsWords          = lyricsLineInfo.getLyricsWords();
-        int[]         wordsDisInterval     = lyricsLineInfo.getWordsDisInterval();
+        String[] lyricsWords = lyricsLineInfo.getLyricsWords();
+        int[] wordsDisInterval = lyricsLineInfo.getWordsDisInterval();
         for (int i = 0; i <= lastIndex; i++) {
             if (i < startIndex) {
                 startTime += wordsDisInterval[i];
@@ -765,7 +816,7 @@ public class LyricsUtils {
         //
         String[] newLyricsWords = lyricsWordsList
                 .toArray(new String[lyricsWordsList.size()]);
-        int newWordsDisInterval[] = getWordsDisIntervalList(wordsDisIntervalList);
+        int[] newWordsDisInterval = getWordsDisIntervalList(wordsDisIntervalList);
         newLyricsLineInfo.setEndTime(endTime);
         newLyricsLineInfo.setStartTime(startTime);
         newLyricsLineInfo.setLineLyrics(lineLyrics.toString());
@@ -783,7 +834,7 @@ public class LyricsUtils {
      */
     private static int[] getWordsDisIntervalList(
             List<Integer> wordsDisIntervalList) {
-        int wordsDisInterval[] = new int[wordsDisIntervalList.size()];
+        int[] wordsDisInterval = new int[wordsDisIntervalList.size()];
         for (int i = 0; i < wordsDisIntervalList.size(); i++) {
             wordsDisInterval[i] = wordsDisIntervalList.get(i);
         }
@@ -798,8 +849,11 @@ public class LyricsUtils {
      * @param mExtraLrcPaint
      * @return 对原始歌词集合进行修改，并返回含有分割歌词的集合
      */
-    public static List<LyricsLineInfo> getSplitDynamicExtraLyrics(List<LyricsLineInfo> lrcLineInfos, float mTextMaxWidth, Paint mExtraLrcPaint) {
-        if (lrcLineInfos == null) return null;
+    public static List<LyricsLineInfo> getSplitDynamicExtraLyrics(List<LyricsLineInfo> lrcLineInfos,
+                                                                  float mTextMaxWidth, Paint mExtraLrcPaint) {
+        if (lrcLineInfos == null) {
+            return null;
+        }
         List<LyricsLineInfo> extraLrcLineInfos = new ArrayList<LyricsLineInfo>();
 
         for (int i = 0; i < lrcLineInfos.size(); i++) {
@@ -823,8 +877,11 @@ public class LyricsUtils {
      * @param mExtraLrcPaint
      * @return 对原始歌词集合进行修改，并返回含有分割歌词的集合
      */
-    public static List<LyricsLineInfo> getSplitLrcExtraLyrics(List<LyricsLineInfo> translateLrcLineInfos, float mTextMaxWidth, Paint mExtraLrcPaint) {
-        if (translateLrcLineInfos == null) return null;
+    public static List<LyricsLineInfo> getSplitLrcExtraLyrics(List<LyricsLineInfo> translateLrcLineInfos,
+                                                              float mTextMaxWidth, Paint mExtraLrcPaint) {
+        if (translateLrcLineInfos == null) {
+            return null;
+        }
         List<LyricsLineInfo> extraLrcLineInfos = new ArrayList<LyricsLineInfo>();
         for (int i = 0; i < translateLrcLineInfos.size(); i++) {
 
@@ -848,8 +905,9 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getSplitDynamicLyricsLineNum(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, int origLineNumber, long oldPlayingTime, long playOffset) {
-        LyricsLineInfo       lyrLine         = lyricsLineTreeMap.get(origLineNumber);
+    public static int getSplitDynamicLyricsLineNum(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap,
+                                                   int origLineNumber, long oldPlayingTime, long playOffset) {
+        LyricsLineInfo lyrLine = lyricsLineTreeMap.get(origLineNumber);
         List<LyricsLineInfo> lyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         return getSplitLyricsLineNum(lyricsLineInfos, oldPlayingTime, playOffset);
     }
@@ -863,8 +921,9 @@ public class LyricsUtils {
      * @param playOffset
      * @return
      */
-    public static int getSplitLrcLyricsLineNum(TreeMap<Integer, LyricsLineInfo> mLrcLineInfos, int mLyricsLineNum, long playProgress, long playOffset) {
-        LyricsLineInfo       lyrLine         = mLrcLineInfos.get(mLyricsLineNum);
+    public static int getSplitLrcLyricsLineNum(TreeMap<Integer, LyricsLineInfo> mLrcLineInfos,
+                                               int mLyricsLineNum, long playProgress, long playOffset) {
+        LyricsLineInfo lyrLine = mLrcLineInfos.get(mLyricsLineNum);
         List<LyricsLineInfo> lyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         return getSplitLrcLyricsLineNum(lyricsLineInfos, playProgress, playOffset);
     }
@@ -877,11 +936,14 @@ public class LyricsUtils {
      * @param playOffset
      * @return
      */
-    private static int getSplitLrcLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos, long playProgress, long playOffset) {
+    private static int getSplitLrcLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos,
+                                                long playProgress, long playOffset) {
         //添加歌词增量
         long curPlayingTime = playProgress + playOffset;
         for (int i = 0; i < lyricsLineInfos.size(); i++) {
-            if (curPlayingTime < lyricsLineInfos.get(i).getStartTime()) return 0;
+            if (curPlayingTime < lyricsLineInfos.get(i).getStartTime()) {
+                return 0;
+            }
 
             if (curPlayingTime >= lyricsLineInfos.get(i).getStartTime()
                     && i + 1 < lyricsLineInfos.size()
@@ -903,8 +965,9 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getSplitExtraLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos, int origLineNumber, long oldPlayingTime, long playOffset) {
-        LyricsLineInfo       lyrLine      = lyricsLineInfos.get(origLineNumber);
+    public static int getSplitExtraLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos,
+                                                 int origLineNumber, long oldPlayingTime, long playOffset) {
+        LyricsLineInfo lyrLine = lyricsLineInfos.get(origLineNumber);
         List<LyricsLineInfo> newLineInfos = lyrLine.getSplitLyricsLineInfos();
         return getSplitLyricsLineNum(newLineInfos, oldPlayingTime, playOffset);
     }
@@ -916,12 +979,15 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    private static int getSplitLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos, long oldPlayingTime, long playOffset) {
+    private static int getSplitLyricsLineNum(List<LyricsLineInfo> lyricsLineInfos,
+                                             long oldPlayingTime, long playOffset) {
         //添加歌词增量
         long curPlayingTime = oldPlayingTime + playOffset;
         for (int i = 0; i < lyricsLineInfos.size(); i++) {
 
-            if (curPlayingTime < lyricsLineInfos.get(i).getStartTime()) return 0;
+            if (curPlayingTime < lyricsLineInfos.get(i).getStartTime()) {
+                return 0;
+            }
 
             if (curPlayingTime >= lyricsLineInfos.get(i).getStartTime()
                     && curPlayingTime <= lyricsLineInfos.get(i).getEndTime()) {
@@ -948,19 +1014,23 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getSplitLyricsWordIndex(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static int getSplitLyricsWordIndex(TreeMap<Integer,
+            LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return -1;
+        }
 
         //添加歌词增量
-        long           curPlayingTime = oldPlayingTime + playOffset;
-        LyricsLineInfo lyrLine        = lyricsLineTreeMap.get(lyricsLineNum);
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineTreeMap.get(lyricsLineNum);
 
         List<LyricsLineInfo> lyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         for (int i = 0; i < lyricsLineInfos.size(); i++) {
-            LyricsLineInfo temp       = lyricsLineInfos.get(i);
-            int            elapseTime = temp.getStartTime();
-            if (curPlayingTime < elapseTime) return -1;
+            LyricsLineInfo temp = lyricsLineInfos.get(i);
+            int elapseTime = temp.getStartTime();
+            if (curPlayingTime < elapseTime) {
+                return -1;
+            }
             for (int j = 0; j < temp.getLyricsWords().length; j++) {
                 elapseTime += temp.getWordsDisInterval()[j];
                 if (curPlayingTime <= elapseTime) {
@@ -985,15 +1055,19 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getLyricsWordIndex(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static int getLyricsWordIndex(TreeMap<Integer,
+            LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return -1;
+        }
 
         //添加歌词增量
-        long           curPlayingTime = oldPlayingTime + playOffset;
-        LyricsLineInfo lyrLine        = lyricsLineTreeMap.get(lyricsLineNum);
-        int            elapseTime     = lyrLine.getStartTime();
-        if (curPlayingTime < elapseTime) return -1;
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineTreeMap.get(lyricsLineNum);
+        int elapseTime = lyrLine.getStartTime();
+        if (curPlayingTime < elapseTime) {
+            return -1;
+        }
 
         for (int j = 0; j < lyrLine.getLyricsWords().length; j++) {
             elapseTime += lyrLine.getWordsDisInterval()[j];
@@ -1014,18 +1088,22 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getSplitExtraLyricsWordIndex(List<LyricsLineInfo> lyricsLineInfos, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static int getSplitExtraLyricsWordIndex(List<LyricsLineInfo> lyricsLineInfos,
+                                                   int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return -1;
+        }
 
         //添加歌词增量
-        long                 curPlayingTime     = oldPlayingTime + playOffset;
-        LyricsLineInfo       lyrLine            = lyricsLineInfos.get(lyricsLineNum);
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineInfos.get(lyricsLineNum);
         List<LyricsLineInfo> newLyricsLineInfos = lyrLine.getSplitLyricsLineInfos();
         for (int i = 0; i < newLyricsLineInfos.size(); i++) {
-            LyricsLineInfo temp       = newLyricsLineInfos.get(i);
-            int            elapseTime = temp.getStartTime();
-            if (curPlayingTime < elapseTime) return -1;
+            LyricsLineInfo temp = newLyricsLineInfos.get(i);
+            int elapseTime = temp.getStartTime();
+            if (curPlayingTime < elapseTime) {
+                return -1;
+            }
             for (int j = 0; j < temp.getLyricsWords().length; j++) {
                 elapseTime += temp.getWordsDisInterval()[j];
                 if (curPlayingTime <= elapseTime) {
@@ -1050,15 +1128,19 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static int getExtraLyricsWordIndex(List<LyricsLineInfo> lyricsLineInfos, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static int getExtraLyricsWordIndex(List<LyricsLineInfo> lyricsLineInfos,
+                                              int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return -1;
+        }
 
         //添加歌词增量
-        long           curPlayingTime = oldPlayingTime + playOffset;
-        LyricsLineInfo lyrLine        = lyricsLineInfos.get(lyricsLineNum);
-        int            elapseTime     = lyrLine.getStartTime();
-        if (curPlayingTime < elapseTime) return -1;
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineInfos.get(lyricsLineNum);
+        int elapseTime = lyrLine.getStartTime();
+        if (curPlayingTime < elapseTime) {
+            return -1;
+        }
         for (int j = 0; j < lyrLine.getLyricsWords().length; j++) {
             elapseTime += lyrLine.getWordsDisInterval()[j];
             if (curPlayingTime <= elapseTime) {
@@ -1077,14 +1159,18 @@ public class LyricsUtils {
      * @param oldPlayingTime
      * @return
      */
-    public static long getDisWordsIndexLenTime(TreeMap<Integer, LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static long getDisWordsIndexLenTime(TreeMap<Integer,
+            LyricsLineInfo> lyricsLineTreeMap, int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return 0;
+        }
         //添加歌词增量
-        long           curPlayingTime = oldPlayingTime + playOffset;
-        LyricsLineInfo lyrLine        = lyricsLineTreeMap.get(lyricsLineNum);
-        int            elapseTime     = lyrLine.getStartTime();
-        if (curPlayingTime < elapseTime) return 0;
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineTreeMap.get(lyricsLineNum);
+        int elapseTime = lyrLine.getStartTime();
+        if (curPlayingTime < elapseTime) {
+            return 0;
+        }
         for (int i = 0; i < lyrLine.getLyricsWords().length; i++) {
             elapseTime += lyrLine.getWordsDisInterval()[i];
             if (curPlayingTime <= elapseTime) {
@@ -1104,14 +1190,18 @@ public class LyricsUtils {
      * @param playOffset
      * @return
      */
-    public static long getTranslateLrcDisWordsIndexLenTime(List<LyricsLineInfo> lyricsLineInfos, int lyricsLineNum, long oldPlayingTime, long playOffset) {
-        if (lyricsLineNum < 0)
+    public static long getTranslateLrcDisWordsIndexLenTime(List<LyricsLineInfo> lyricsLineInfos,
+                                                           int lyricsLineNum, long oldPlayingTime, long playOffset) {
+        if (lyricsLineNum < 0) {
             return 0;
+        }
         //添加歌词增量
-        long           curPlayingTime = oldPlayingTime + playOffset;
-        LyricsLineInfo lyrLine        = lyricsLineInfos.get(lyricsLineNum);
-        int            elapseTime     = lyrLine.getStartTime();
-        if (curPlayingTime < elapseTime) return 0;
+        long curPlayingTime = oldPlayingTime + playOffset;
+        LyricsLineInfo lyrLine = lyricsLineInfos.get(lyricsLineNum);
+        int elapseTime = lyrLine.getStartTime();
+        if (curPlayingTime < elapseTime) {
+            return 0;
+        }
         for (int i = 0; i < lyrLine.getLyricsWords().length; i++) {
             elapseTime += lyrLine.getWordsDisInterval()[i];
             if (curPlayingTime <= elapseTime) {

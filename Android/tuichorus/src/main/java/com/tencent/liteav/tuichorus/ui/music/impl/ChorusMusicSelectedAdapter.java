@@ -1,6 +1,7 @@
 package com.tencent.liteav.tuichorus.ui.music.impl;
 
 import android.content.Context;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -30,7 +31,8 @@ public class ChorusMusicSelectedAdapter extends RecyclerView.Adapter<ChorusMusic
     private   OnItemClickListener       mListener;
     private   ChorusRoomInfoController  mChorusRoomInfoController;
 
-    public ChorusMusicSelectedAdapter(Context context, ChorusRoomInfoController controller, List<ChorusMusicModel> selectedList,
+    public ChorusMusicSelectedAdapter(Context context, ChorusRoomInfoController controller,
+                                      List<ChorusMusicModel> selectedList,
                                       OnUpdateItemClickListener listener) {
         this.mContext = context;
         this.mChorusRoomInfoController = controller;
@@ -40,9 +42,9 @@ public class ChorusMusicSelectedAdapter extends RecyclerView.Adapter<ChorusMusic
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context        context  = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View           view     = inflater.inflate(R.layout.tuichorus_fragment_selected_itemview, parent, false);
+        View view = inflater.inflate(R.layout.tuichorus_fragment_selected_itemview, parent, false);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }

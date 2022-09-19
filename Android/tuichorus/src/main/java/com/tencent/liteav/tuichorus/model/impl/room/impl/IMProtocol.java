@@ -1,5 +1,9 @@
 package com.tencent.liteav.tuichorus.model.impl.room.impl;
 
+import static com.tencent.liteav.tuichorus.model.impl.room.impl.IMProtocol.Define.KEY_CMD_ACTION;
+import static com.tencent.liteav.tuichorus.model.impl.room.impl.IMProtocol.Define.KEY_ROOM_INFO;
+import static com.tencent.liteav.tuichorus.model.impl.room.impl.IMProtocol.Define.KEY_SEAT;
+
 import android.text.TextUtils;
 import android.util.Pair;
 
@@ -16,8 +20,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.tencent.liteav.tuichorus.model.impl.room.impl.IMProtocol.Define.*;
 
 public class IMProtocol {
     private static final String TAG = IMProtocol.class.getName();
@@ -54,57 +56,57 @@ public class IMProtocol {
         public static final String VALUE_PLATFORM    = "Android";   //当前平台
     }
 
-    public static HashMap<String, String> getInitRoomMap(TXRoomInfo TXRoomInfo, List<TXSeatInfo> TXSeatInfoList) {
-        Gson                    gson    = new Gson();
+    public static HashMap<String, String> getInitRoomMap(TXRoomInfo txRoomInfo, List<TXSeatInfo> txSeatInfos) {
+        Gson gson = new Gson();
         HashMap<String, String> jsonMap = new HashMap<>();
-        jsonMap.put(KEY_ATTR_VERSION, VALUE_ATTR_VERSION);
-        jsonMap.put(KEY_ROOM_INFO, gson.toJson(TXRoomInfo));
-        for (int i = 0; i < TXSeatInfoList.size(); i++) {
-            String json = gson.toJson(TXSeatInfoList.get(i), TXSeatInfo.class);
+        jsonMap.put(Define.KEY_ATTR_VERSION, Define.VALUE_ATTR_VERSION);
+        jsonMap.put(KEY_ROOM_INFO, gson.toJson(txRoomInfo));
+        for (int i = 0; i < txSeatInfos.size(); i++) {
+            String json = gson.toJson(txSeatInfos.get(i), TXSeatInfo.class);
             jsonMap.put(KEY_SEAT + i, json);
         }
         return jsonMap;
     }
 
-    public static HashMap<String, String> getSeatInfoListJsonStr(List<TXSeatInfo> TXSeatInfoList) {
-        Gson                    gson    = new Gson();
+    public static HashMap<String, String> getSeatInfoListJsonStr(List<TXSeatInfo> txSeatInfos) {
+        Gson gson = new Gson();
         HashMap<String, String> jsonMap = new HashMap<>();
-        for (int i = 0; i < TXSeatInfoList.size(); i++) {
-            String json = gson.toJson(TXSeatInfoList.get(i), TXSeatInfo.class);
+        for (int i = 0; i < txSeatInfos.size(); i++) {
+            String json = gson.toJson(txSeatInfos.get(i), TXSeatInfo.class);
             jsonMap.put(KEY_SEAT + i, json);
         }
         return jsonMap;
     }
 
     public static HashMap<String, String> getSeatInfoJsonStr(int index, TXSeatInfo info) {
-        Gson                    gson = new Gson();
-        String                  json = gson.toJson(info, TXSeatInfo.class);
-        HashMap<String, String> map  = new HashMap<>();
+        Gson gson = new Gson();
+        String json = gson.toJson(info, TXSeatInfo.class);
+        HashMap<String, String> map = new HashMap<>();
         map.put(KEY_SEAT + index, json);
         return map;
     }
 
     public static TXRoomInfo getRoomInfoFromAttr(Map<String, String> map) {
-        TXRoomInfo TXRoomInfo;
-        Gson       gson = new Gson();
-        String     json = map.get(KEY_ROOM_INFO);
+        TXRoomInfo txRoomInfo;
+        Gson gson = new Gson();
+        String json = map.get(KEY_ROOM_INFO);
         if (TextUtils.isEmpty(json)) {
             return null;
         }
         try {
-            TXRoomInfo = gson.fromJson(json, TXRoomInfo.class);
+            txRoomInfo = gson.fromJson(json, TXRoomInfo.class);
         } catch (Exception e) {
             TRTCLogger.e(TAG, "parse room info json error! " + json);
-            TXRoomInfo = null;
+            txRoomInfo = null;
         }
-        return TXRoomInfo;
+        return txRoomInfo;
     }
 
     public static List<TXSeatInfo> getSeatListFromAttr(Map<String, String> map, int seatSize) {
-        Gson             gson           = new Gson();
+        Gson gson = new Gson();
         List<TXSeatInfo> txSeatInfoList = new ArrayList<>();
         for (int i = 0; i < seatSize; i++) {
-            String     json = map.get(KEY_SEAT + i);
+            String json = map.get(KEY_SEAT + i);
             TXSeatInfo txSeatInfo;
             if (TextUtils.isEmpty(json)) {
                 txSeatInfo = new TXSeatInfo();
@@ -122,7 +124,7 @@ public class IMProtocol {
     }
 
     public static SignallingData convert2SignallingData(String json) {
-        SignallingData      signallingData = new SignallingData();
+        SignallingData signallingData = new SignallingData();
         Map<String, Object> extraMap;
         try {
             extraMap = new Gson().fromJson(json, Map.class);
@@ -151,7 +153,7 @@ public class IMProtocol {
             if (extraMap.containsKey(SignallingDefine.KEY_DATA)) {
                 Object dataMapObj = extraMap.get(SignallingDefine.KEY_DATA);
                 if (dataMapObj != null && dataMapObj instanceof Map) {
-                    Map<String, Object>     dataMap  = (Map<String, Object>) dataMapObj;
+                    Map<String, Object> dataMap = (Map<String, Object>) dataMapObj;
                     SignallingData.DataInfo dataInfo = convert2DataInfo(dataMap);
                     signallingData.setData(dataInfo);
                 } else {
@@ -200,8 +202,8 @@ public class IMProtocol {
     public static String getRoomDestroyMsg() {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(KEY_CMD_VERSION, VALUE_CMD_VERSION);
-            jsonObject.put(KEY_CMD_ACTION, CODE_ROOM_DESTROY);
+            jsonObject.put(Define.KEY_CMD_VERSION, Define.VALUE_CMD_VERSION);
+            jsonObject.put(KEY_CMD_ACTION, Define.CODE_ROOM_DESTROY);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -211,8 +213,8 @@ public class IMProtocol {
     public static String getCusMsgJsonStr(String cmd, String msg) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject.put(KEY_ATTR_VERSION, VALUE_ATTR_VERSION);
-            jsonObject.put(KEY_CMD_ACTION, CODE_ROOM_CUSTOM_MSG);
+            jsonObject.put(Define.KEY_ATTR_VERSION, Define.VALUE_ATTR_VERSION);
+            jsonObject.put(KEY_CMD_ACTION, Define.CODE_ROOM_CUSTOM_MSG);
             jsonObject.put("command", cmd);
             jsonObject.put("message", msg);
         } catch (JSONException e) {
@@ -222,7 +224,7 @@ public class IMProtocol {
     }
 
     public static Pair<String, String> parseCusMsg(JSONObject jsonObject) {
-        String cmd     = jsonObject.optString("command");
+        String cmd = jsonObject.optString("command");
         String message = jsonObject.optString("message");
         return new Pair<>(cmd, message);
     }

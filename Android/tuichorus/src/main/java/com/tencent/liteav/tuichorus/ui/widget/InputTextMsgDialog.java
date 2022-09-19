@@ -41,7 +41,8 @@ public class InputTextMsgDialog extends Dialog {
         mEditMessage = (EditText) findViewById(R.id.et_input_message);
         mEditMessage.setInputType(InputType.TYPE_CLASS_TEXT);
         //修改下划线颜色
-        mEditMessage.getBackground().setColorFilter(context.getResources().getColor(R.color.tuichorus_transparent), PorterDuff.Mode.CLEAR);
+        mEditMessage.getBackground().setColorFilter(context.getResources()
+                .getColor(R.color.tuichorus_transparent), PorterDuff.Mode.CLEAR);
 
         mTextConfirm = (TextView) findViewById(R.id.confrim_btn);
         mInputMethodManager = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -116,8 +117,9 @@ public class InputTextMsgDialog extends Dialog {
         mRelativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (v.getId() != R.id.rl_inputdlg_view)
+                if (v.getId() != R.id.rl_inputdlg_view) {
                     dismiss();
+                }
             }
         });
 
