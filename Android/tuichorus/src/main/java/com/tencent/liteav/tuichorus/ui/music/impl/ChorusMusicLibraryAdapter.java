@@ -1,8 +1,10 @@
 package com.tencent.liteav.tuichorus.ui.music.impl;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +25,8 @@ public class ChorusMusicLibraryAdapter extends RecyclerView.Adapter<ChorusMusicL
     protected OnPickItemClickListener  onPickItemClickListener;
     private   ChorusRoomInfoController mChorusRoomInfoController;
 
-    public ChorusMusicLibraryAdapter(Context context, ChorusRoomInfoController controller, List<ChorusMusicModel> libraryList,
+    public ChorusMusicLibraryAdapter(Context context, ChorusRoomInfoController controller,
+                                     List<ChorusMusicModel> libraryList,
                                      OnPickItemClickListener onPickItemClickListener) {
         this.mContext = context;
         this.mChorusRoomInfoController = controller;
@@ -34,9 +37,9 @@ public class ChorusMusicLibraryAdapter extends RecyclerView.Adapter<ChorusMusicL
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Context        context  = parent.getContext();
+        Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View           view     = inflater.inflate(R.layout.tuichorus_fragment_library_itemview, parent, false);
+        View view = inflater.inflate(R.layout.tuichorus_fragment_library_itemview, parent, false);
         return new ViewHolder(view);
     }
 

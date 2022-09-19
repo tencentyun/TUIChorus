@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -28,7 +29,8 @@ public class SlideRecyclerView extends RecyclerView {
     private Scroller        mScroller;          // 触碰动画
     private Rect            mTouchFrame;        // 子View所在的矩形范围
     private float           mLastX;             // 滑动过程中记录上次触碰点X
-    private float           mFirstX, mFirstY;   // 首次触碰范围
+    private float           mFirstX;
+    private float           mFirstY;   // 首次触碰范围
 
     private int     mTouchSlop;      // 认为是滑动的最小距离（一般由系统提供）
     private boolean mIsSlide;        // 是否滑动子View
@@ -66,7 +68,8 @@ public class SlideRecyclerView extends RecyclerView {
                 if (mPosition != INVALID_POSITION) {
                     View view = mFlingView;
                     // 获取触碰点所在的view
-                    mFlingView = (ViewGroup) getChildAt(mPosition - ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition());
+                    mFlingView = (ViewGroup) getChildAt(mPosition - ((LinearLayoutManager) getLayoutManager())
+                            .findFirstVisibleItemPosition());
                     // 如果之前触碰的view已经打开，而当前碰到的view不是那个view则立即关闭之前的view
                     if (view != null && mFlingView != view && view.getScrollX() != 0) {
                         view.scrollTo(0, 0);
@@ -101,6 +104,8 @@ public class SlideRecyclerView extends RecyclerView {
             case MotionEvent.ACTION_UP:
                 releaseVelocity();
                 break;
+            default:
+                break;
         }
         return super.onInterceptTouchEvent(e);
     }
@@ -127,11 +132,13 @@ public class SlideRecyclerView extends RecyclerView {
                                 // 2.横向滑动速度大于最小滑动速度；
                                 // 注意:向左滑则速度为负值
                                 if (mVelocityTracker.getXVelocity() < -SNAP_VELOCITY) {    // 向左侧滑达到侧滑最低速度，则打开
-                                    mScroller.startScroll(scrollX, 0, mMenuViewWidth - scrollX, 0, Math.abs(mMenuViewWidth - scrollX));
+                                    mScroller.startScroll(scrollX, 0,
+                                            mMenuViewWidth - scrollX, 0, Math.abs(mMenuViewWidth - scrollX));
                                 } else if (mVelocityTracker.getXVelocity() >= SNAP_VELOCITY) {  // 向右侧滑达到侧滑最低速度，则关闭
                                     mScroller.startScroll(scrollX, 0, -scrollX, 0, Math.abs(scrollX));
                                 } else if (scrollX >= mMenuViewWidth / 2) { // 如果超过删除按钮一半，则打开
-                                    mScroller.startScroll(scrollX, 0, mMenuViewWidth - scrollX, 0, Math.abs(mMenuViewWidth - scrollX));
+                                    mScroller.startScroll(scrollX, 0,
+                                            mMenuViewWidth - scrollX, 0, Math.abs(mMenuViewWidth - scrollX));
                                 } else {    // 其他情况则关闭
                                     mScroller.startScroll(scrollX, 0, -scrollX, 0, Math.abs(scrollX));
                                 }
@@ -146,6 +153,8 @@ public class SlideRecyclerView extends RecyclerView {
                     break;
                 case MotionEvent.ACTION_UP:
                     releaseVelocity();
+                    break;
+                default:
                     break;
             }
             return true;
@@ -173,8 +182,8 @@ public class SlideRecyclerView extends RecyclerView {
     }
 
     public int pointToPosition(int x, int y) {
-        int  firstPosition = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
-        Rect frame         = mTouchFrame;
+        int firstPosition = ((LinearLayoutManager) getLayoutManager()).findFirstVisibleItemPosition();
+        Rect frame = mTouchFrame;
         if (frame == null) {
             mTouchFrame = new Rect();
             frame = mTouchFrame;

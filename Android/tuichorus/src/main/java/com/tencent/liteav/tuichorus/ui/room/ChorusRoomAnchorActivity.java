@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements SelectMemberView.onSelectedCallback {
+public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements SelectMemberView.OnSelectedCallback {
     public static final int ERROR_ROOM_ID_EXIT = -1301;
 
     // 用户消息的map
@@ -244,7 +244,8 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
                     //成功上座位，可以展示UI了
                     ToastUtils.showLong(getString(R.string.tuichorus_toast_owner_succeeded_in_occupying_the_seat));
                 } else {
-                    ToastUtils.showLong(getString(R.string.tuichorus_toast_owner_failed_to_occupy_the_seat) + "[" + code + "]:" + msg);
+                    ToastUtils.showLong(getString(R.string.tuichorus_toast_owner_failed_to_occupy_the_seat)
+                            + "[" + code + "]:" + msg);
                 }
             }
         });
@@ -544,13 +545,13 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
         final boolean isClose = entity.isClose;
         mTRTCChorusRoom.closeSeat(changeSeatIndexToModelIndex(itemPos), !isClose,
                 new TRTCChorusRoomCallback.ActionCallback() {
-            @Override
-            public void onCallback(int code, String msg) {
-                if (code == 0) {
-                    mViewSelectMember.updateCloseStatus(!isClose);
-                }
-            }
-        });
+                    @Override
+                    public void onCallback(int code, String msg) {
+                        if (code == 0) {
+                            mViewSelectMember.updateCloseStatus(!isClose);
+                        }
+                    }
+                });
     }
 
     private static class SeatInvitation {
@@ -571,13 +572,11 @@ public class ChorusRoomAnchorActivity extends ChorusRoomBaseActivity implements 
             }
             mTRTCChorusRoom.pickSeat(changeSeatIndexToModelIndex(seatInvitation.seatIndex),
                     seatInvitation.inviteUserId, new TRTCChorusRoomCallback.ActionCallback() {
-                @Override
-                public void onCallback(int code, String msg) {
-                    if (code == 0) {
-                        //ToastUtils.showLong(getString(R.string.tuichorus_toast_invite_to_chat_successfully, invitee));
-                    }
-                }
-            });
+                        @Override
+                        public void onCallback(int code, String msg) {
+
+                        }
+                    });
         } else {
             Log.e(TAG, "onInviteeAccepted: " + id + " user:" + invitee + " not this people");
         }
