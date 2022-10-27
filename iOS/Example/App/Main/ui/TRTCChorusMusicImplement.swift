@@ -177,7 +177,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
         let data: [String : Any] = [
             gCHORUS_KEY_ROOM_ID : roomInfo.roomID,
             gCHORUS_KEY_INSTRUCTION : instruction,
-            gCHORUS_KEY_INVITAITON_CONTENT : musicID
+            gCHORUS_KEY_INVITAITON_CONTENT : musicID,
         ]
         header[gCHORUS_KEY_DATA] = data
         return header
@@ -188,7 +188,7 @@ extension TRTCChorusMusicImplement: V2TIMSimpleMsgListener {
         let data: [String : Any] = [
             gCHORUS_KEY_ROOM_ID : roomInfo.roomID,
             gCHORUS_KEY_INSTRUCTION : instruction,
-            gCHORUS_KEY_INVITAITON_CONTENT : content
+            gCHORUS_KEY_INVITAITON_CONTENT : content,
         ]
         header[gCHORUS_KEY_DATA] = data
         return header

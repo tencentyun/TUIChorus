@@ -192,7 +192,7 @@
     if (view) {
         [self.player setRenderView:view];
     }
-    V2TXLiveCode result = [self.player startPlay:url];
+    V2TXLiveCode result = [self.player startLivePlay:url];
     [[TRTCCloud sharedInstance] apiLog:[NSString stringWithFormat:@"TRTCChorusManager startCdnPlay finished, url:%@, view:%p, result:%ld, current_ntp:%ld", url, view, result, [TXLiveBase getNetworkTimestamp]]];
     return result == V2TXLIVE_OK;
     return NO;
