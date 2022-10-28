@@ -99,7 +99,6 @@
 				AF0AADE3B9A54EA0E703D293 /* en.lproj */,
 				80073BFC0664CCE42EBBD238 /* LoginLocalized.swift */,
 			);
-			name = AppLocalized;
 			path = AppLocalized;
 			sourceTree = "<group>";
 		};
@@ -228,7 +227,6 @@
 			children = (
 				9FE92E2ACABF5E650130C266 /* LoginLocalized.strings */,
 			);
-			name = en.lproj;
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
@@ -237,7 +235,6 @@
 			children = (
 				3992FCDE15F6E254CFECDB57 /* LoginLocalized.strings */,
 			);
-			name = "zh-Hans.lproj";
 			path = "zh-Hans.lproj";
 			sourceTree = "<group>";
 		};
@@ -578,6 +575,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 12015;
 				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -586,6 +584,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adams.TUIChorusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
@@ -602,6 +601,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 12015;
 				DEVELOPMENT_TEAM = F8A3GH6Q4W;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = App/Info.plist;
@@ -610,6 +610,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 10.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.adams.TUIChorusApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = abyWildcardDev;
