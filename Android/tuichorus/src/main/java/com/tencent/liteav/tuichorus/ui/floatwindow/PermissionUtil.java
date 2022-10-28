@@ -43,8 +43,8 @@ class PermissionUtil {
      */
     static boolean hasPermissionBelowMarshmallow(Context context) {
         try {
-            AppOpsManager manager        = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            Method        dispatchMethod = AppOpsManager.class.getMethod("checkOp", int.class, int.class, String.class);
+            AppOpsManager manager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            Method dispatchMethod = AppOpsManager.class.getMethod("checkOp", int.class, int.class, String.class);
             return AppOpsManager.MODE_ALLOWED == (Integer) dispatchMethod.invoke(
                     manager, 24, Binder.getCallingUid(), context.getApplicationContext().getPackageName());
         } catch (Exception e) {
@@ -59,11 +59,14 @@ class PermissionUtil {
     private static boolean hasPermissionForO(Context context) {
         try {
             WindowManager mgr = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-            if (mgr == null) return false;
+            if (mgr == null) {
+                return false;
+            }
             View viewToAdd = new View(context);
             WindowManager.LayoutParams params = new WindowManager.LayoutParams(0, 0,
-                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ?
-                            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY : WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+                            ? WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+                            : WindowManager.LayoutParams.TYPE_SYSTEM_ALERT,
                     WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSPARENT);
             viewToAdd.setLayoutParams(params);

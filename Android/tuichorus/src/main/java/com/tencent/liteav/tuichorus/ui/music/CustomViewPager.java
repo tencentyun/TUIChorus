@@ -3,6 +3,7 @@ package com.tencent.liteav.tuichorus.ui.music;
 import android.content.Context;
 
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -29,18 +30,20 @@ public class CustomViewPager extends ViewPager {
 
     @Override
     public boolean onTouchEvent(MotionEvent arg0) {
-        if (mNoScroll)
+        if (mNoScroll) {
             return false;
-        else
+        } else {
             return super.onTouchEvent(arg0);
+        }
     }
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent arg0) {
-        if (mNoScroll)
+        if (mNoScroll) {
             return false;
-        else
+        } else {
             return super.onInterceptTouchEvent(arg0);
+        }
     }
 
     @Override

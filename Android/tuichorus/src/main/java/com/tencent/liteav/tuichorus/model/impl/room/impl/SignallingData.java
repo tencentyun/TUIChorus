@@ -1,5 +1,7 @@
 package com.tencent.liteav.tuichorus.model.impl.room.impl;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SignallingData {
 
     private int      version;
@@ -50,16 +52,21 @@ public class SignallingData {
 
     public static class DataInfo {
 
-        private int    room_id;
+        @SerializedName("room_id")
+        private int roomId;
+
+        @SerializedName("cmd")
         private String cmd;
-        private String seat_number;
+
+        @SerializedName("seat_number")
+        private String seatNumber;
 
         public int getRoomID() {
-            return room_id;
+            return roomId;
         }
 
         public void setRoomID(int roomId) {
-            this.room_id = roomId;
+            this.roomId = roomId;
         }
 
         public String getCmd() {
@@ -71,11 +78,11 @@ public class SignallingData {
         }
 
         public String getSeatNumber() {
-            return seat_number;
+            return seatNumber;
         }
 
         public void setSeatNumber(String seatNumber) {
-            this.seat_number = seatNumber;
+            this.seatNumber = seatNumber;
         }
 
     }

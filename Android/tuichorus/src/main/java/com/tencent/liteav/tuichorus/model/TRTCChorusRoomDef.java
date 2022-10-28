@@ -3,7 +3,8 @@ package com.tencent.liteav.tuichorus.model;
 import java.util.List;
 
 public class TRTCChorusRoomDef {
-    public static final int ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT = 10056; //群属性写冲突，请先拉取最新的群属性后再尝试写操作，IMSDK5.6及其以上版本支持，麦位信息已经发生变化，需要重新拉取
+    //群属性写冲突，请先拉取最新的群属性后再尝试写操作，IMSDK5.6及其以上版本支持，麦位信息已经发生变化，需要重新拉取
+    public static final int ERR_SVR_GROUP_ATTRIBUTE_WRITE_CONFLICT = 10056;
 
     public static class SeatInfo {
         public static final transient int STATUS_UNUSED = 0;
@@ -19,11 +20,11 @@ public class TRTCChorusRoomDef {
 
         @Override
         public String toString() {
-            return "TXSeatInfo{" +
-                    "status=" + status +
-                    ", mute=" + mute +
-                    ", userId=" + userId +
-                    '}';
+            return "SeatInfo{"
+                    + "status=" + status
+                    + ", mute=" + mute
+                    + ", userId='" + userId + '\''
+                    + '}';
         }
     }
 
@@ -45,12 +46,15 @@ public class TRTCChorusRoomDef {
 
         @Override
         public String toString() {
-            return "RoomParam{" +
-                    "roomName='" + roomName + '\'' +
-                    ", coverUrl='" + coverUrl + '\'' +
-                    ", needRequest=" + needRequest +
-                    ", seatInfoList=" + seatInfoList +
-                    '}';
+            return "RoomParam{"
+                    + "roomName='" + roomName + '\''
+                    + ", coverUrl='" + coverUrl + '\''
+                    + ", needRequest=" + needRequest
+                    + ", seatCount=" + seatCount
+                    + ", seatInfoList=" + seatInfoList
+                    + ", mPushUrl='" + mPushUrl + '\''
+                    + ", mPlayUrl='" + mPlayUrl + '\''
+                    + '}';
         }
     }
 
@@ -64,11 +68,11 @@ public class TRTCChorusRoomDef {
 
         @Override
         public String toString() {
-            return "RoomInfoController{" +
-                    "userId='" + userId + '\'' +
-                    ", userName='" + userName + '\'' +
-                    ", userAvatar='" + userAvatar + '\'' +
-                    '}';
+            return "UserInfo{"
+                    + "userId='" + userId + '\''
+                    + ", userName='" + userName + '\''
+                    + ", userAvatar='" + userAvatar + '\''
+                    + '}';
         }
     }
 
@@ -90,14 +94,15 @@ public class TRTCChorusRoomDef {
 
         @Override
         public String toString() {
-            return "TXRoomInfo{" +
-                    "roomId=" + roomId +
-                    ", roomName='" + roomName + '\'' +
-                    ", coverUrl='" + coverUrl + '\'' +
-                    ", ownerId='" + ownerId + '\'' +
-                    ", ownerName='" + ownerName + '\'' +
-                    ", memberCount=" + memberCount +
-                    '}';
+            return "RoomInfo{"
+                    + "roomId=" + roomId
+                    + ", roomName='" + roomName + '\''
+                    + ", coverUrl='" + coverUrl + '\''
+                    + ", ownerId='" + ownerId + '\''
+                    + ", ownerName='" + ownerName + '\''
+                    + ", memberCount=" + memberCount
+                    + ", needRequest=" + needRequest
+                    + '}';
         }
     }
 }

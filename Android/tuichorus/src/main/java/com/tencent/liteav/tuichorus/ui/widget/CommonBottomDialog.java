@@ -1,7 +1,9 @@
 package com.tencent.liteav.tuichorus.ui.widget;
 
 import android.content.Context;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -34,7 +36,7 @@ public class CommonBottomDialog extends BottomSheetDialog {
 
     public static int dp2px(Context context, float dpVal) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                               dpVal, context.getResources().getDisplayMetrics());
+                dpVal, context.getResources().getDisplayMetrics());
     }
 
     public void setButton(OnButtonClickListener buttonClickListener, String... textList) {
@@ -42,10 +44,12 @@ public class CommonBottomDialog extends BottomSheetDialog {
         mOnButtonClickListener = buttonClickListener;
         mViewContainer.removeAllViews();
         for (int i = 0; i < mButtonSize; i++) {
-            TextView                  textView = createButton(i, textList[i]);
-            LinearLayout.LayoutParams lp       = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(getContext(), 57));
+            TextView textView = createButton(i, textList[i]);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    dp2px(getContext(), 57));
             lp.setMargins(dp2px(getContext(), 10), 0, dp2px(getContext(), 10), dp2px(getContext(), 8));
-            textView.setPadding(dp2px(getContext(), 5), dp2px(getContext(), 10), dp2px(getContext(), 5), dp2px(getContext(), 10));
+            textView.setPadding(dp2px(getContext(), 5), dp2px(getContext(), 10),
+                    dp2px(getContext(), 5), dp2px(getContext(), 10));
             textView.setLayoutParams(lp);
             textView.setGravity(Gravity.CENTER);
             mViewContainer.addView(textView);
