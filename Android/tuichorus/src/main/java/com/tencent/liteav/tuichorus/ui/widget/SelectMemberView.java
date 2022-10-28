@@ -2,10 +2,14 @@ package com.tencent.liteav.tuichorus.ui.widget;
 
 import android.content.Context;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -27,15 +31,15 @@ import java.util.List;
  * @author guanyifeng
  */
 public class SelectMemberView extends BottomSheetDialog {
-    private Context            mContext;
-    private RecyclerView       mPusherListRv;
-    private ImageView          mIvCloseSeat;
-    private TextView           mTVCloseSeat;
-    private ListAdapter        mListAdapter;
-    private List<MemberEntity> mMemberEntityList;
-    private onSelectedCallback mOnSelectedCallback;
-    protected View             mCloseSeat;
-    private int                mSeatIndex;
+    private   Context            mContext;
+    private   RecyclerView       mPusherListRv;
+    private   ImageView          mIvCloseSeat;
+    private   TextView           mTVCloseSeat;
+    private   ListAdapter        mListAdapter;
+    private   List<MemberEntity> mMemberEntityList;
+    private   OnSelectedCallback mOnSelectedCallback;
+    protected View               mCloseSeat;
+    private   int                mSeatIndex;
 
     public SelectMemberView(@NonNull Context context) {
         super(context, R.style.TUIChorusDialogTheme);
@@ -76,7 +80,7 @@ public class SelectMemberView extends BottomSheetDialog {
 
     }
 
-    public void setOnSelectedCallback(onSelectedCallback onSelectedCallback) {
+    public void setOnSelectedCallback(OnSelectedCallback onSelectedCallback) {
         mOnSelectedCallback = onSelectedCallback;
     }
 
@@ -120,9 +124,11 @@ public class SelectMemberView extends BottomSheetDialog {
         }
     }
 
-    public interface onSelectedCallback {
+    public interface OnSelectedCallback {
         void onSelected(int seatIndex, MemberEntity memberEntity);
+
         void onCancel();
+
         void onCloseButtonClick(int seatIndex);
     }
 
@@ -142,7 +148,7 @@ public class SelectMemberView extends BottomSheetDialog {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Context        context  = parent.getContext();
+            Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
             View view = inflater.inflate(R.layout.tuichorus_item_select, parent, false);
             return new ViewHolder(view);

@@ -1,5 +1,7 @@
 package com.tencent.liteav.tuichorus.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class TRTCChorusSEIJsonData {
 
     /**
@@ -8,31 +10,36 @@ public class TRTCChorusSEIJsonData {
      * total_time : 269.793
      */
 
-    private long   current_time;
-    private String music_id;
-    private long   total_time;
+    @SerializedName("current_time")
+    private long currentTime;
+
+    @SerializedName("music_id")
+    private String musicId;
+
+    @SerializedName("total_time")
+    private long totalTime;
 
     public long getCurrentTime() {
-        return current_time;
+        return currentTime;
     }
 
     public void setCurrentTime(long currentTime) {
-        this.current_time = currentTime;
+        this.currentTime = currentTime;
     }
 
     public String getMusicId() {
-        return music_id;
+        return musicId;
     }
 
-    public void setMusicId(String music_id) {
-        this.music_id = music_id;
+    public void setMusicId(String musicId) {
+        this.musicId = musicId;
     }
 
     public long getTotalTime() {
-        return total_time;
+        return totalTime;
     }
 
-    public void setTotalTime(long total_time) {
-        this.total_time = total_time;
+    public void setTotalTime(long totalTime) {
+        this.totalTime = totalTime;
     }
 }

@@ -46,8 +46,9 @@ public class DemoApplication extends MultiDexApplication {
             public void onActivityResumed(Activity activity) {
                 startCount++;
                 if (!(activity instanceof ChorusRoomAudienceActivity)) {
-                    if (mCallback != null)
+                    if (mCallback != null) {
                         mCallback.onAppBackground(false);
+                    }
                 }
             }
 
@@ -56,8 +57,9 @@ public class DemoApplication extends MultiDexApplication {
                 startCount--;
                 if (!(activity instanceof ChorusRoomAudienceActivity)) {
                     if (startCount < 1) {
-                        if (mCallback != null)
+                        if (mCallback != null) {
                             mCallback.onAppBackground(true);
+                        }
                     }
                 }
 

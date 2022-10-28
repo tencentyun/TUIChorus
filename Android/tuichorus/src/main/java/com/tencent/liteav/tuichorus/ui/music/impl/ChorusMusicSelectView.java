@@ -1,8 +1,10 @@
 package com.tencent.liteav.tuichorus.ui.music.impl;
 
 import android.content.Context;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChorusMusicSelectView extends CoordinatorLayout implements ChorusMusicServiceDelegate {
-    private final String TAG = "MusicSelectView";
+    private static final String TAG = "MusicSelectView";
 
     private final Context                    mContext;
     private       SlideRecyclerView          mRvList;
@@ -82,12 +84,13 @@ public class ChorusMusicSelectView extends CoordinatorLayout implements ChorusMu
             @Override
             public void onDeleteClick(View view, int position) {
                 if (mSelectedList.size() > 1) {
-                    mChorusMusicImpl.deleteMusic(mSelectedList.get(position).musicId, new ChorusMusicCallback.ActionCallback() {
-                        @Override
-                        public void onCallback(int code, String msg) {
-                            Log.d(TAG, "deleteMusic: code = " + code);
-                        }
-                    });
+                    mChorusMusicImpl.deleteMusic(mSelectedList.get(position).musicId,
+                            new ChorusMusicCallback.ActionCallback() {
+                                @Override
+                                public void onCallback(int code, String msg) {
+                                    Log.d(TAG, "deleteMusic: code = " + code);
+                                }
+                            });
                     mRvList.closeMenu();
                 }
             }

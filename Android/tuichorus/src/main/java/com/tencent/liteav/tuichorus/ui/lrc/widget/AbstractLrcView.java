@@ -296,7 +296,7 @@ public abstract class AbstractLrcView extends View {
                 synchronized (mLock) {
                     if (mLrcPlayerStatus == LRCPLAYERSTATUS_PLAY && mLyricsReader != null) {
                         invalidateView();
-                        long endTime    = System.currentTimeMillis();
+                        long endTime = System.currentTimeMillis();
                         long updateTime = (endTime - mPlayerStartTime) - mPlayerSpendTime;
                         mPlayerSpendTime = (endTime - mPlayerStartTime);
                         long delayMs = mRefreshTime - updateTime;
@@ -422,7 +422,8 @@ public abstract class AbstractLrcView extends View {
             mPaintHL.setAlpha(255);
             mExtraLrcPaint.setAlpha(255);
             mExtraLrcPaintHL.setAlpha(255);
-            if (mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR || mLrcStatus == LRCSTATUS_NONSUPPORT) {
+            if (mLrcStatus == LRCSTATUS_LOADING || mLrcStatus == LRCSTATUS_ERROR
+                    || mLrcStatus == LRCSTATUS_NONSUPPORT) {
                 //绘画加载中文本
 //                String text = "";
 //                if (mLrcStatus == LRCSTATUS_LOADING) {
@@ -555,10 +556,11 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public int getSplitLineLrcStartTime(int playProgress) {
-        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0)
+        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0) {
             return -1;
-        return LyricsUtils.getSplitLineLrcStartTime(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
-
+        }
+        return LyricsUtils.getSplitLineLrcStartTime(mLyricsReader.getLyricsType(),
+                mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
     }
 
     /**
@@ -568,9 +570,11 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public int getLineLrcStartTime(int playProgress) {
-        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0)
+        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0) {
             return -1;
-        return LyricsUtils.getLineLrcStartTime(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        }
+        return LyricsUtils.getLineLrcStartTime(mLyricsReader.getLyricsType(),
+                mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
     }
 
     /**
@@ -580,9 +584,11 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public String getSplitLineLrc(int playProgress) {
-        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0)
+        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0) {
             return null;
-        return LyricsUtils.getSplitLineLrc(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        }
+        return LyricsUtils.getSplitLineLrc(mLyricsReader.getLyricsType(),
+                mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
     }
 
     /**
@@ -592,9 +598,11 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public String getLineLrc(int playProgress) {
-        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0)
+        if (mLyricsReader == null || mLrcLineInfos == null || mLrcLineInfos.size() == 0) {
             return null;
-        return LyricsUtils.getLineLrc(mLyricsReader.getLyricsType(), mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
+        }
+        return LyricsUtils.getLineLrc(mLyricsReader.getLyricsType(),
+                mLrcLineInfos, playProgress, mLyricsReader.getPlayOffset());
 
     }
 
@@ -710,11 +718,13 @@ public abstract class AbstractLrcView extends View {
      * @return
      */
     public boolean hasLrcLineInfos() {
-        if (mLyricsReader != null && mLyricsReader.getLrcLineInfos() != null && mLyricsReader.getLrcLineInfos().size() > 0) {
+        if (mLyricsReader != null && mLyricsReader.getLrcLineInfos() != null
+                && mLyricsReader.getLrcLineInfos().size() > 0) {
             //获取分割歌词集合
             if (mLyricsReader.getLyricsType() == LyricsInfo.DYNAMIC) {
                 //默认歌词
-                mLrcLineInfos = LyricsUtils.getSplitDynamicLyrics(mLyricsReader.getLrcLineInfos(), mTextMaxWidth, mPaint);
+                mLrcLineInfos = LyricsUtils.getSplitDynamicLyrics(mLyricsReader.getLrcLineInfos(),
+                        mTextMaxWidth, mPaint);
             }
 
             return true;
@@ -785,16 +795,21 @@ public abstract class AbstractLrcView extends View {
         //动感歌词
         if (mLyricsReader.getLyricsType() == LyricsInfo.DYNAMIC) {
             //获取分割后的索引
-            mSplitLyricsLineNum = LyricsUtils.getSplitDynamicLyricsLineNum(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
+            mSplitLyricsLineNum = LyricsUtils.getSplitDynamicLyricsLineNum(mLrcLineInfos, mLyricsLineNum,
+                    playProgress, mLyricsReader.getPlayOffset());
             //获取原始的歌词字索引
-            mLyricsWordIndex = LyricsUtils.getLyricsWordIndex(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
+            mLyricsWordIndex = LyricsUtils.getLyricsWordIndex(mLrcLineInfos, mLyricsLineNum,
+                    playProgress, mLyricsReader.getPlayOffset());
             //获取分割后的歌词字索引
-            mSplitLyricsWordIndex = LyricsUtils.getSplitLyricsWordIndex(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
-            mLyricsWordHLTime = LyricsUtils.getDisWordsIndexLenTime(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
+            mSplitLyricsWordIndex = LyricsUtils.getSplitLyricsWordIndex(mLrcLineInfos, mLyricsLineNum,
+                    playProgress, mLyricsReader.getPlayOffset());
+            mLyricsWordHLTime = LyricsUtils.getDisWordsIndexLenTime(mLrcLineInfos,
+                    mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
         } else {
             //lrc歌词
             //获取分割后的索引
-            mSplitLyricsLineNum = LyricsUtils.getSplitLrcLyricsLineNum(mLrcLineInfos, mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
+            mSplitLyricsLineNum = LyricsUtils.getSplitLrcLyricsLineNum(mLrcLineInfos,
+                    mLyricsLineNum, playProgress, mLyricsReader.getPlayOffset());
         }
     }
 
@@ -804,8 +819,9 @@ public abstract class AbstractLrcView extends View {
     public void release() {
         removeCallbacksAndMessages();
         //关闭线程
-        if (mHandlerThread != null)
+        if (mHandlerThread != null) {
             mHandlerThread.quit();
+        }
     }
 
     /**

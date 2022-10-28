@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Path;
+
 import androidx.appcompat.widget.AppCompatImageView;
+
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -40,10 +42,14 @@ public class RoundCornerImageView extends AppCompatImageView {
         // 读取配置
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.TUIChorusRoundCornerImageView);
         mRadius = array.getDimensionPixelOffset(R.styleable.TUIChorusRoundCornerImageView_radius, mDefaultRadius);
-        mLeftTopRadius = array.getDimensionPixelOffset(R.styleable.TUIChorusRoundCornerImageView_left_top_radius, mDefaultRadius);
-        mRightTopRadius = array.getDimensionPixelOffset(R.styleable.TUIChorusRoundCornerImageView_right_top_radius, mDefaultRadius);
-        mRightBottomRadius = array.getDimensionPixelOffset(R.styleable.TUIChorusRoundCornerImageView_right_bottom_radius, mDefaultRadius);
-        mLeftBottomRadius = array.getDimensionPixelOffset(R.styleable.TUIChorusRoundCornerImageView_left_bottom_radius, mDefaultRadius);
+        mLeftTopRadius = array.getDimensionPixelOffset(
+                R.styleable.TUIChorusRoundCornerImageView_left_top_radius, mDefaultRadius);
+        mRightTopRadius = array.getDimensionPixelOffset(
+                R.styleable.TUIChorusRoundCornerImageView_right_top_radius, mDefaultRadius);
+        mRightBottomRadius = array.getDimensionPixelOffset(
+                R.styleable.TUIChorusRoundCornerImageView_right_bottom_radius, mDefaultRadius);
+        mLeftBottomRadius = array.getDimensionPixelOffset(
+                R.styleable.TUIChorusRoundCornerImageView_left_bottom_radius, mDefaultRadius);
 
         //如果四个角的值没有设置，那么就使用通用的radius的值。
         if (mDefaultRadius == mLeftTopRadius) {
@@ -71,10 +77,10 @@ public class RoundCornerImageView extends AppCompatImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         // 只有图片的宽高大于设置的圆角距离的时候才进行裁剪
-        int maxLeft   = Math.max(mLeftTopRadius, mLeftBottomRadius);
-        int maxRight  = Math.max(mRightTopRadius, mRightBottomRadius);
-        int minWidth  = maxLeft + maxRight;
-        int maxTop    = Math.max(mLeftTopRadius, mRightTopRadius);
+        int maxLeft = Math.max(mLeftTopRadius, mLeftBottomRadius);
+        int maxRight = Math.max(mRightTopRadius, mRightBottomRadius);
+        int minWidth = maxLeft + maxRight;
+        int maxTop = Math.max(mLeftTopRadius, mRightTopRadius);
         int maxBottom = Math.max(mLeftBottomRadius, mRightBottomRadius);
         int minHeight = maxTop + maxBottom;
         if (mWidth >= minWidth && mHeight > minHeight) {

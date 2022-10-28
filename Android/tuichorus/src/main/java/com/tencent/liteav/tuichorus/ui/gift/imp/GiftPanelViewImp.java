@@ -30,8 +30,8 @@ import java.util.List;
 public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelView {
     private static final String TAG = "GiftPanelViewImp";
 
-    private int COLUMNS = 4;
-    private int ROWS    = 2;
+    private static int COLUMNS = 4;
+    private static int ROWS    = 2;
 
     private Context             mContext;
     private List<View>          mGiftViews;     //每页显示的礼物view
@@ -64,7 +64,7 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
             textView.setTextSize(24);
             textView.setPadding(20, 32, 0, 0);
             mDotsLayout.setVisibility(View.GONE);
-            LinearLayout             linearLayout = findViewById(R.id.giftLayout);
+            LinearLayout linearLayout = findViewById(R.id.giftLayout);
             FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) linearLayout.getLayoutParams();
             layoutParams.height *= 0.6;
             linearLayout.setLayoutParams(layoutParams);
@@ -144,8 +144,8 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
      * @return
      */
     private ImageView dotsItem(int position) {
-        View      layout = mInflater.inflate(R.layout.tuichorus_layout_gift_dot, null);
-        ImageView iv     = (ImageView) layout.findViewById(R.id.face_dot);
+        View layout = mInflater.inflate(R.layout.tuichorus_layout_gift_dot, null);
+        ImageView iv = (ImageView) layout.findViewById(R.id.face_dot);
         iv.setId(position);
         return iv;
     }
@@ -165,8 +165,9 @@ public class GiftPanelViewImp extends BottomSheetDialog implements IGiftPanelVie
                 mDotsLayout.getChildAt(i).setSelected(false);
             }
             mDotsLayout.getChildAt(position).setSelected(true);
-            for (int i = 0; i < mGiftViews.size(); i++) {//清除选中，当礼物页面切换到另一个礼物页面
-                RecyclerView     view    = (RecyclerView) mGiftViews.get(i);
+            for (int i = 0; i < mGiftViews.size(); i++) {
+                //清除选中，当礼物页面切换到另一个礼物页面
+                RecyclerView view = (RecyclerView) mGiftViews.get(i);
                 GiftPanelAdapter adapter = (GiftPanelAdapter) view.getAdapter();
                 if (mGiftController != null) {
                     int selectPageIndex = mGiftController.getSelectPageIndex();

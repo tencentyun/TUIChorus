@@ -168,7 +168,8 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
                     }
                     if (!mIsChorusOn && mListener != null) {
                         mChorusStartReason = ChorusStartReason.RemoteStart;
-                        mListener.onReceiveAnchorSendChorusMsg(json.optString(KEY_MUSIC_ID), mRevStartPlayMusicTs - getNtpTime());
+                        mListener.onReceiveAnchorSendChorusMsg(json.optString(KEY_MUSIC_ID),
+                                mRevStartPlayMusicTs - getNtpTime());
                     }
                     TXCLog.i(TAG, "receive start chorus message. startTs:" + mRevStartPlayMusicTs);
                     break;
@@ -247,7 +248,7 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         }
         mPlayer.setRenderView(view);
         mPlayer.setCacheParams(CACHE_TIME_SMOOTH, CACHE_TIME_SMOOTH);
-        return mPlayer.startPlay(url) == V2TXLIVE_OK;
+        return mPlayer.startLivePlay(url) == V2TXLIVE_OK;
     }
 
     /**
@@ -309,7 +310,8 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
 
     private boolean startPlayMusic(ChorusStartReason reason, int delayMs) {
         if (!isNtpReady() || mMusicDuration <= 0) {
-            TXCLog.e(TAG, "startPlayMusic failed. isNtpReady:" + isNtpReady() + " isMusicFileReady:" + (mMusicDuration > 0));
+            TXCLog.e(TAG, "startPlayMusic failed. isNtpReady:" + isNtpReady()
+                    + " isMusicFileReady:" + (mMusicDuration > 0));
             return false;
         }
         if (delayMs <= -mMusicDuration) {
@@ -323,8 +325,10 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         mIsChorusOn = true;
         TXCLog.i(TAG, "startPlayMusic delayMs:" + delayMs + " mMusicDuration:" + mMusicDuration);
 
-        startTimer(reason, reason == ChorusStartReason.LocalStart ? (getNtpTime() + MUSIC_START_DELAY) : mRevStartPlayMusicTs);
-        final TXAudioEffectManager.AudioMusicParam audioMusicParam = new TXAudioEffectManager.AudioMusicParam(mMusicID, mMusicPath);
+        startTimer(reason, reason == ChorusStartReason.LocalStart ? (getNtpTime()
+                + MUSIC_START_DELAY) : mRevStartPlayMusicTs);
+        final TXAudioEffectManager.AudioMusicParam audioMusicParam = new TXAudioEffectManager
+                .AudioMusicParam(mMusicID, mMusicPath);
         audioMusicParam.publish = false;
         audioMusicParam.loopCount = 0;
         mTRTCCloud.getAudioEffectManager().setMusicObserver(mMusicID, this);
@@ -436,7 +440,8 @@ public class TRTCChorusManager implements TXAudioEffectManager.TXMusicPlayObserv
         long currentProgress = mTRTCCloud.getAudioEffectManager().getMusicCurrentPosInMS(mMusicID);
         long estimatedProgress = getNtpTime() - mStartPlayMusicTs;
         if (estimatedProgress >= 0 && Math.abs(currentProgress - estimatedProgress) > 60) {
-            TXCLog.i(TAG, "checkMusicProgress currentProgress:" + currentProgress + " estimatedProgress:" + estimatedProgress);
+            TXCLog.i(TAG, "checkMusicProgress currentProgress:" + currentProgress
+                    + " estimatedProgress:" + estimatedProgress);
             mTRTCCloud.getAudioEffectManager().seekMusicToPosInMS(mMusicID, (int) estimatedProgress);
         }
     }
