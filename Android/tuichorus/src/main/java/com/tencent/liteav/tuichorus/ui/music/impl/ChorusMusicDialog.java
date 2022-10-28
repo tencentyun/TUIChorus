@@ -58,12 +58,6 @@ public class ChorusMusicDialog extends Dialog {
     }
 
     private void initData(Context context) {
-        String[] TITLE_LIST = new String[]{
-                context.getString(R.string.tuichorus_btn_choose_song),
-                context.getString(R.string.tuichorus_btn_choosed_song),
-        };
-        List<String> titleList = Arrays.asList(TITLE_LIST);
-
         ArrayList<View> viewList = new ArrayList<>();
         viewList.add(mChorusLibraryView);
         viewList.add(mChorusSelectView);
@@ -72,6 +66,13 @@ public class ChorusMusicDialog extends Dialog {
 
         PagerAdapter pagerAdapter = new ChorusMusicPagerAdapter(viewList);
         mContentVp.setAdapter(pagerAdapter);
+
+        String[] titleArray = new String[]{
+                context.getString(R.string.tuichorus_btn_choose_song),
+                context.getString(R.string.tuichorus_btn_choosed_song),
+        };
+        List<String> titleList = Arrays.asList(titleArray);
+
         for (int i = 0; i < titleList.size(); i++) {
             TabLayout.Tab tab = mTopTl.getTabAt(i);
             if (tab != null) {
@@ -96,8 +97,8 @@ public class ChorusMusicDialog extends Dialog {
     }
 
     public static int getScreenHeight(Context context) {
-        WindowManager wm    = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        Point         point = new Point();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Point point = new Point();
         if (wm == null) {
             TRTCLogger.d(TAG, " the wm is null");
             return 0;

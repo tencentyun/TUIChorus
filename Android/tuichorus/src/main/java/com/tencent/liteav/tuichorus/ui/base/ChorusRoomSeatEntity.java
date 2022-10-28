@@ -13,10 +13,16 @@ public class ChorusRoomSeatEntity {
 
     @Override
     public String toString() {
-        return "RoomSeatEntity{" +
-                "userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userAvatar='" + userAvatar + '\'' +
-                '}';
+        return "ChorusRoomSeatEntity{"
+                + "index=" + index
+                + ", userId='" + userId + '\''
+                + ", userName='" + userName + '\''
+                + ", userAvatar='" + userAvatar + '\''
+                + ", isUsed=" + isUsed
+                + ", isClose=" + isClose
+                + ", isSeatMute=" + isSeatMute
+                + ", isUserMute=" + isUserMute
+                + ", isTalk=" + isTalk
+                + '}';
     }
 }

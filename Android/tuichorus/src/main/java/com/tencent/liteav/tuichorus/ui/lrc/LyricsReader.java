@@ -22,7 +22,7 @@ public class LyricsReader {
     /**
      * 增量
      */
-    private long mOffset = 0;
+    private long mOffset    = 0;
 
     /**
      * 歌词类型
@@ -52,8 +52,8 @@ public class LyricsReader {
      * @param lyricsFile
      */
     public void loadLrc(File lyricsFile) throws Exception {
-        if(!lyricsFile.exists() || lyricsFile.length() == 0){
-            return ;
+        if (!lyricsFile.exists() || lyricsFile.length() == 0) {
+            return;
         }
 
         this.mLrcFilePath = lyricsFile.getPath();
@@ -77,8 +77,9 @@ public class LyricsReader {
      * @param fileName
      */
     public void loadLrc(byte[] base64ByteArray, File saveLrcFile, String fileName) throws Exception {
-        if (saveLrcFile != null)
+        if (saveLrcFile != null) {
             mLrcFilePath = saveLrcFile.getPath();
+        }
         LyricsFileReader lyricsFileReader = LyricsIOUtils.getLyricsFileReader(fileName);
         LyricsInfo lyricsInfo = lyricsFileReader.readLrcText(base64ByteArray, saveLrcFile);
         parser(lyricsInfo);

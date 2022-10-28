@@ -308,21 +308,41 @@ public class AudioEffectPanel extends BottomSheetDialog {
 
     private List<ItemEntity> createAudioChangeItems() {
         List<ItemEntity> list = new ArrayList<>();
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_no_effect), R.drawable.tuichorus_changetype_no_select_nomal, R.drawable.tuichorus_changetype_no_select_hover, AUDIO_VOICECHANGER_TYPE_0));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_child), R.drawable.tuichorus_changetype_child_normal, R.drawable.tuichorus_changetype_child_hover, AUDIO_VOICECHANGER_TYPE_1));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_luoli), R.drawable.tuichorus_changetype_luoli_normal, R.drawable.tuichorus_changetype_luoli_hover, AUDIO_VOICECHANGER_TYPE_2));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_dashu), R.drawable.tuichorus_changetype_dashu_normal, R.drawable.tuichorus_changetype_dashu_hover, AUDIO_VOICECHANGER_TYPE_3));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_kongling), R.drawable.tuichorus_changetype_kongling_normal, R.drawable.tuichorus_changetype_kongling_hover, AUDIO_VOICECHANGER_TYPE_11));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_no_effect),
+                R.drawable.tuichorus_changetype_no_select_nomal,
+                R.drawable.tuichorus_changetype_no_select_hover, AUDIO_VOICECHANGER_TYPE_0));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_child),
+                R.drawable.tuichorus_changetype_child_normal,
+                R.drawable.tuichorus_changetype_child_hover, AUDIO_VOICECHANGER_TYPE_1));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_luoli),
+                R.drawable.tuichorus_changetype_luoli_normal,
+                R.drawable.tuichorus_changetype_luoli_hover, AUDIO_VOICECHANGER_TYPE_2));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_dashu),
+                R.drawable.tuichorus_changetype_dashu_normal,
+                R.drawable.tuichorus_changetype_dashu_hover, AUDIO_VOICECHANGER_TYPE_3));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_change_type_kongling),
+                R.drawable.tuichorus_changetype_kongling_normal,
+                R.drawable.tuichorus_changetype_kongling_hover, AUDIO_VOICECHANGER_TYPE_11));
         return list;
     }
 
     private List<ItemEntity> createReverbItems() {
         List<ItemEntity> list = new ArrayList<>();
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_no_effect), R.drawable.tuichorus_changetype_no_select_nomal, R.drawable.tuichorus_changetype_no_select_hover, AUDIO_REVERB_TYPE_0));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_ktv), R.drawable.tuichorus_reverbtype_chorus_normal, R.drawable.tuichorus_reverbtype_chorus_hover, AUDIO_REVERB_TYPE_1));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_lowdeep), R.drawable.tuichorus_reverbtype_lowdeep_normal, R.drawable.tuichorus_reverbtype_lowdeep_hover, AUDIO_REVERB_TYPE_4));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_heavymetal), R.drawable.tuichorus_reverbtype_heavymetal_normal, R.drawable.tuichorus_reverbtype_heavymetal_hover, AUDIO_REVERB_TYPE_6));
-        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_hongliang), R.drawable.tuichorus_reverbtype_hongliang_normal, R.drawable.tuichorus_reverbtype_hongliang_hover, AUDIO_REVERB_TYPE_5));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_no_effect),
+                R.drawable.tuichorus_changetype_no_select_nomal,
+                R.drawable.tuichorus_changetype_no_select_hover, AUDIO_REVERB_TYPE_0));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_ktv),
+                R.drawable.tuichorus_reverbtype_chorus_normal,
+                R.drawable.tuichorus_reverbtype_chorus_hover, AUDIO_REVERB_TYPE_1));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_lowdeep),
+                R.drawable.tuichorus_reverbtype_lowdeep_normal,
+                R.drawable.tuichorus_reverbtype_lowdeep_hover, AUDIO_REVERB_TYPE_4));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_heavymetal),
+                R.drawable.tuichorus_reverbtype_heavymetal_normal,
+                R.drawable.tuichorus_reverbtype_heavymetal_hover, AUDIO_REVERB_TYPE_6));
+        list.add(new ItemEntity(mContext.getResources().getString(R.string.tuichorus_audio_reverb_type_hongliang),
+                R.drawable.tuichorus_reverbtype_hongliang_normal,
+                R.drawable.tuichorus_reverbtype_hongliang_hover, AUDIO_REVERB_TYPE_5));
         return list;
     }
 

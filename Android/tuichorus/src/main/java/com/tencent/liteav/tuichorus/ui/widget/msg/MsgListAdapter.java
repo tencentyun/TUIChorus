@@ -96,12 +96,15 @@ public class MsgListAdapter extends
             if (model.type == MsgEntity.TYPE_WELCOME) {
                 String result = model.content + model.linkUrl;
                 SpannableStringBuilder builder = new SpannableStringBuilder(result);
-                ForegroundColorSpan welcomeTitleSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.tuichorus_color_welcome));
-                ForegroundColorSpan linkSpan = new ForegroundColorSpan(mContext.getResources().getColor(R.color.tuichorus_color_link));
+                ForegroundColorSpan welcomeTitleSpan = new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.tuichorus_color_welcome));
+                ForegroundColorSpan linkSpan = new ForegroundColorSpan(mContext.getResources()
+                        .getColor(R.color.tuichorus_color_link));
                 UnderlineSpan linkUnderline = new UnderlineSpan();
                 builder.setSpan(welcomeTitleSpan, 0, model.content.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 builder.setSpan(linkSpan, model.content.length(), result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                builder.setSpan(linkUnderline, model.content.length(), result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(linkUnderline, model.content.length(),
+                        result.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 mTvMsgContent.setText(builder);
                 mTvMsgContent.setBackground(null);
                 //消息发送者颜色定制，消息发送者的username会根据设置的颜色显示

@@ -42,7 +42,8 @@ public abstract class TRTCChorusRoom {
      * 您可以通过 TRTCChorusRoomDelegate 获得 TRTCChorusRoom 的各种状态通知
      *
      * @param delegate 回调接口
-     * @note TRTCChorusRoom 中的事件，默认是在 Main Thread 中回调给您；如果您需要指定事件回调所在的线程，可使用 {@link TRTCChorusRoom#setDelegateHandler(Handler)}
+     * @note TRTCChorusRoom 中的事件，默认是在 Main Thread 中回调给您；
+     * 如果您需要指定事件回调所在的线程，可使用 {@link TRTCChorusRoom#setDelegateHandler(Handler)}
      */
     public abstract void setDelegate(TRTCChorusRoomDelegate delegate);
 
@@ -61,7 +62,8 @@ public abstract class TRTCChorusRoom {
      * @param userSig  腾讯云设计的一种安全保护签名，获取方式请参考 [如何计算 UserSig](https://cloud.tencent.com/document/product/647/17275)。
      * @param callback 登录回调，成功时 code 为0
      */
-    public abstract void login(int sdkAppId, String userId, String userSig, TRTCChorusRoomCallback.ActionCallback callback);
+    public abstract void login(int sdkAppId, String userId, String userSig,
+                               TRTCChorusRoomCallback.ActionCallback callback);
 
     /**
      * 退出登录
@@ -75,7 +77,8 @@ public abstract class TRTCChorusRoom {
      * @param avatarURL 用户头像
      * @param callback  是否设置成功的结果回调
      */
-    public abstract void setSelfProfile(String userName, String avatarURL, TRTCChorusRoomCallback.ActionCallback callback);
+    public abstract void setSelfProfile(String userName, String avatarURL,
+                                        TRTCChorusRoomCallback.ActionCallback callback);
 
     //////////////////////////////////////////////////////////
     //
@@ -116,7 +119,8 @@ public abstract class TRTCChorusRoom {
      * @param roomId   房间标识
      * @param callback 进入房间是否成功的结果回调
      */
-    public abstract void enterRoom(int roomId, TXCloudVideoView videoView, TRTCChorusRoomCallback.ActionCallback callback);
+    public abstract void enterRoom(int roomId, TXCloudVideoView videoView,
+                                   TRTCChorusRoomCallback.ActionCallback callback);
 
     /**
      * 退出房间
@@ -130,7 +134,8 @@ public abstract class TRTCChorusRoom {
      *
      * @param userlistcallback 用户详细信息回调
      */
-    public abstract void getUserInfoList(List<String> userIdList, TRTCChorusRoomCallback.UserListCallback userlistcallback);
+    public abstract void getUserInfoList(List<String> userIdList,
+                                         TRTCChorusRoomCallback.UserListCallback userlistcallback);
 
     //////////////////////////////////////////////////////////
     //
@@ -317,7 +322,8 @@ public abstract class TRTCChorusRoom {
      * @param callback 发送结果回调
      * @return inviteId 用于标识此次邀请ID
      */
-    public abstract String sendInvitation(String cmd, String userId, String content, TRTCChorusRoomCallback.ActionCallback callback);
+    public abstract String sendInvitation(String cmd, String userId, String content,
+                                          TRTCChorusRoomCallback.ActionCallback callback);
 
     /**
      * 接受邀请
